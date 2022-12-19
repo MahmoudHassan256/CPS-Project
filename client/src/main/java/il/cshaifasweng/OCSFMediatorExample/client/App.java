@@ -1,5 +1,7 @@
 package il.cshaifasweng.OCSFMediatorExample.client;
 
+import il.cshaifasweng.OCSFMediatorExample.entities.ParkingLot;
+import il.cshaifasweng.OCSFMediatorExample.entities.Price;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
@@ -12,6 +14,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.io.IOException;
+import java.util.List;
 
 /**
  * JavaFX App
@@ -61,6 +64,27 @@ public class App extends Application {
         	alert.show();
     	});
     	
+    }
+
+    @SuppressWarnings("unchecked")
+        @Subscribe
+    public void onParkingLotsReceivedEvent(ParkingLotsReceivedEvent event){
+       ParkinglotsController.setParkingLotList((List<ParkingLot>) event.getParkinglotsTable());
+        try{
+            App.setRoot("parkinglots");
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+    @SuppressWarnings("unchecked")
+    @Subscribe
+    public void onPricesReceivedEvent(PricesReceivedEvent event){
+        PricesController.setPrice((List<Price>) event.getPricesTable());
+        try{
+            App.setRoot("prices");
+        }catch (IOException e){
+            e.printStackTrace();
+        }
     }
 
 	public static void main(String[] args) {
