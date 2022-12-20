@@ -23,6 +23,8 @@ public class SimpleClient extends AbstractClient {
 			EventBus.getDefault().post(new ParkingLotsReceivedEvent((Message) msg));
 		} else if (strmsg.startsWith("#ShowPrices")) {
 			EventBus.getDefault().post(new PricesReceivedEvent((Message) msg));
+		} else if (strmsg.startsWith("#UpdatePrices")) {
+			EventBus.getDefault().post(new UpdatePricesReceivedEvent ((Message) msg));
 		}
 //
 	}

@@ -60,7 +60,7 @@ public class PricesController {
         parkingtype_t_c.setCellValueFactory(new PropertyValueFactory<Price,String>("parkingType"));
         paymentplan_t_c.setCellValueFactory(new PropertyValueFactory<Price,String>("paymentPlan"));
         price_t_c.setCellValueFactory(new PropertyValueFactory<Price,String>("price"));
-    pricestable.setItems(list);
+        pricestable.setItems(list);
     }
 
 }

@@ -23,6 +23,16 @@ public class Price implements Serializable {
     private String paymentPlan;
     private String price;
 
+    @Override
+    public String toString() {
+        return "Price{" +
+                "id=" + id +
+                ", parkingType='" + parkingType + '\'' +
+                ", paymentPlan='" + paymentPlan + '\'' +
+                ", price='" + price + '\'' +
+                '}';
+    }
+
     public Price() {
 
     }

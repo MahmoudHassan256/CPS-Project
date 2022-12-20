@@ -5,8 +5,8 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.cshaifasweng.OCSFMediatorExample.client.PrimaryController">
    <children>
-      <Button fx:id="showparkingbtn" layoutX="29.0" layoutY="155.0" mnemonicParsing="false" onAction="#ShowParkings" prefHeight="98.0" prefWidth="152.0" text="show parking lots" />
-      <Button fx:id="showpricesbtn" layoutX="231.0" layoutY="155.0" mnemonicParsing="false" onAction="#showPrices" prefHeight="98.0" prefWidth="161.0" text="show prices" />
-      <Button fx:id="updatepricesbtn" layoutX="460.0" layoutY="147.0" mnemonicParsing="false" onAction="#updatePrices" prefHeight="106.0" prefWidth="110.0" text="update prices" />
+      <Button fx:id="showparkingbtn" layoutX="29.0" layoutY="155.0" mnemonicParsing="false" onAction="#ShowParkings" prefHeight="110.0" prefWidth="130.0" text="show parking lots" AnchorPane.bottomAnchor="145.0" AnchorPane.leftAnchor="26.0" AnchorPane.topAnchor="145.0" />
+      <Button fx:id="showpricesbtn" layoutX="231.0" layoutY="155.0" mnemonicParsing="false" onAction="#showPrices" prefHeight="110.0" prefWidth="130.0" text="show prices" AnchorPane.bottomAnchor="145.0" AnchorPane.leftAnchor="232.0" AnchorPane.rightAnchor="232.0" AnchorPane.topAnchor="145.0" />
+      <Button fx:id="updatepricesbtn" layoutX="444.0" layoutY="147.0" mnemonicParsing="false" onAction="#updatePrices" prefHeight="110.0" prefWidth="130.0" text="update prices" AnchorPane.bottomAnchor="145.0" AnchorPane.rightAnchor="26.0" AnchorPane.topAnchor="145.0" />
    </children>
 </AnchorPane>

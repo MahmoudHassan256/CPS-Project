@@ -87,6 +87,17 @@ public class App extends Application {
         }
     }
 
+    @SuppressWarnings("unchecked")
+    @Subscribe
+    public void onUpdatePricesReceivedEvent(UpdatePricesReceivedEvent event){
+        PriceschangesceneController.setPriceList((List<Price>) event.getPricestable());
+        try{
+            App.setRoot("priceschangescene");
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+
 	public static void main(String[] args) {
         launch();
     }

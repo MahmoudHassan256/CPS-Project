@@ -58,6 +58,16 @@ public class SimpleServer extends AbstractServer {
 			}catch (Exception e){
 				e.printStackTrace();
 			}
+		} else if (msgString.startsWith("#UpdatePricesRequest")) {
+			try{
+				session=sessionFactory.openSession();
+				ArrayList<Price> prices = getAllPrices();
+				client.sendToClient(new Message("#UpdatePrices",prices));
+		}catch (IOException e){
+			e.printStackTrace();
+		}catch (Exception e){
+			e.printStackTrace();
+		}
 		}
 
 
