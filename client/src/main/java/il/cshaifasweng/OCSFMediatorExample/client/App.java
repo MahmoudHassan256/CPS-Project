@@ -29,7 +29,7 @@ public class App extends Application {
     	EventBus.getDefault().register(this);
     	client = SimpleClient.getClient();
     	client.openConnection();
-        scene = new Scene(loadFXML("primary"), 640, 480);
+        scene = new Scene(loadFXML("primary"));
         stage.setScene(scene);
         stage.show();
 
@@ -96,6 +96,12 @@ public class App extends Application {
         }catch (IOException e){
             e.printStackTrace();
         }
+    }
+    @SuppressWarnings("unchecked")
+    @Subscribe
+    public void onShowUpdatedPricesEvent(ShowUpdatedPricesEvent event){
+        PricesController.setPrice((List<Price>) event.getPricesTable());
+        PriceschangesceneController.setPriceList((List<Price>) event.getPricesTable());
     }
 
 	public static void main(String[] args) {

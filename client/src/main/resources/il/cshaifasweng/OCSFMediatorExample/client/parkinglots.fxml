@@ -4,15 +4,22 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.cshaifasweng.OCSFMediatorExample.client.ParkinglotsController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.cshaifasweng.OCSFMediatorExample.client.ParkinglotsController">
    <children>
-      <Button fx:id="backbtn" layoutX="537.0" layoutY="35.0" mnemonicParsing="false" onAction="#gotoprimary" text="Back" />
-      <TableView fx:id="parkinglotstabe" layoutY="82.0" prefHeight="200.0" prefWidth="600.0">
+      <Button fx:id="backbtn" layoutX="715.0" layoutY="14.0" mnemonicParsing="false" onAction="#gotoprimary" prefHeight="45.0" prefWidth="71.0" text="Back" />
+      <TableView fx:id="parkinglotstabe" layoutX="79.0" layoutY="143.0" prefHeight="214.0" prefWidth="641.0">
         <columns>
           <TableColumn fx:id="id_t_c" prefWidth="47.20001220703125" text="id" />
-          <TableColumn fx:id="capacity_t_c" prefWidth="109.60003662109375" text="capacity" />
+          <TableColumn fx:id="capacity_t_c" prefWidth="251.99993896484375" text="capacity" />
         </columns>
       </TableView>
+      <Text fx:id="text" layoutX="79.0" layoutY="139.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Parking Lots">
+         <font>
+            <Font size="36.0" />
+         </font>
+      </Text>
    </children>
 </AnchorPane>

@@ -63,4 +63,5 @@ public class PricesController {
         pricestable.setItems(list);
     }
 
+
 }

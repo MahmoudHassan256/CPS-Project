@@ -15,9 +15,8 @@ public class Price implements Serializable {
     }
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    @Column(name = "id", nullable = false)
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    public Long id;
 
     private String parkingType;
     private String paymentPlan;

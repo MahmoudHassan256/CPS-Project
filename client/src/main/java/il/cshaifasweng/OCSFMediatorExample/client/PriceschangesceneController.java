@@ -4,6 +4,7 @@
 
 package il.cshaifasweng.OCSFMediatorExample.client;
 
+import il.cshaifasweng.OCSFMediatorExample.entities.Message;
 import il.cshaifasweng.OCSFMediatorExample.entities.Price;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -36,10 +37,12 @@ public class PriceschangesceneController {
 
     @FXML // fx:id="backbtn"
     private Button backbtn; // Value injected by FXMLLoader
-
+    @FXML // fx:id="id_t_c"
+    private TableColumn<Price,Long> id_t_c; // Value injected by FXMLLoader
     @FXML // fx:id="parkingtype_t_c"
     private TableColumn<Price, String> parkingtype_t_c; // Value injected by FXMLLoader
-
+    @FXML // fx:id="idbox"
+    private ComboBox<Long> idbox; // Value injected by FXMLLoader
     @FXML // fx:id="parkingtypebox"
     private ComboBox<String> parkingtypebox; // Value injected by FXMLLoader
 
@@ -74,41 +77,46 @@ public class PriceschangesceneController {
     }
 
     @FXML
-    void updateparkingtype(ActionEvent event) {
+    void chooseid(ActionEvent event) {
+        parkingtypebox.setDisable(false);
         paymentmethodbox.setDisable(false);
-    }
-
-    @FXML
-    void updatepaymentmethod(ActionEvent event) {
         pricebtn.setDisable(false);
+        updatebtn.setDisable(false);
     }
-
-    @FXML
-    void updateprice(ActionEvent event) {
-    }
-
     @FXML
     void updatepricestable(ActionEvent event) {
-        if(parkingtypebox.getValue()!=null && paymentmethodbox.getValue()!=null && pricebtn.getText()!=""){
-            Price updatedPrice=new Price(parkingtypebox.getValue(),paymentmethodbox.getValue(),pricebtn.getText());
+            Price updatedPrice = new Price();
+            if(pricebtn.getText()!="")updatedPrice.setPrice(pricebtn.getText());
+            if(paymentmethodbox.getValue()!="")updatedPrice.setPaymentPlan(paymentmethodbox.getValue());
+            if(parkingtypebox.getValue()!="")updatedPrice.setParkingType(parkingtypebox.getValue());
+            if (idbox.getValue()!=null)updatedPrice.setId(idbox.getValue());
+            try {
+                SimpleClient.getClient().sendToServer(new Message("#ChangePriceRequest", updatedPrice));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        try {
+        App.setRoot("primary");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
-        else {
-            System.out.println("Fill All Feils");
-        }
-
     }
 
     @FXML
-    void initialize() {
+     void initialize() {
         parkingtype_t_c.setCellValueFactory(new PropertyValueFactory<Price, String>("parkingType"));
         paymentmethod_t_c.setCellValueFactory(new PropertyValueFactory<Price, String>("paymentPlan"));
         price_t_c.setCellValueFactory(new PropertyValueFactory<Price, String>("price"));
+        id_t_c.setCellValueFactory(new PropertyValueFactory<Price,Long>("id"));
         pricestable.setItems(list);
         for (Price price : priceList) {
+            idbox.getItems().addAll(price.getId());
             parkingtypebox.getItems().addAll(price.getParkingType());
             paymentmethodbox.getItems().addAll(price.getPaymentPlan());
         }
+        parkingtypebox.setDisable(true);
         paymentmethodbox.setDisable(true);
         pricebtn.setDisable(true);
+        updatebtn.setDisable(true);
     }
 }

@@ -18,6 +18,7 @@ import org.hibernate.service.ServiceRegistry;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Random;
 
 public class SimpleServer extends AbstractServer {
@@ -68,25 +69,59 @@ public class SimpleServer extends AbstractServer {
 		}catch (Exception e){
 			e.printStackTrace();
 		}
+		} else if (msgString.startsWith("#ChangePriceRequest")) {
+			try{
+			session=sessionFactory.openSession();
+			List<Price> priceList=null;
+				Price pricetoupdate=((Price)((Message)msg).getObject());
+				try {
+					priceList = getAllPrices();
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				for (Price price:priceList){
+					if(Objects.equals(price.getId(), pricetoupdate.getId())){
+						session.beginTransaction();
+						if(pricetoupdate.getPaymentPlan()!=null)price.setPaymentPlan(pricetoupdate.getPaymentPlan());
+						if(pricetoupdate.getParkingType()!=null)price.setParkingType(pricetoupdate.getParkingType());
+						if(pricetoupdate.getPrice()!=null)price.setPrice(pricetoupdate.getPrice());
+						session.save(price);
+						session.flush();
+						session.getTransaction().commit();
+						break;
+					}
+				}
+			}catch (Exception e){
+				e.printStackTrace();
+			}
+			session.close();
+		}else if(msgString.startsWith("#UpdatePricesTableRequest")){
+			try {
+				session=sessionFactory.openSession();
+				ArrayList<Price> prices = getAllPrices();
+				client.sendToClient(new Message("#ShowUpdatedPrices", prices));
+			}catch (IOException e){
+				e.printStackTrace();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 
 
 	}
 	public void generateParkingLots(){
-		Random random=new Random();
-		for (int i = 0; i < 10; i++) {
-			ParkingLot parkingLot =new ParkingLot(random.nextInt(19));
-			session.save(parkingLot);
-			session.flush();
-		}
+			ParkingLot parkingLot1 =new ParkingLot(250);session.save(parkingLot1);session.flush();
+			ParkingLot parkingLot2 =new ParkingLot(350);session.save(parkingLot2);session.flush();
+			ParkingLot parkingLot3 =new ParkingLot(450);session.save(parkingLot3);session.flush();
 	}
 	public void generatePrices(){
 		Random random=new Random();
-		Price price1 =new Price("type1","plan1","price1");session.save(price1);session.flush();
-		Price price2 =new Price("type2","plan2","price2");session.save(price2);session.flush();
-		Price price3 =new Price("type3","plan3","price3");session.save(price3);session.flush();
-		Price price4 =new Price("type4","plan4","price4");session.save(price4);session.flush();
-		Price price5 =new Price("type5","plan5","price5");session.save(price5);session.flush();
+		Price price1 =new Price("Occasional parking","Per Hour","8₪");session.save(price1);session.flush();
+		Price price2 =new Price("Requested One-time parking","Per Hour","7₪");session.save(price2);session.flush();
+		Price price3 =new Price("Regular monthly subscription-1 Car","Fixed price","60 hour of Requested One-time parking");session.save(price3);session.flush();
+		Price price4 =new Price("Regular monthly subscription-Multi cars","Fixed price","54 hour of Requested One-time parking * Number of cars");session.save(price4);session.flush();
+		Price price5 =new Price("Full monthly subscription-1 Car","Fixed price","72 hour of Requested One-time parking");session.save(price5);session.flush();
 
 	}
 	private static SessionFactory getSessionFactory() throws HibernateError {
