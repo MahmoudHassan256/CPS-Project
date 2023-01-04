@@ -48,7 +48,7 @@ public class ParkinglotsController {
     @FXML
     void gotoprimary(ActionEvent event) {
         try {
-            App.setRoot("primary");
+            App.setRoot("firstscene");
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();

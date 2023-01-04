@@ -30,6 +30,7 @@ public class App extends Application {
     	client = SimpleClient.getClient();
     	client.openConnection();
         scene = new Scene(loadFXML("firstscene"));
+        stage.setResizable(false);
         stage.setScene(scene);
         stage.show();
 
@@ -103,7 +104,24 @@ public class App extends Application {
         PricesController.setPrice((List<Price>) event.getPricesTable());
         PriceschangesceneController.setPriceList((List<Price>) event.getPricesTable());
     }
-
+    @SuppressWarnings("unchecked")
+    @Subscribe
+    public void onShowCheckInEvent(ShowCheckInEvent event){
+        try {
+            App.setRoot("checkin");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    @SuppressWarnings("unchecked")
+    @Subscribe
+    public void onShowRegisterEvent(ShowRegisterEvent event){
+        try {
+            App.setRoot("register");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 	public static void main(String[] args) {
         launch();
     }

@@ -106,6 +106,19 @@ public class SimpleServer extends AbstractServer {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
+		} else if (msgString.startsWith("#ShowRegisterRequest")) {
+			try {
+				client.sendToClient(new Message("#ShowRegister"));
+			} catch (IOException e) {
+				throw new RuntimeException(e);
+			}
+
+		} else if (msgString.startsWith("#ShowCheckInRequest")) {
+			try {
+				client.sendToClient(new Message("#ShowCheckIn"));
+			} catch (IOException e) {
+				throw new RuntimeException(e);
+			}
 		}
 
 
