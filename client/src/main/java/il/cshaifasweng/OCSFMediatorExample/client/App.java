@@ -115,9 +115,9 @@ public class App extends Application {
     }
     @SuppressWarnings("unchecked")
     @Subscribe
-    public void onShowRegisterEvent(ShowRegisterEvent event){
+    public void onShowReserveEvent(ShowReserveEvent event){
         try {
-            App.setRoot("register");
+            App.setRoot("reserve");
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

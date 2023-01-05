@@ -27,10 +27,12 @@ public class SimpleClient extends AbstractClient {
 			EventBus.getDefault().post(new UpdatePricesReceivedEvent ((Message) msg));
 		} else if (strmsg.startsWith("#ShowUpdatedPrices")) {
 			EventBus.getDefault().post(new ShowUpdatedPricesEvent((Message)msg));
-		} else if (strmsg.startsWith("#ShowRegister")) {
-			EventBus.getDefault().post(new ShowRegisterEvent((Message) msg));
+		} else if (strmsg.startsWith("#ShowReserve")) {
+			EventBus.getDefault().post(new ShowReserveEvent((Message) msg));
 		} else if (strmsg.startsWith("#ShowCheckIn")) {
 			EventBus.getDefault().post(new ShowCheckInEvent((Message) msg));
+		} else if (strmsg.startsWith("ShowCheckOut")) {
+			EventBus.getDefault().post(new ShowCheckOutEvent((Message) msg));
 		}
 //
 	}

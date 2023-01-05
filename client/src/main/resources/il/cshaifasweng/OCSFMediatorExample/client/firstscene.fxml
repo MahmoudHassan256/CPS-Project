@@ -13,13 +13,14 @@
             <Image url="@images/background.png" />
          </image>
       </ImageView>
-      <VBox fx:id="vboxbuttons" alignment="CENTER" fillWidth="false" layoutX="576.0" layoutY="409.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="165.0" prefWidth="150.0" spacing="5.0">
+      <VBox fx:id="vboxbuttons" alignment="CENTER" fillWidth="false" layoutX="576.0" layoutY="409.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="219.0" prefWidth="150.0" spacing="5.0">
          <stylesheets>
             
          </stylesheets>
          <Button fx:id="checkinBtn" alignment="CENTER" contentDisplay="CENTER" depthTest="ENABLE" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#gotocheckin" prefHeight="50.0" prefWidth="150.0" stylesheets="@styles/clickableBtn.css" text="Check-IN" textAlignment="CENTER" />
-         <Button fx:id="registerBtn" alignment="CENTER" contentDisplay="CENTER" depthTest="ENABLE" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#gotoregister" prefHeight="50.0" prefWidth="150.0" stylesheets="@styles/clickableBtn.css" text="Register" textAlignment="CENTER" />
+         <Button fx:id="checkoutBtn" alignment="CENTER" contentDisplay="CENTER" depthTest="ENABLE" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#gotocheckout" prefHeight="50.0" prefWidth="150.0" stylesheets="@styles/clickableBtn.css" text="Check-Out" textAlignment="CENTER" />
          <Button fx:id="showparkingBtn" alignment="CENTER" contentDisplay="CENTER" depthTest="ENABLE" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#gotoshowparking" prefHeight="50.0" prefWidth="150.0" stylesheets="@styles/clickableBtn.css" text="Show Parking" textAlignment="CENTER" />
+         <Button fx:id="reserveBtn" mnemonicParsing="false" onAction="#gotoreserve" prefHeight="50.0" prefWidth="247.0" stylesheets="@styles/clickableBtn.css" text="Reserve" />
       </VBox>
    </children>
 </AnchorPane>
