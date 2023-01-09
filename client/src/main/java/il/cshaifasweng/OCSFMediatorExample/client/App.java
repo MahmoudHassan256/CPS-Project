@@ -1,5 +1,7 @@
 package il.cshaifasweng.OCSFMediatorExample.client;
 
+import il.cshaifasweng.OCSFMediatorExample.entities.ParkingLot;
+import il.cshaifasweng.OCSFMediatorExample.entities.Price;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
@@ -8,11 +10,11 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
-
-import java.io.IOException;
-
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
+
+import java.io.IOException;
+import java.util.List;
 
 /**
  * JavaFX App
@@ -27,9 +29,11 @@ public class App extends Application {
     	EventBus.getDefault().register(this);
     	client = SimpleClient.getClient();
     	client.openConnection();
-        scene = new Scene(loadFXML("primary"), 640, 480);
+        scene = new Scene(loadFXML("firstscene"));
+        stage.setResizable(false);
         stage.setScene(scene);
         stage.show();
+
     }
 
     static void setRoot(String fxml) throws IOException {
@@ -63,6 +67,61 @@ public class App extends Application {
     	
     }
 
+    @SuppressWarnings("unchecked")
+        @Subscribe
+    public void onParkingLotsReceivedEvent(ParkingLotsReceivedEvent event){
+       ParkinglotsController.setParkingLotList((List<ParkingLot>) event.getParkinglotsTable());
+        try{
+            App.setRoot("parkinglots");
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+    @SuppressWarnings("unchecked")
+    @Subscribe
+    public void onPricesReceivedEvent(PricesReceivedEvent event){
+        PricesController.setPrice((List<Price>) event.getPricesTable());
+        try{
+            App.setRoot("prices");
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    @Subscribe
+    public void onUpdatePricesReceivedEvent(UpdatePricesReceivedEvent event){
+        PriceschangesceneController.setPriceList((List<Price>) event.getPricestable());
+        try{
+            App.setRoot("priceschangescene");
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+    @SuppressWarnings("unchecked")
+    @Subscribe
+    public void onShowUpdatedPricesEvent(ShowUpdatedPricesEvent event){
+        PricesController.setPrice((List<Price>) event.getPricesTable());
+        PriceschangesceneController.setPriceList((List<Price>) event.getPricesTable());
+    }
+    @SuppressWarnings("unchecked")
+    @Subscribe
+    public void onShowCheckInEvent(ShowCheckInEvent event){
+        try {
+            App.setRoot("checkin");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    @SuppressWarnings("unchecked")
+    @Subscribe
+    public void onShowReserveEvent(ShowReserveEvent event){
+        try {
+            App.setRoot("reserve");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 	public static void main(String[] args) {
         launch();
     }

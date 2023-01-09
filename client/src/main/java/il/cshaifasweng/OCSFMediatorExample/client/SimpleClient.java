@@ -1,5 +1,6 @@
 package il.cshaifasweng.OCSFMediatorExample.client;
 
+import il.cshaifasweng.OCSFMediatorExample.entities.Message;
 import org.greenrobot.eventbus.EventBus;
 
 import il.cshaifasweng.OCSFMediatorExample.client.ocsf.AbstractClient;
@@ -15,10 +16,25 @@ public class SimpleClient extends AbstractClient {
 
 	@Override
 	protected void handleMessageFromServer(Object msg) {
+		String strmsg=((Message) msg).getMessage();
 		if (msg.getClass().equals(Warning.class)) {
 			EventBus.getDefault().post(new WarningEvent((Warning) msg));
+		} else if (strmsg.startsWith("#ShowParkingLots")) {
+			EventBus.getDefault().post(new ParkingLotsReceivedEvent((Message) msg));
+		} else if (strmsg.startsWith("#ShowPrices")) {
+			EventBus.getDefault().post(new PricesReceivedEvent((Message) msg));
+		} else if (strmsg.startsWith("#UpdatePrices")) {
+			EventBus.getDefault().post(new UpdatePricesReceivedEvent ((Message) msg));
+		} else if (strmsg.startsWith("#ShowUpdatedPrices")) {
+			EventBus.getDefault().post(new ShowUpdatedPricesEvent((Message)msg));
+		} else if (strmsg.startsWith("#ShowReserve")) {
+			EventBus.getDefault().post(new ShowReserveEvent((Message) msg));
+		} else if (strmsg.startsWith("#ShowCheckIn")) {
+			EventBus.getDefault().post(new ShowCheckInEvent((Message) msg));
+		} else if (strmsg.startsWith("ShowCheckOut")) {
+			EventBus.getDefault().post(new ShowCheckOutEvent((Message) msg));
 		}
-
+//
 	}
 	
 	public static SimpleClient getClient() {

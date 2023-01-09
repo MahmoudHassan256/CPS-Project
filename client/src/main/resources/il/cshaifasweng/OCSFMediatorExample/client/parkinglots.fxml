@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.cshaifasweng.OCSFMediatorExample.client.ParkinglotsController">
+   <children>
+      <ImageView fitHeight="800.0" fitWidth="1280.0" opacity="0.5" pickOnBounds="true">
+         <image>
+            <Image url="@images/background.png" />
+         </image>
+      </ImageView>
+      <Button fx:id="backbtn" layoutX="1183.0" layoutY="20.0" mnemonicParsing="false" onAction="#gotoprimary" prefHeight="45.0" prefWidth="71.0" stylesheets="@styles/clickableBtn.css" text="Back" textFill="WHITE" />
+      <TableView fx:id="parkinglotstabe" layoutX="79.0" layoutY="143.0" prefHeight="563.0" prefWidth="1070.0">
+        <columns>
+          <TableColumn fx:id="id_t_c" prefWidth="47.20001220703125" text="id" />
+          <TableColumn fx:id="capacity_t_c" prefWidth="251.99993896484375" text="capacity" />
+        </columns>
+      </TableView>
+      <VBox alignment="CENTER" layoutX="116.0" layoutY="79.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="58.0" prefWidth="1280.0" styleClass="headlinebox" stylesheets="@styles/headline.css" AnchorPane.leftAnchor="0.0">
+         <children>
+            <Text fx:id="text" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="headline" text="Parking Lots" textAlignment="CENTER">
+               <font>
+                  <Font size="36.0" />
+               </font>
+            </Text>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>
