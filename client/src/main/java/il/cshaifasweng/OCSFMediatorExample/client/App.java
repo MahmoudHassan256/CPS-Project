@@ -2,6 +2,7 @@ package il.cshaifasweng.OCSFMediatorExample.client;
 
 import il.cshaifasweng.OCSFMediatorExample.entities.ParkingLot;
 import il.cshaifasweng.OCSFMediatorExample.entities.Price;
+import il.cshaifasweng.OCSFMediatorExample.entities.Worker;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
@@ -90,20 +91,15 @@ public class App extends Application {
 
     @SuppressWarnings("unchecked")
     @Subscribe
-    public void onUpdatePricesReceivedEvent(UpdatePricesReceivedEvent event){
+    public void onUpdatePricesReceivedEvent(UpdatePricesReceivedEvent event) {
         PriceschangesceneController.setPriceList((List<Price>) event.getPricestable());
-        try{
+        try {
             App.setRoot("priceschangescene");
-        }catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
-    @SuppressWarnings("unchecked")
-    @Subscribe
-    public void onShowUpdatedPricesEvent(ShowUpdatedPricesEvent event){
-        PricesController.setPrice((List<Price>) event.getPricesTable());
-        PriceschangesceneController.setPriceList((List<Price>) event.getPricesTable());
-    }
+
     @SuppressWarnings("unchecked")
     @Subscribe
     public void onShowCheckInEvent(ShowCheckInEvent event){
@@ -122,6 +118,44 @@ public class App extends Application {
             throw new RuntimeException(e);
         }
     }
+    @SuppressWarnings("unchecked")
+    @Subscribe
+    public void onShowSignInEvent(ShowSignInEvent event){
+        SignInController.setWorkerList((List<Worker>) event.getWorkersTable());
+        try {
+            App.setRoot("signin");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    @SuppressWarnings("unchecked")
+    @Subscribe
+    public void onShowAdminPageEvent(ShowAdminPageEvent event){
+        Worker worker=(Worker) event.getWorker();
+        if(worker.getOccupation().startsWith("Parking Lot")) {
+        ParkingLotWorkerPageController.setWorker((Worker) event.getWorker());
+        try {
+            App.setRoot("parkinglotworkerpage");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        } else if (worker.getOccupation().startsWith("Chain")) {
+            ChainManagerPageController.setWorker(worker);
+            try {
+                App.setRoot("chainmanagerpage");
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        } else if (worker.getOccupation().startsWith("Customer Service")) {
+            CustomerServicePageController.setWorker(worker);
+            try {
+                App.setRoot("customerservicepage");
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+
 	public static void main(String[] args) {
         launch();
     }

@@ -11,6 +11,9 @@ package il.cshaifasweng.OCSFMediatorExample.client;
 
 public class FirstSceneController {
 
+
+    @FXML // fx:id="SignInBtn"
+    private Button SignInBtn; // Value injected by FXMLLoader
     @FXML // fx:id="backgroundimg"
     private ImageView backgroundimg; // Value injected by FXMLLoader
 
@@ -55,4 +58,8 @@ public class FirstSceneController {
 
     }
 
+    @FXML
+    void gotosignin(ActionEvent event) throws IOException {
+        SimpleClient.getClient().sendToServer("#ShowSignInRequest");
+    }
 }
