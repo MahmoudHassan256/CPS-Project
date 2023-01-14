@@ -41,6 +41,9 @@ public class SimpleClient extends AbstractClient {
 		} else if (strmsg.startsWith("#RefreshPrices")) {
 			EventBus.getDefault().post(new RefreshPricesEvent((Message) msg));
 		}
+		else if(strmsg.startsWith("#ShowSubscribe")){
+			EventBus.getDefault().post(new ShowSubscribeEvent((Message) msg));
+		}
 //
 	}
 	

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.cshaifasweng.OCSFMediatorExample.client.SubscribeController">
+   <children>
+      <Label text="Label" />
+      <Label layoutX="241.0" layoutY="145.0" text="Hi">
+         <font>
+            <Font size="71.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>

@@ -13,7 +13,6 @@ public class ParkingLot implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private int capacity;
-
     @Column(name = "parkinglot_status",columnDefinition = "BLOB")
     private String[] parkingLotStatus;
     @OneToMany

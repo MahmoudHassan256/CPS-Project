@@ -106,8 +106,12 @@ public class SimpleServer extends AbstractServer {
 			}
 		} else if (msgString.startsWith("#ShowReserveRequest")) {
 			try {
-				client.sendToClient(new Message("#ShowReserve"));
+				session = sessionFactory.openSession();
+				List<ParkingLot> parkingLots = getAllParkingLots();
+				client.sendToClient(new Message("#ShowReserve",parkingLots));
 			} catch (IOException e) {
+				throw new RuntimeException(e);
+			} catch (Exception e) {
 				throw new RuntimeException(e);
 			}
 
@@ -136,6 +140,24 @@ public class SimpleServer extends AbstractServer {
 		}else if (msgString.startsWith("#ShowAddDisabledSpacesRequest")){
 			try {
 				client.sendToClient(new Message("ShowAddDisabledSpaces"));
+			} catch (IOException e) {
+				throw new RuntimeException(e);
+			}
+		}
+		else if(msgString.startsWith("#AddReservationRequest"))
+		{
+			session = sessionFactory.openSession();
+			session.beginTransaction();
+			Reservation reservation = (Reservation) ((Message) msg).getObject();
+			session.save(reservation);
+			session.flush();
+			session.getTransaction().commit();
+			session.close();
+		}
+		else if(msgString.startsWith("#ShowSubscribeRequest"))
+		{
+			try {
+				client.sendToClient(new Message("#ShowSubscribe"));
 			} catch (IOException e) {
 				throw new RuntimeException(e);
 			}
@@ -218,6 +240,13 @@ public class SimpleServer extends AbstractServer {
 		ArrayList<Worker> data=(ArrayList<Worker>) session.createQuery(query).getResultList();
 		return data;
 	}
+	private static ArrayList<Reservation> getAllReservations()throws Exception{
+		CriteriaBuilder builder=session.getCriteriaBuilder();
+		CriteriaQuery<Reservation> query=builder.createQuery(Reservation.class);
+		query.from(Reservation.class);
+		ArrayList<Reservation> data=(ArrayList<Reservation>) session.createQuery(query).getResultList();
+		return data;
+	}
 	private static void addWorkerToParkingLot()throws Exception{
 		List<Worker> workers=getAllWorkers();
 		List<ParkingLot> parkingLots=getAllParkingLots();
@@ -272,6 +301,7 @@ public class SimpleServer extends AbstractServer {
 		configuration.addAnnotatedClass(Price.class);
 		configuration.addAnnotatedClass(Worker.class);
 		configuration.addAnnotatedClass(Vehicle.class);
+		configuration.addAnnotatedClass(Reservation.class);
 
 		ServiceRegistry serviceRegistry=new StandardServiceRegistryBuilder().applySettings(configuration.getProperties()).build();
 		return configuration.buildSessionFactory(serviceRegistry);
