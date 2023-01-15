@@ -14,6 +14,7 @@ import org.hibernate.service.ServiceRegistry;
 
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -67,7 +68,10 @@ public class SimpleServer extends AbstractServer {
 		}catch (Exception e){
 			e.printStackTrace();
 		}
-		} else if (msgString.startsWith("#ChangePriceRequest")) {
+		}else if (msgString.startsWith("#ChangePriceRequest")){
+			Price pricetoupdate=((Price)((Message)msg).getObject());
+			this.sendToAllClients(new Message("#ChangePriceChainRequest",pricetoupdate));
+		}else if (msgString.startsWith("#ChangePriceGrantedRequest")) {
 			try{
 			session=sessionFactory.openSession();
 			List<Price> priceList=null;
@@ -126,8 +130,10 @@ public class SimpleServer extends AbstractServer {
 		} else if (msgString.startsWith("#ShowAdminPageRequset")) {
 			try {
 				updateConnectedWorkerStatus((Worker) ((Message)msg).getObject());
-				client.sendToClient(new Message("#ShowAdminPage",((Worker) ((Message)msg).getObject())));
-			} catch (IOException e) {
+				List<Complaint> complaintList=getAllComplaints();
+				List<Refund> refundList=getAllRefunds();
+				client.sendToClient(new Message("#ShowAdminPage",((Worker) ((Message)msg).getObject()),complaintList,refundList));
+			} catch (Exception e) {
 				throw new RuntimeException(e);
 			}
 
@@ -139,9 +145,34 @@ public class SimpleServer extends AbstractServer {
 			} catch (IOException e) {
 				throw new RuntimeException(e);
 			}
+		}else if(msgString.startsWith("#UpdateComplaint")){
+			try{
+			session=sessionFactory.openSession();
+			List<Complaint> complaints=null;
+			Complaint updatedComplaint=(Complaint) ((Message)msg).getObject();
+				System.out.println(updatedComplaint);
+			try {
+				complaints=getAllComplaints();
+			} catch (Exception e) {
+				throw new RuntimeException(e);
+			}
+			for (Complaint complaint:complaints){
+				if(complaint.getCarNumber().equals(updatedComplaint.getCarNumber()) && complaint.getDescription().equals(updatedComplaint.getDescription())){
+					session.beginTransaction();
+					if(updatedComplaint.getRefundValue()!=null)complaint.setRefundValue(updatedComplaint.getRefundValue());
+					if(!updatedComplaint.getResponse().equals(complaint.getResponse()))complaint.setResponse(updatedComplaint.getResponse());
+					if(!updatedComplaint.getStatus().equals(complaint.getStatus()))complaint.setStatus(updatedComplaint.getStatus());
+					session.save(complaint);
+					session.flush();
+					session.getTransaction().commit();
+					}
+				}
+			this.sendToAllClients(new Message("#RefreshComplaintList",complaints));
+		}catch (Exception e){
+			e.printStackTrace();
 		}
-
-
+		session.close();
+		}
 	}
 	public void updateConnectedWorkerStatus(Worker updateWorker){
 		session=sessionFactory.openSession();
@@ -197,6 +228,21 @@ public class SimpleServer extends AbstractServer {
 		CustomerService.setOccupation("Customer Service");CustomerService.setPassword("admin");
 		session.save(CustomerService);session.flush();
 	}
+	public void generateComplaints(){
+		Complaint complaint=new Complaint("20","Car got damaged during parking",LocalDateTime.now());
+		Complaint complaint1=new Complaint("30","Too expensive",LocalDateTime.now().minusDays(2));
+		session.save(complaint);session.flush();
+		session.save(complaint1);session.flush();
+	}
+	public void generateRefunds(){
+		Refund refund1=new Refund("up to no less than three hours before the parking start time","%90");
+		Refund refund2=new Refund("Between three hours and one hour before the start of parking","%50");
+		Refund refund3=new Refund("The last hour before parking starts","%10");
+		session.save(refund1);session.flush();
+		session.save(refund2);session.flush();
+		session.save(refund3);session.flush();
+
+	}
 	private static ArrayList<ParkingLot> getAllParkingLots( )throws Exception{
 		CriteriaBuilder builder=session.getCriteriaBuilder();
 		CriteriaQuery<ParkingLot> query=builder.createQuery(ParkingLot.class);
@@ -216,6 +262,20 @@ public class SimpleServer extends AbstractServer {
 		CriteriaQuery<Worker> query=builder.createQuery(Worker.class);
 		query.from(Worker.class);
 		ArrayList<Worker> data=(ArrayList<Worker>) session.createQuery(query).getResultList();
+		return data;
+	}
+	private static ArrayList<Complaint> getAllComplaints()throws Exception{
+		CriteriaBuilder builder=session.getCriteriaBuilder();
+		CriteriaQuery<Complaint> query=builder.createQuery(Complaint.class);
+		query.from(Complaint.class);
+		ArrayList<Complaint> data=(ArrayList<Complaint>) session.createQuery(query).getResultList();
+		return data;
+	}
+	private static ArrayList<Refund> getAllRefunds()throws Exception{
+		CriteriaBuilder builder=session.getCriteriaBuilder();
+		CriteriaQuery<Refund> query=builder.createQuery(Refund.class);
+		query.from(Refund.class);
+		ArrayList<Refund> data=(ArrayList<Refund>) session.createQuery(query).getResultList();
 		return data;
 	}
 	private static void addWorkerToParkingLot()throws Exception{
@@ -251,6 +311,8 @@ public class SimpleServer extends AbstractServer {
 			generateParkingLots();
 			generatePrices();
 			generateWorkers();
+			generateComplaints();
+			generateRefunds();
 
 			addWorkerToParkingLot();
 
@@ -272,6 +334,8 @@ public class SimpleServer extends AbstractServer {
 		configuration.addAnnotatedClass(Price.class);
 		configuration.addAnnotatedClass(Worker.class);
 		configuration.addAnnotatedClass(Vehicle.class);
+		configuration.addAnnotatedClass(Complaint.class);
+		configuration.addAnnotatedClass(Refund.class);
 
 		ServiceRegistry serviceRegistry=new StandardServiceRegistryBuilder().applySettings(configuration.getProperties()).build();
 		return configuration.buildSessionFactory(serviceRegistry);

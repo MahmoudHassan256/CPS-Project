@@ -1,8 +1,6 @@
 package il.cshaifasweng.OCSFMediatorExample.client;
 
-import il.cshaifasweng.OCSFMediatorExample.entities.ParkingLot;
-import il.cshaifasweng.OCSFMediatorExample.entities.Price;
-import il.cshaifasweng.OCSFMediatorExample.entities.Worker;
+import il.cshaifasweng.OCSFMediatorExample.entities.*;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
@@ -131,6 +129,8 @@ public class App extends Application {
     @SuppressWarnings("unchecked")
     @Subscribe
     public void onShowAdminPageEvent(ShowAdminPageEvent event){
+        List<Complaint> complaintList=(List<Complaint>) event.getComplaintList();
+        List<Refund> refundList=(List<Refund>) event.getRefundList();
         Worker worker=(Worker) event.getWorker();
         if(worker.getOccupation().startsWith("Parking Lot")) {
         ParkingLotWorkerPageController.setWorker((Worker) event.getWorker());
@@ -148,6 +148,8 @@ public class App extends Application {
             }
         } else if (worker.getOccupation().startsWith("Customer Service")) {
             CustomerServicePageController.setWorker(worker);
+            CustomerServicePageController.setComplaintList(complaintList);
+            CustomerServicePageController.setRefundList(refundList);
             try {
                 App.setRoot("customerservicepage");
             } catch (IOException e) {
