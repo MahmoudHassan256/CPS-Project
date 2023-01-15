@@ -177,6 +177,19 @@ public class SimpleServer extends AbstractServer {
 			e.printStackTrace();
 		}
 		session.close();
+		}else if (msgString.startsWith("#ShowSubscribeRequest")){
+			session=sessionFactory.openSession();
+			List<ParkingLot> parkingLots= null;
+			try {
+				parkingLots = getAllParkingLots();
+			} catch (Exception e) {
+				throw new RuntimeException(e);
+			}
+			try {
+				client.sendToClient(new Message("#ShowSubscribe",parkingLots));
+			} catch (IOException e) {
+				throw new RuntimeException(e);
+			}
 		}
 	}
 	public void updateConnectedWorkerStatus(Worker updateWorker){
