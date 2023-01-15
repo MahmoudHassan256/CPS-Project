@@ -157,8 +157,12 @@ public class SimpleServer extends AbstractServer {
 		else if(msgString.startsWith("#ShowSubscribeRequest"))
 		{
 			try {
-				client.sendToClient(new Message("#ShowSubscribe"));
+				session = sessionFactory.openSession();
+				List<ParkingLot> parkingLots = getAllParkingLots();
+				client.sendToClient(new Message("#ShowSubscribe",parkingLots));
 			} catch (IOException e) {
+				throw new RuntimeException(e);
+			} catch (Exception e) {
 				throw new RuntimeException(e);
 			}
 		}

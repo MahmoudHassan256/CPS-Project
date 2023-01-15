@@ -159,10 +159,11 @@ public class App extends Application {
     @SuppressWarnings("unchecked")
     @Subscribe
     public void onShowSubscribeEvent(ShowSubscribeEvent event){
+        SubscribeController.setParkingLots((List<ParkingLot>)event.getParkingLotsList());
         try{
             App.setRoot("subscribe");
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
     }
 
