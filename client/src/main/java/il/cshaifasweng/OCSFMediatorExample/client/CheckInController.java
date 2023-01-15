@@ -7,6 +7,7 @@
 
 package il.cshaifasweng.OCSFMediatorExample.client;
 
+import il.cshaifasweng.OCSFMediatorExample.entities.SubsriptionClient;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -15,22 +16,33 @@ import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.VBox;
 
 import java.io.IOException;
-import java.nio.channels.Pipe;
 import java.util.Arrays;
 import java.util.List;
 
 
 public class CheckInController {
-    List<String> hourLst  = Arrays.asList("00","01","02","03","04","05","06","07","08","09","10","11","12","13","14","15","16","17","18","19","20","21","22","23");
-    List<String> minLst = Arrays.asList("00","01","02","03","04","05","06","07","08","09","10","11","12","13","14","15","16","17","18","19","20","21","22","23",
-            "24","25","26","27","28","29","30","31","32","33","34","35","36","37","38","39","40","41","42","43","44",
-            "45","46","47","48","49","50","51","52","53","54","55","56","57","58","59");
-    List<String> monthLst = Arrays.asList("01","02","03","04","05","06","07","08,","09","10,","11","12");
-    List<String> yearLst = Arrays.asList("23","24","25","26","27","28");
+    List<String> hourLst = Arrays.asList("00", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23");
+    List<String> minLst = Arrays.asList("00", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23",
+            "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41", "42", "43", "44",
+            "45", "46", "47", "48", "49", "50", "51", "52", "53", "54", "55", "56", "57", "58", "59");
+    List<String> monthLst = Arrays.asList("01", "02", "03", "04", "05", "06", "07", "08,", "09", "10,", "11", "12");
+    List<String> yearLst = Arrays.asList("23", "24", "25", "26", "27", "28");
 
-    ObservableList<String> hourLst1 = FXCollections.observableArrayList("00" ,"01","02","03","04","05","06","07","08","09","10","11","12","13","14","15","16","17","18","19","20","21","22","23");
+    ObservableList<String> hourLst1 = FXCollections.observableArrayList("00", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23");
+
+    //public static List<Reservation>
+    public static List<SubsriptionClient> subsriptionClients;
+
+    public static List<SubsriptionClient> getSubsriptionClients() {
+        return subsriptionClients;
+    }
+
+    public static void setSubsriptionClients(List<SubsriptionClient> subsriptionClients) {
+        CheckInController.subsriptionClients = subsriptionClients;
+    }
 
     @FXML // fx:id="backBtn"
     private Button backBtn; // Value injected by FXMLLoader
@@ -56,6 +68,12 @@ public class CheckInController {
     @FXML // fx:id="comboyear"
     private ComboBox<String> comboyear; // Value injected by FXMLLoader
 
+    @FXML // fx:id="left"
+    private VBox left; // Value injected by FXMLLoader
+
+    @FXML // fx:id="right"
+    private VBox right; // Value injected by FXMLLoader
+
     @FXML // fx:id="tfcardid"
     private TextField tfcardid; // Value injected by FXMLLoader
 
@@ -80,10 +98,10 @@ public class CheckInController {
     @FXML // fx:id="tfsubid"
     private TextField tfsubid; // Value injected by FXMLLoader
 
+
     @FXML
     void cbreserveselect(ActionEvent event) {
-        if (cbreserve.isSelected())
-        {
+        if (cbreserve.isSelected()) {
             tflicenseplt.setDisable(false);
             cbsubscribe.setDisable(false);
             tfcarnum.setDisable(true);
@@ -96,9 +114,7 @@ public class CheckInController {
             tfcardnum.setDisable(true);
             tfcvv.setDisable(true);
             tfdriverid.setDisable(true);
-        }
-        else
-        {
+        } else {
             tflicenseplt.setDisable(true);
             cbsubscribe.setDisable(true);
             tfcarnum.setDisable(false);
@@ -117,31 +133,37 @@ public class CheckInController {
         }
 
 
-
-
-
-
-
     }
 
     @FXML
     void cbsubscribeselect(ActionEvent event) {
-        if (cbsubscribe.isSelected())
-        {
+        if (cbsubscribe.isSelected()) {
             tfsubid.setDisable(false);
-        }
-        else
+        } else
             tfsubid.setDisable(true);
     }
 
     @FXML
     void checkinbtn(ActionEvent event) {
+        if (cbsubscribe.isSelected()) {
+            //you checked subscriber
 
+            tfsubid.getText();
+        }
     }
+
+    boolean isSubscriper(SubsriptionClient subsriptionClient) {
+        for (SubsriptionClient subsriptionClient1 : subsriptionClients) {
+            if (subsriptionClient1.getDriverId().equals(subsriptionClient.getDriverId())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 
     @FXML
     void gotoprimary(ActionEvent event) {
-
         try {
             App.setRoot("firstscene");
         } catch (IOException e) {
