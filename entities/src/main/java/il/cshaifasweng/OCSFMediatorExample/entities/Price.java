@@ -24,12 +24,11 @@ public class Price implements Serializable {
 
     @Override
     public String toString() {
-        return "Price{" +
+        return
                 "id=" + id +
-                ", parkingType='" + parkingType + '\'' +
-                ", paymentPlan='" + paymentPlan + '\'' +
-                ", price='" + price + '\'' +
-                '}';
+                "\nparkingType=" + parkingType  +
+                "\npaymentPlan=" + paymentPlan +
+                "\nprice=" + price;
     }
 
     public Price() {
