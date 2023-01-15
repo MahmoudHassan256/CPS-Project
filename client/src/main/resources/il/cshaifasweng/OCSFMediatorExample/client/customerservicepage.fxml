@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.cshaifasweng.OCSFMediatorExample.client.CustomerServicePageController">
+   <children>
+      <ImageView fitHeight="800.0" fitWidth="1280.0" layoutX="213.0" layoutY="96.0" opacity="0.5" pickOnBounds="true" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <image>
+            <Image url="@images/background.png" />
+         </image>
+      </ImageView>
+      <Button layoutX="1158.0" layoutY="23.0" mnemonicParsing="false" onAction="#signout" stylesheets="@styles/clickableBtn.css" text="Sign Out" />
+      <HBox alignment="CENTER" layoutY="89.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="70.0" prefWidth="1280.0" style="-fx-background-color: white;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+         <children>
+            <Text fx:id="hello" strokeType="OUTSIDE" strokeWidth="0.0" text="Hello:">
+               <font>
+                  <Font size="36.0" />
+               </font>
+            </Text>
+         </children>
+      </HBox>
+      <TabPane fx:id="tabTable" layoutX="78.0" layoutY="197.0" prefHeight="383.0" prefWidth="674.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="200.0">
+        <tabs>
+          <Tab fx:id="priorityTab" text="High priority">
+               <content>
+                  <TableView fx:id="priorityTable" onMouseClicked="#viewpriorityinquiry" prefHeight="200.0" prefWidth="200.0">
+                    <columns>
+                      <TableColumn fx:id="identifierCol1" prefWidth="75.0" text="Id" />
+                      <TableColumn fx:id="submitiondateCol1" prefWidth="131.73331451416016" text="Submition Date" />
+                        <TableColumn fx:id="descriptionCol1" minWidth="0.0" prefWidth="467.1999877929687" text="Description" />
+                    </columns>
+                  </TableView>
+               </content>
+            </Tab>
+          <Tab fx:id="openTab" text="Open Inquiries ">
+               <content>
+                  <TableView fx:id="openTable" onMouseClicked="#viewopeninquiry" prefHeight="200.0" prefWidth="200.0">
+                     <columns>
+                        <TableColumn fx:id="identifierCol2" prefWidth="75.0" text="Id" />
+                        <TableColumn fx:id="submitiondateCol2" prefWidth="131.73331451416016" text="Submition Date" />
+                        <TableColumn fx:id="descriptionCol2" minWidth="0.0" prefWidth="467.1999877929687" text="Description" />
+                     </columns>
+                  </TableView>
+               </content>
+            </Tab>
+            <Tab fx:id="closedTab" text="Closed inquiries">
+               <content>
+                  <TableView fx:id="closedTable" onMouseClicked="#viewclosedinquiry" prefHeight="200.0" prefWidth="200.0">
+                     <columns>
+                        <TableColumn fx:id="identifierCol3" prefWidth="75.0" text="Id" />
+                        <TableColumn fx:id="submitiondateCol3" prefWidth="131.73331451416016" text="Submition Date" />
+                        <TableColumn fx:id="descriptionCol3" minWidth="0.0" prefWidth="467.1999877929687" text="Description" />
+                     </columns>
+                  </TableView>
+               </content>
+            </Tab>
+        </tabs>
+      </TabPane>
+      <HBox alignment="CENTER_LEFT" layoutY="608.0" prefHeight="150.0" prefWidth="1280.0" style="-fx-background-color: white;" AnchorPane.bottomAnchor="40.0" AnchorPane.leftAnchor="0.0">
+         <children>
+            <TextArea fx:id="complaintDescrition" editable="false" prefHeight="150.0" prefWidth="516.0" promptText="Complaint Description...">
+               <HBox.margin>
+                  <Insets />
+               </HBox.margin>
+            </TextArea>
+            <TextArea fx:id="responseDescription" prefHeight="150.0" prefWidth="516.0" promptText="Response Description..." />
+            <VBox alignment="CENTER" prefHeight="150.0" prefWidth="250.0">
+               <children>
+                  <CheckBox fx:id="deservefundCheckBox" mnemonicParsing="false" onAction="#setDeserveRefund" text="Deserve Refund">
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                     <VBox.margin>
+                        <Insets bottom="20.0" top="10.0" />
+                     </VBox.margin>
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </CheckBox>
+                  <TextField fx:id="refundValue" promptText="Refund Value...">
+                     <VBox.margin>
+                        <Insets bottom="20.0" />
+                     </VBox.margin>
+                  </TextField>
+                  <Text fx:id="errormsg" fill="RED" strokeType="OUTSIDE" strokeWidth="0.0" text="Error Msg" />
+                  <Button fx:id="submitBtn" mnemonicParsing="false" onAction="#SubmitResponse" prefHeight="50.0" prefWidth="160.0" stylesheets="@styles/clickableBtn.css" text="Submit" />
+               </children>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+            </VBox>
+         </children></HBox>
+      <VBox layoutX="773.0" layoutY="214.0" prefHeight="356.0" prefWidth="506.0" style="-fx-background-color: white;" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="200.0">
+         <children>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Refund Table" wrappingWidth="480.8033447265625">
+               <font>
+                  <Font size="36.0" />
+               </font>
+            </Text>
+            <TableView fx:id="refundTable" prefHeight="290.0" prefWidth="482.0">
+              <columns>
+                <TableColumn fx:id="cancellationCol" prefWidth="330.13330078125" text="Cancellation time" />
+                <TableColumn fx:id="amountCol" minWidth="0.0" prefWidth="152.2667236328125" text="The amount of the credit" />
+              </columns>
+            </TableView>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>
