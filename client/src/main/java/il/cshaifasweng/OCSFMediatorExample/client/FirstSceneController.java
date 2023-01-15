@@ -11,30 +11,41 @@ package il.cshaifasweng.OCSFMediatorExample.client;
 
 public class FirstSceneController {
 
+    @FXML
+    private Button SignInBtn;
 
-    @FXML // fx:id="SignInBtn"
-    private Button SignInBtn; // Value injected by FXMLLoader
-    @FXML // fx:id="backgroundimg"
-    private ImageView backgroundimg; // Value injected by FXMLLoader
+    @FXML
+    private ImageView backgroundimg;
 
-    @FXML // fx:id="checkinBtn"
-    private Button checkinBtn; // Value injected by FXMLLoader
+    @FXML
+    private Button cancelBtn;
 
-    @FXML // fx:id="checkoutBtn"
-    private Button checkoutBtn; // Value injected by FXMLLoader
+    @FXML
+    private Button checkinBtn;
 
-    @FXML // fx:id="imageanchor"
-    private AnchorPane imageanchor; // Value injected by FXMLLoader
+    @FXML
+    private Button checkoutBtn;
 
-    @FXML // fx:id="reserveBtn"
-    private Button reserveBtn; // Value injected by FXMLLoader
+    @FXML
+    private Button complaintBtn;
 
-    @FXML // fx:id="showparkingBtn"
-    private Button showparkingBtn; // Value injected by FXMLLoader
+    @FXML
+    private AnchorPane imageanchor;
 
-    @FXML // fx:id="vboxbuttons"
-    private VBox vboxbuttons; // Value injected by FXMLLoader
+    @FXML
+    private Button myprofileBtn;
 
+    @FXML
+    private Button reserveBtn;
+
+    @FXML
+    private Button showparkingBtn;
+
+    @FXML
+    private Button subscribeBtn;
+
+    @FXML
+    private VBox vboxbuttons;
     @FXML
     void gotocheckout(ActionEvent event) throws IOException {
         SimpleClient.getClient().sendToServer("#ShowCheckOutRequest");
@@ -66,5 +77,18 @@ public class FirstSceneController {
     @FXML
     void gotosubscribe(ActionEvent event) throws IOException {
         SimpleClient.getClient().sendToServer("#ShowSubscribeRequest");
+    }
+    @FXML
+    void gotocancelreservation(ActionEvent event) {
+
+    }
+    @FXML
+    void gotocomplaint(ActionEvent event) {
+
+    }
+
+    @FXML
+    void gotomyprofile(ActionEvent event) {
+
     }
 }
