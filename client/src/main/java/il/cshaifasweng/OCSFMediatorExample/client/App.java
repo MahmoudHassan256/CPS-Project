@@ -111,6 +111,15 @@ public class App extends Application {
     }
     @SuppressWarnings("unchecked")
     @Subscribe
+    public void onShowCheckOutEvent(ShowCheckOutEvent event){
+        try {
+            App.setRoot("checkout");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    @SuppressWarnings("unchecked")
+    @Subscribe
     public void onShowReserveEvent(ShowReserveEvent event){
         try {
             App.setRoot("reserve");
