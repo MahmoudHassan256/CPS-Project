@@ -16,6 +16,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
+
 import javafx.scene.layout.VBox;
 
 import java.io.IOException;
@@ -24,6 +25,7 @@ import java.util.List;
 
 
 public class CheckInController {
+
     List<String> hourLst = Arrays.asList("00", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23");
     List<String> minLst = Arrays.asList("00", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23",
             "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41", "42", "43", "44",
@@ -67,7 +69,6 @@ public class CheckInController {
 
     @FXML // fx:id="comboyear"
     private ComboBox<String> comboyear; // Value injected by FXMLLoader
-
     @FXML // fx:id="left"
     private VBox left; // Value injected by FXMLLoader
 
@@ -162,8 +163,10 @@ public class CheckInController {
     }
 
 
+
     @FXML
     void gotoprimary(ActionEvent event) {
+
         try {
             App.setRoot("firstscene");
         } catch (IOException e) {
@@ -181,7 +184,6 @@ public class CheckInController {
         combomonth.setItems(FXCollections.observableArrayList(monthLst));
         comboyear.getItems().clear();
         comboyear.setItems(FXCollections.observableArrayList(yearLst));
-
 
     }
 

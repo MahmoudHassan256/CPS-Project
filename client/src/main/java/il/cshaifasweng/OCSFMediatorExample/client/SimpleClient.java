@@ -44,7 +44,10 @@ public class SimpleClient extends AbstractClient {
 			EventBus.getDefault().post(new ChangePriceChainEvent((Message)msg));
 		} else if (strmsg.startsWith("#RefreshComplaintList")) {
 			EventBus.getDefault().post(new RefreshComplaintListEvent((Message)msg));
+		} else if(strmsg.startsWith("#ShowSubscribe")){
+			EventBus.getDefault().post(new ShowSubscribeEvent((Message) msg));
 		}
+
 	}
 	
 	public static SimpleClient getClient() {

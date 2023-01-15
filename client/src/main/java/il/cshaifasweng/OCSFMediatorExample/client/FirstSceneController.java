@@ -62,4 +62,9 @@ public class FirstSceneController {
     void gotosignin(ActionEvent event) throws IOException {
         SimpleClient.getClient().sendToServer("#ShowSignInRequest");
     }
+
+    @FXML
+    void gotosubscribe(ActionEvent event) throws IOException {
+        SimpleClient.getClient().sendToServer("#ShowSubscribeRequest");
+    }
 }

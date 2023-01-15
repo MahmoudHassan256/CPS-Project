@@ -22,7 +22,7 @@
          <Button fx:id="checkinBtn" alignment="CENTER" contentDisplay="CENTER" depthTest="ENABLE" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#gotocheckin" prefHeight="50.0" prefWidth="150.0" stylesheets="@styles/clickableBtn.css" text="Check-IN" textAlignment="CENTER" />
          <Button fx:id="checkoutBtn" alignment="CENTER" contentDisplay="CENTER" depthTest="ENABLE" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#gotocheckout" prefHeight="50.0" prefWidth="150.0" stylesheets="@styles/clickableBtn.css" text="Check-Out" textAlignment="CENTER" />
          <Button fx:id="showparkingBtn" alignment="CENTER" contentDisplay="CENTER" depthTest="ENABLE" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#gotoshowparking" prefHeight="50.0" prefWidth="150.0" stylesheets="@styles/clickableBtn.css" text="Show Parking" textAlignment="CENTER" />
-         <Button fx:id="reserveBtn" mnemonicParsing="false" onAction="#gotoreserve" prefHeight="50.0" prefWidth="247.0" stylesheets="@styles/clickableBtn.css" text="Reserve" />
+         <Button fx:id="reserveBtn" mnemonicParsing="false" onAction="#gotoreserve" prefHeight="30.0" prefWidth="150.0" stylesheets="@styles/clickableBtn.css" text="Reserve" />
       </VBox>
       <VBox alignment="TOP_CENTER" layoutX="25.0" layoutY="37.0" prefHeight="68.0" prefWidth="100.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -34,5 +34,6 @@
             <Button fx:id="SignInBtn" mnemonicParsing="false" onAction="#gotosignin" stylesheets="@styles/clickableBtn.css" text="Sign In" />
          </children>
       </VBox>
+      <Button fx:id="subscribeBtn" layoutX="576.0" layoutY="628.0" mnemonicParsing="false" onAction="#gotosubscribe" prefHeight="30.0" prefWidth="150.0" stylesheets="@styles/clickableBtn.css" text="Subscribe" />
    </children>
 </AnchorPane>
