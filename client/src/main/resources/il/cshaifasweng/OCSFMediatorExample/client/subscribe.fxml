@@ -44,7 +44,7 @@
                   <Insets />
                </BorderPane.margin>
                <children>
-                  <VBox fx:id="scrollPane" layoutX="89.0" layoutY="462.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="172.0" prefWidth="398.0" />
+                  <VBox fx:id="scrollPane" layoutX="102.0" layoutY="472.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="172.0" prefWidth="398.0" />
                   <Label layoutX="61.0" layoutY="66.0" text="Driver's ID">
                      <font>
                         <Font name="System Bold" size="24.0" />
@@ -92,7 +92,12 @@
                   <ComboBox fx:id="cbParkingLotID" layoutX="327.0" layoutY="204.0" prefWidth="150.0" />
                   <DatePicker fx:id="subscriptionStartingDate" layoutX="379.0" layoutY="262.0" />
                   <TextField fx:id="tfNumberOfCars" layoutX="276.0" layoutY="389.0" />
-                  <Button fx:id="btnOkCars" layoutX="451.0" layoutY="389.0" mnemonicParsing="false" onAction="#addedNumberOfCars" text="Button" />
+                  <Button fx:id="btnOkCars" layoutX="446.0" layoutY="379.0" mnemonicParsing="false" onAction="#addedNumberOfCars" prefHeight="49.0" prefWidth="83.0" stylesheets="@styles/clickableBtn.css" text="OK" />
+                  <Label fx:id="labelNumberError" layoutX="135.0" layoutY="440.0" prefHeight="17.0" prefWidth="261.0" text="Please enter a valid number" textFill="#b20c0c" visible="false">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
                </children>
             </AnchorPane>
          </left>

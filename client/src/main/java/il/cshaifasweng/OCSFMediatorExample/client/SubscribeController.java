@@ -20,6 +20,7 @@ import org.apache.commons.lang3.StringUtils;
 
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 
@@ -46,6 +47,9 @@ public class SubscribeController {
     List<String> yearLst = Arrays.asList("23","24","25","26","27","28");
     @FXML // fx:id="btnBack"
     private Button btnBack; // Value injected by FXMLLoader
+
+    @FXML // fx:id="labelNumberError"
+    private Label labelNumberError; // Value injected by FXMLLoader
 
     @FXML // fx:id="btnSubscribe"
     private Button btnSubscribe; // Value injected by FXMLLoader
@@ -96,6 +100,8 @@ public class SubscribeController {
 
     @FXML
     void addSubscription(ActionEvent event) {
+        LocalDateTime startDate = LocalDateTime.of(subscriptionStartingDate.getValue().getYear(), subscriptionStartingDate.getValue().getMonth(),
+                subscriptionStartingDate.getValue().getDayOfMonth(), 0,0);
 
     }
 
@@ -104,6 +110,7 @@ public class SubscribeController {
         scrollPane.getChildren().clear();
     if(StringUtils.isNumeric(tfNumberOfCars.getText() ))
     {
+        labelNumberError.setVisible(false);
         Platform.runLater(() -> {
             ScrollPane sp = new ScrollPane();
             VBox vBox = new VBox();
@@ -123,6 +130,9 @@ public class SubscribeController {
         });
 
 
+    }
+    else{
+        labelNumberError.setVisible(true);
     }
     }
 

@@ -120,7 +120,6 @@ public class SimpleServer extends AbstractServer {
 			}
 
 		} else if (msgString.startsWith("#ShowCheckInRequest")) {
-
 			try {
 				client.sendToClient(new Message("#ShowCheckIn"));
 			} catch (IOException e) {
