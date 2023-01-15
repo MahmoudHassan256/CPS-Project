@@ -7,9 +7,6 @@ import javafx.scene.layout.AnchorPane;
 public class CheckOutController {
 
     @FXML
-    private AnchorPane CarLocation;
-
-    @FXML
     private TextField licenseplatebox;
 
 }
