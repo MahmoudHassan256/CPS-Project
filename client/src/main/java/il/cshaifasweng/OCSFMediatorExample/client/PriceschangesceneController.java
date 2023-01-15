@@ -10,12 +10,10 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.io.IOException;
 import java.util.List;
@@ -69,7 +67,7 @@ public class PriceschangesceneController {
     @FXML
     void gotoprimary(ActionEvent event) {
         try {
-            App.setRoot("primary");
+            App.setRoot("parkinglotworkerpage");
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -95,15 +93,17 @@ public class PriceschangesceneController {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        try {
-        App.setRoot("primary");
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+    }
+    @SuppressWarnings("unchecked")
+    @Subscribe
+    public void onRefreshPricesEvent(RefreshPricesEvent event){
+        pricestable.getItems().clear();
+        pricestable.setItems(FXCollections.observableArrayList((List<Price>)event.getPricesList()));
     }
 
     @FXML
      void initialize() {
+        EventBus.getDefault().register(this);
         parkingtype_t_c.setCellValueFactory(new PropertyValueFactory<Price, String>("parkingType"));
         paymentmethod_t_c.setCellValueFactory(new PropertyValueFactory<Price, String>("paymentPlan"));
         price_t_c.setCellValueFactory(new PropertyValueFactory<Price, String>("price"));
@@ -119,4 +119,5 @@ public class PriceschangesceneController {
         pricebtn.setDisable(true);
         updatebtn.setDisable(true);
     }
+
 }

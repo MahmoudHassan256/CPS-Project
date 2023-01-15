@@ -5,6 +5,8 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
 <AnchorPane fx:id="imageanchor" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.cshaifasweng.OCSFMediatorExample.client.FirstSceneController">
    <children>
@@ -21,6 +23,16 @@
          <Button fx:id="checkoutBtn" alignment="CENTER" contentDisplay="CENTER" depthTest="ENABLE" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#gotocheckout" prefHeight="50.0" prefWidth="150.0" stylesheets="@styles/clickableBtn.css" text="Check-Out" textAlignment="CENTER" />
          <Button fx:id="showparkingBtn" alignment="CENTER" contentDisplay="CENTER" depthTest="ENABLE" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#gotoshowparking" prefHeight="50.0" prefWidth="150.0" stylesheets="@styles/clickableBtn.css" text="Show Parking" textAlignment="CENTER" />
          <Button fx:id="reserveBtn" mnemonicParsing="false" onAction="#gotoreserve" prefHeight="50.0" prefWidth="247.0" stylesheets="@styles/clickableBtn.css" text="Reserve" />
+      </VBox>
+      <VBox alignment="TOP_CENTER" layoutX="25.0" layoutY="37.0" prefHeight="68.0" prefWidth="100.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Sign In for Workers" wrappingWidth="160.65841674804688">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Text>
+            <Button fx:id="SignInBtn" mnemonicParsing="false" onAction="#gotosignin" stylesheets="@styles/clickableBtn.css" text="Sign In" />
+         </children>
       </VBox>
    </children>
 </AnchorPane>
