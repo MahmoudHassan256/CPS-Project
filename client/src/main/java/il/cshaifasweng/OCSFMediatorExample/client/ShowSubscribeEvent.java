@@ -2,12 +2,11 @@ package il.cshaifasweng.OCSFMediatorExample.client;
 
 import il.cshaifasweng.OCSFMediatorExample.entities.Message;
 
-public class ShowReserveEvent {
+public class ShowSubscribeEvent {
     private Object parkingLotsList;
-    public ShowReserveEvent(Message msg) {
+    public ShowSubscribeEvent(Message msg) {
         this.parkingLotsList = msg.getObject();
     }
-
     public Object getParkingLotsList() {
         return parkingLotsList;
     }

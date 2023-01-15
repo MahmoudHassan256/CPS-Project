@@ -111,7 +111,17 @@ public class App extends Application {
     }
     @SuppressWarnings("unchecked")
     @Subscribe
+    public void onShowCheckOutEvent(ShowCheckOutEvent event){
+        try {
+            App.setRoot("checkout");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    @SuppressWarnings("unchecked")
+    @Subscribe
     public void onShowReserveEvent(ShowReserveEvent event){
+        ReserveController.setParkingLots((List<ParkingLot>)event.getParkingLotsList());
         try {
             App.setRoot("reserve");
         } catch (IOException e) {
@@ -159,6 +169,17 @@ public class App extends Application {
             }
         }
     }
+    @SuppressWarnings("unchecked")
+    @Subscribe
+    public void onShowSubscribeEvent(ShowSubscribeEvent event){
+        SubscribeController.setParkingLots((List<ParkingLot>)event.getParkingLotsList());
+        try{
+            App.setRoot("subscribe");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 
 	public static void main(String[] args) {
         launch();

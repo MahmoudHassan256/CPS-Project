@@ -110,8 +110,12 @@ public class SimpleServer extends AbstractServer {
 			}
 		} else if (msgString.startsWith("#ShowReserveRequest")) {
 			try {
-				client.sendToClient(new Message("#ShowReserve"));
+				session = sessionFactory.openSession();
+				List<ParkingLot> parkingLots = getAllParkingLots();
+				client.sendToClient(new Message("#ShowReserve",parkingLots));
 			} catch (IOException e) {
+				throw new RuntimeException(e);
+			} catch (Exception e) {
 				throw new RuntimeException(e);
 			}
 
