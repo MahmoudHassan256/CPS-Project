@@ -25,6 +25,21 @@ public class Worker implements Serializable {
     @JoinColumn(name = "parking_lot_id")
     private ParkingLot parkingLot;
 
+    @Override
+    public String toString() {
+        return "Worker{" +
+                "id=" + id +
+                ", WorkerId='" + WorkerId + '\'' +
+                ", FirstName='" + FirstName + '\'' +
+                ", LastName='" + LastName + '\'' +
+                ", Email='" + Email + '\'' +
+                ", Occupation='" + Occupation + '\'' +
+                ", isConnected=" + isConnected +
+                ", parkingLot=" + parkingLot +
+                ", Password='" + Password + '\'' +
+                '}';
+    }
+
     private String Password;
     private String hashPassword(String Password) throws NoSuchAlgorithmException {
         MessageDigest md = MessageDigest.getInstance("SHA-512");

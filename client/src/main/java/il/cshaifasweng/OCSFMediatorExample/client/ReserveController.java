@@ -13,12 +13,14 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
-
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.YearMonth;
 import java.util.*;
+import java.util.Arrays;
+import java.util.List;
+
 
 public class ReserveController {
     private  static List<ParkingLot> parkingLots;

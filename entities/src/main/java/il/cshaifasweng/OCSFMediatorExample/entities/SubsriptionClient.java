@@ -3,8 +3,6 @@ package il.cshaifasweng.OCSFMediatorExample.entities;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
-import java.security.NoSuchAlgorithmException;
-import java.sql.Time;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
@@ -25,6 +23,7 @@ public class SubsriptionClient implements Serializable {
     @Column(nullable =true)
     public LocalTime timeOfDepature;
     public int numberOfCars;
+
     public List<String> carNumberList;
     public String creditCardNumber;
     public LocalDateTime expDate;
@@ -53,6 +52,10 @@ public class SubsriptionClient implements Serializable {
         this.idHolder = idHolder;
         this.email = email;
         RemainingHours = remainingHours;
+    }
+
+    public SubsriptionClient() {
+
     }
 
     public int getId() {

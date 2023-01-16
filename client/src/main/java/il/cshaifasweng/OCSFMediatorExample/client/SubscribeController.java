@@ -13,19 +13,14 @@ import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.geometry.Orientation;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import org.apache.commons.lang3.StringUtils;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
-
 
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -139,12 +134,22 @@ public class SubscribeController {
                             cbParkingLotID.getValue(), startDate, departureTime, 1,carNumberList,
                             tfCardNumber.getText(), cardExpirationDate, tfCVV.getText(),
                             tfCardOwnerID.getText(), tfEmail.getText(), 60);
-
                     try {
                         SimpleClient.getClient().sendToServer(new Message("#AddSubscriberRequest", subsriptionClient));
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
+                    Timer timer=new Timer();
+                    timer.schedule(new TimerTask() {
+                        @Override
+                        public void run() {
+                            try {
+                                App.setRoot("firstscene");
+                            } catch (IOException e) {
+                                throw new RuntimeException(e);
+                            }
+                        }
+                    },2000);
 
 
                 }
@@ -177,10 +182,21 @@ public class SubscribeController {
                             tfCardNumber.getText(), cardExpirationDate, tfCVV.getText(),
                             tfCardOwnerID.getText(), tfEmail.getText(), 54*Integer.parseInt(tfNumberOfCars.getText()));
                     try {
-                        SimpleClient.getClient().sendToServer(new Message("#AddSubscriberRequest", subsriptionClient));
+                        SimpleClient.getClient().sendToServer(new Message("#AddSubscriberRequest ", subsriptionClient));
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
+                    Timer timer=new Timer();
+                    timer.schedule(new TimerTask() {
+                        @Override
+                        public void run() {
+                            try {
+                                App.setRoot("firstscene");
+                            } catch (IOException e) {
+                                throw new RuntimeException(e);
+                            }
+                        }
+                    },2000);
                 }
                 else
                     labelErrorInfo.setVisible(true);
@@ -212,6 +228,17 @@ public class SubscribeController {
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
+                    Timer timer=new Timer();
+                    timer.schedule(new TimerTask() {
+                        @Override
+                        public void run() {
+                            try {
+                                App.setRoot("firstscene");
+                            } catch (IOException e) {
+                                throw new RuntimeException(e);
+                            }
+                        }
+                    },2000);
                 }
                 else
                     labelErrorInfo.setVisible(true);
