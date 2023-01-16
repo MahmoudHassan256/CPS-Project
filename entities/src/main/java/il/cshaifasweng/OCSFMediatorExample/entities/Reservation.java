@@ -53,7 +53,6 @@ public class Reservation implements Serializable {
 
     public Reservation() {
     }
-
     public Reservation(String driverID, String licensePlate,
                        Integer parkingLotID, LocalDateTime timeOfArrival, LocalDateTime timeOfDeparture,
                        String email, String typeOfClient, String subsriptionID) {
