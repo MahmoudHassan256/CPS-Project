@@ -49,6 +49,10 @@ public class SimpleClient extends AbstractClient {
 		} else if (strmsg.startsWith("#ShowComplaint")) {
 			EventBus.getDefault().post(new ShowComplaintEvent((Message)msg));
 		}
+		else if(strmsg.startsWith("#ShowSubscriptionID"))
+		{
+			EventBus.getDefault().post(new ShowSubscriptionIDEvent((Message)msg));
+		}
 
 	}
 	

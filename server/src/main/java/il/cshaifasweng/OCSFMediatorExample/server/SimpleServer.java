@@ -205,6 +205,18 @@ public class SimpleServer extends AbstractServer {
 			session.save(subsriptionClient);
 			session.flush();
 			session.getTransaction().commit();
+			try {
+				List<SubsriptionClient> subsriptionClients = getAllSubscriptions();
+				for(SubsriptionClient subsriptionClient1 : subsriptionClients)
+				{
+					if(subsriptionClient.getDriverId().equals(subsriptionClient1.getDriverId()))
+						client.sendToClient(new Message(("#ShowSubscriptionID"), subsriptionClient1.getId()));
+				}
+			} catch (Exception e) {
+				throw new RuntimeException(e);
+			}
+
+			session.close();
 
 		} else if(msgString.startsWith("#ShowComplaintRequest")){
 			try {

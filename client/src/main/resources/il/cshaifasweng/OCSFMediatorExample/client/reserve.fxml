@@ -10,7 +10,8 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.cshaifasweng.OCSFMediatorExample.client.ReserveController">
@@ -20,167 +21,244 @@
             <Image url="@images/background.png" />
          </image>
       </ImageView>
-      <BorderPane prefHeight="800.0" prefWidth="1280.0">
-         <top>
-            <AnchorPane prefHeight="100.0" prefWidth="1280.0" BorderPane.alignment="CENTER">
+      <Button fx:id="btnBack" layoutX="1173.0" layoutY="22.0" mnemonicParsing="false" onAction="#gotoprimary" prefHeight="33.0" prefWidth="79.0" stylesheets="@styles/clickableBtn.css" text="Back" />
+      <HBox alignment="CENTER" prefHeight="75.0" prefWidth="1280.0" style="-fx-background-color: white;" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="100.0">
+         <children>
+            <Label text="Reserve a parking spot">
+               <font>
+                  <Font name="Times New Roman Bold" size="32.0" />
+               </font>
+            </Label>
+         </children>
+      </HBox>
+      <HBox alignment="CENTER" layoutY="203.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="1000.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="203.0">
+         <children>
+            <VBox fx:id="left" prefHeight="312.0" prefWidth="500.0" spacing="5.0" style="-fx-background-color: white;">
                <children>
-                  <Label layoutX="472.0" layoutY="33.0" text="Reserve a parking spot">
-                     <font>
-                        <Font name="Times New Roman Bold" size="32.0" />
-                     </font>
-                  </Label>
-                  <Button fx:id="btnBack" layoutX="1168.0" layoutY="38.0" mnemonicParsing="false" onAction="#gotoprimary" prefHeight="33.0" prefWidth="79.0" stylesheets="@styles/clickableBtn.css" text="Back" />
-               </children>
-            </AnchorPane>
-         </top>
-         <left>
-            <AnchorPane prefHeight="695.0" prefWidth="640.0" BorderPane.alignment="CENTER">
-               <BorderPane.margin>
-                  <Insets />
-               </BorderPane.margin>
-               <children>
-                  <Label layoutX="61.0" layoutY="180.0" text="Driver's ID">
-                     <font>
-                        <Font name="System Bold" size="24.0" />
-                     </font>
-                  </Label>
-                  <Label layoutX="61.0" layoutY="251.0" text="License plate">
-                     <font>
-                        <Font name="System Bold" size="24.0" />
-                     </font>
-                  </Label>
-                  <TextField fx:id="tfID" layoutX="259.0" layoutY="185.0" prefHeight="25.0" prefWidth="285.0" AnchorPane.leftAnchor="265.0" />
-                  <DatePicker fx:id="aririvalDate" layoutX="286.0" layoutY="393.0" AnchorPane.leftAnchor="298.0" />
-                  <Label layoutX="61.0" layoutY="388.0" text="Date of arrival">
-                     <font>
-                        <Font name="System Bold" size="24.0" />
-                     </font>
-                  </Label>
-                  <Label layoutX="61.0" layoutY="443.0" text="Time of arrival">
-                     <font>
-                        <Font name="System Bold" size="24.0" />
-                     </font>
-                  </Label>
-                  <ComboBox fx:id="parkingLotComboBox" layoutX="298.0" layoutY="316.0" prefHeight="25.0" prefWidth="171.0" AnchorPane.leftAnchor="298.0" />
-                  <Label layoutX="61.0" layoutY="311.0" text="Desired parking lot">
-                     <font>
-                        <Font name="System Bold" size="24.0" />
-                     </font>
-                  </Label>
-                  <Label layoutX="61.0" layoutY="498.0" text="Departure date">
-                     <font>
-                        <Font name="System Bold" size="24.0" />
-                     </font>
-                  </Label>
-                  <Label layoutX="61.0" layoutY="552.0" text="Time of Deprature">
-                     <font>
-                        <Font name="System Bold" size="24.0" />
-                     </font>
-                  </Label>
-                  <DatePicker fx:id="departureDate" layoutX="286.0" layoutY="503.0" />
-                  <ComboBox fx:id="arrivalHour" layoutX="287.0" layoutY="449.0" prefHeight="25.0" prefWidth="66.0" />
-                  <Label layoutX="354.0" layoutY="436.0" prefHeight="37.0" prefWidth="6.0" text=":">
-                     <font>
-                        <Font name="System Bold" size="34.0" />
-                     </font>
-                  </Label>
-                  <ComboBox fx:id="arrivalMinute" layoutX="367.0" layoutY="449.0" prefHeight="25.0" prefWidth="71.0" />
-                  <ComboBox fx:id="departureHour" layoutX="289.0" layoutY="558.0" prefHeight="25.0" prefWidth="63.0" />
-                  <Label layoutX="354.0" layoutY="546.0" prefHeight="50.0" prefWidth="10.0" text=":">
-                     <font>
-                        <Font name="System Bold" size="34.0" />
-                     </font>
-                  </Label>
-                  <ComboBox fx:id="departureMinute" layoutX="365.0" layoutY="558.0" prefHeight="25.0" prefWidth="71.0" />
-                  <Label layoutX="61.0" layoutY="598.0" text="E-mail">
-                     <font>
-                        <Font name="System Bold" size="24.0" />
-                     </font>
-                  </Label>
-                  <TextField fx:id="tfEmail" layoutX="170.0" layoutY="603.0" prefHeight="25.0" prefWidth="311.0" />
-                  <Label layoutX="61.0" layoutY="14.0" text="Step 1: Details">
+                  <Label text="Step 1: Details">
                      <font>
                         <Font name="Arial Black" size="24.0" />
                      </font>
+                     <VBox.margin>
+                        <Insets bottom="40.0" />
+                     </VBox.margin>
                   </Label>
-                  <TextField fx:id="tfLicense" layoutX="262.0" layoutY="256.0" prefHeight="25.0" prefWidth="285.0" AnchorPane.leftAnchor="265.0" />
-                  <CheckBox fx:id="cbSubscriber" layoutX="52.0" layoutY="72.0" mnemonicParsing="false" onAction="#cbSubscriberSelected" text="Subscriber">
-                     <font>
-                        <Font name="System Bold Italic" size="24.0" />
-                     </font>
-                  </CheckBox>
-                  <CheckBox fx:id="cbOneTimer" layoutX="297.0" layoutY="72.0" mnemonicParsing="false" onAction="#cbOneTimerSelected" text="One Timer">
-                     <font>
-                        <Font name="System Bold Italic" size="24.0" />
-                     </font>
-                  </CheckBox>
-                  <Label layoutX="61.0" layoutY="130.0" prefHeight="35.0" prefWidth="207.0" text="Subscription Type">
-                     <font>
-                        <Font name="System Bold" size="24.0" />
-                     </font>
-                  </Label>
-                  <ComboBox fx:id="cbSubsType" disable="true" layoutX="277.0" layoutY="135.0" onAction="#cbSubsTypeSelected" prefHeight="25.0" prefWidth="274.0" />
+                  <HBox prefHeight="34.0" prefWidth="490.0">
+                     <children>
+                        <CheckBox fx:id="cbSubscriber" mnemonicParsing="false" onAction="#cbSubscriberSelected" prefHeight="27.0" prefWidth="216.0" text="Subscriber?">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </CheckBox>
+                        <CheckBox fx:id="cbOneTimer" mnemonicParsing="false" onAction="#cbOneTimerSelected" text="One Timer">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </CheckBox>
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER_LEFT" prefHeight="0.0" prefWidth="490.0" spacing="10.0">
+                     <children>
+                        <Label prefHeight="35.0" prefWidth="166.0" text="Driver's ID">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Label>
+                        <TextField fx:id="tfID" prefHeight="35.0" prefWidth="294.0" />
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER_LEFT" prefHeight="0.0" prefWidth="490.0" spacing="10.0">
+                     <children>
+                        <Label prefHeight="35.0" prefWidth="167.0" text="License plate">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Label>
+                        <TextField fx:id="tfLicense" prefHeight="35.0" prefWidth="293.0" />
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER_LEFT" prefHeight="0.0" prefWidth="490.0" spacing="10.0">
+                     <children>
+                        <Label prefHeight="27.0" prefWidth="216.0" text="Desired parking lot">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Label>
+                        <ComboBox fx:id="parkingLotComboBox" prefHeight="25.0" prefWidth="171.0" />
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER_LEFT" prefHeight="0.0" prefWidth="490.0" spacing="10.0">
+                     <children>
+                        <Label prefHeight="27.0" prefWidth="213.0" text="Date of arrival">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Label>
+                        <DatePicker fx:id="aririvalDate" editable="false" />
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER_LEFT" prefHeight="0.0" prefWidth="490.0" spacing="10.0">
+                     <children>
+                        <Label prefHeight="27.0" prefWidth="219.0" text="Time of arrival">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Label>
+                        <ComboBox fx:id="arrivalHour" prefHeight="25.0" prefWidth="66.0" />
+                        <Label prefHeight="37.0" prefWidth="6.0" text=":">
+                           <font>
+                              <Font name="System Bold" size="34.0" />
+                           </font>
+                        </Label>
+                        <ComboBox fx:id="arrivalMinute" prefHeight="25.0" prefWidth="71.0" />
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER_LEFT" prefHeight="0.0" prefWidth="490.0" spacing="10.0">
+                     <children>
+                        <Label prefHeight="27.0" prefWidth="217.0" text="Departure date">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Label>
+                        <DatePicker fx:id="departureDate" editable="false" />
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER_LEFT" prefHeight="0.0" prefWidth="490.0" spacing="10.0">
+                     <children>
+                        <Label prefHeight="27.0" prefWidth="218.0" text="Time of Deprature">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Label>
+                        <ComboBox fx:id="departureHour" prefHeight="25.0" prefWidth="63.0" />
+                        <Label prefHeight="50.0" prefWidth="10.0" text=":">
+                           <font>
+                              <Font name="System Bold" size="34.0" />
+                           </font>
+                        </Label>
+                        <ComboBox fx:id="departureMinute" prefHeight="25.0" prefWidth="71.0" />
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER_LEFT" prefHeight="0.0" prefWidth="490.0" spacing="10.0">
+                     <children>
+                        <Label prefHeight="27.0" prefWidth="172.0" text="E-mail">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Label>
+                        <TextField fx:id="tfEmail" prefHeight="25.0" prefWidth="283.0" />
+                     </children>
+                  </HBox>
                </children>
-            </AnchorPane>
-         </left>
-         <center>
-            <AnchorPane prefHeight="700.0" prefWidth="640.0" BorderPane.alignment="CENTER">
+               <padding>
+                  <Insets left="10.0" />
+               </padding>
+            </VBox>
+            <VBox fx:id="right" prefHeight="200.0" prefWidth="500.0" spacing="5.0" style="-fx-background-color: white;">
                <children>
-                  <Label layoutX="33.0" layoutY="27.0" text="Step 2: Payment">
+                  <Label text="Step 2: Payment">
                      <font>
                         <Font name="Arial Black" size="24.0" />
                      </font>
+                     <VBox.margin>
+                        <Insets bottom="40.0" />
+                     </VBox.margin>
                   </Label>
-                  <TextField fx:id="tfSubscribtionID" disable="true" layoutX="230.0" layoutY="115.0" prefHeight="25.0" prefWidth="224.0" />
-                  <Label layoutX="53.0" layoutY="112.0" text="Subscription ID">
-                     <font>
-                        <Font name="System Bold" size="21.0" />
-                     </font>
-                  </Label>
-                  <Label layoutX="33.0" layoutY="225.0" text="Payment Method Details">
+                  <HBox prefHeight="48.0" prefWidth="490.0">
+                     <children>
+                        <Label prefHeight="27.0" prefWidth="165.0" text="Subscription Type">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Label>
+                        <ComboBox fx:id="cbSubsType" onAction="#cbSubsTypeSelected" prefHeight="25.0" prefWidth="317.0" />
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER_LEFT" prefHeight="0.0" prefWidth="490.0" spacing="5.0">
+                     <children>
+                        <Label prefHeight="27.0" prefWidth="171.0" text="Subscription ID">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Label>
+                        <TextField fx:id="tfSubscribtionID" disable="true" prefHeight="25.0" prefWidth="224.0" />
+                     </children>
+                  </HBox>
+                  <Label prefHeight="39.0" prefWidth="513.0" style="-fx-background-color: black;" text="Payment Method Details" textFill="WHITE">
                      <font>
                         <Font name="System Bold Italic" size="27.0" />
                      </font>
+                     <VBox.margin>
+                        <Insets bottom="15.0" left="-10.0" top="15.0" />
+                     </VBox.margin>
                   </Label>
-                  <Label layoutX="41.0" layoutY="298.0" text="Credit card number">
-                     <font>
-                        <Font name="System Bold" size="24.0" />
-                     </font>
-                  </Label>
-                  <TextField fx:id="tfCardNumber" disable="true" layoutX="281.0" layoutY="303.0" prefHeight="25.0" prefWidth="271.0" />
-                  <Label layoutX="41.0" layoutY="364.0" text="Expiration Date">
-                     <font>
-                        <Font name="System Bold" size="24.0" />
-                     </font>
-                  </Label>
-                  <Label layoutX="41.0" layoutY="431.0" text="CVV">
-                     <font>
-                        <Font name="System Bold" size="24.0" />
-                     </font>
-                  </Label>
-                  <Label layoutX="41.0" layoutY="491.0" text="Credit card holder ID">
-                     <font>
-                        <Font name="System Bold" size="24.0" />
-                     </font>
-                  </Label>
-                  <TextField fx:id="tfCVV" disable="true" layoutX="129.0" layoutY="436.0" prefHeight="25.0" prefWidth="82.0" />
-                  <TextField fx:id="tfCardOwnerID" disable="true" layoutX="284.0" layoutY="496.0" prefHeight="25.0" prefWidth="264.0" />
-                  <ComboBox fx:id="expirationMonth" disable="true" layoutX="317.0" layoutY="369.0" prefHeight="25.0" prefWidth="62.0" />
-                  <ComboBox fx:id="expirationYear" disable="true" layoutX="430.0" layoutY="370.0" prefHeight="25.0" prefWidth="69.0" />
-                  <Label layoutX="260.0" layoutY="370.0" text="Month">
-                     <font>
-                        <Font size="16.0" />
-                     </font>
-                  </Label>
-                  <Label layoutX="388.0" layoutY="369.0" text="Year">
-                     <font>
-                        <Font size="18.0" />
-                     </font>
-                  </Label>
-                  <Button fx:id="btnReserve" layoutX="308.0" layoutY="617.0" mnemonicParsing="false" onAction="#reserveParkingLot" stylesheets="@styles/clickableBtn.css" text="Reserve" />
+                  <HBox alignment="CENTER_LEFT" prefHeight="0.0" prefWidth="490.0" spacing="5.0">
+                     <children>
+                        <Label prefHeight="27.0" prefWidth="210.0" text="Credit card number">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Label>
+                        <TextField fx:id="tfCardNumber" disable="true" prefHeight="25.0" prefWidth="271.0" />
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER_LEFT" prefHeight="0.0" prefWidth="490.0" spacing="5.0">
+                     <children>
+                        <Label prefHeight="27.0" prefWidth="251.0" text="Expiration Date">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Label>
+                        <Label prefHeight="26.0" prefWidth="58.0" text="Month">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Label>
+                        <ComboBox fx:id="expirationMonth" disable="true" prefHeight="25.0" prefWidth="46.0" />
+                        <Label text="Year">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Label>
+                        <ComboBox fx:id="expirationYear" disable="true" prefHeight="25.0" prefWidth="46.0" />
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER_LEFT" prefHeight="0.0" prefWidth="490.0" spacing="5.0">
+                     <children>
+                        <Label prefHeight="27.0" prefWidth="69.0" text="CVV">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Label>
+                        <TextField fx:id="tfCVV" disable="true" prefHeight="25.0" prefWidth="82.0" />
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER_LEFT" prefHeight="5.0" prefWidth="490.0" spacing="5.0">
+                     <children>
+                        <Label prefHeight="27.0" prefWidth="210.0" text="Credit card holder ID">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Label>
+                        <TextField fx:id="tfCardOwnerID" disable="true" prefHeight="26.0" prefWidth="266.0" />
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER" prefHeight="91.0" prefWidth="499.0">
+                     <children>
+                        <Label fx:id="labelErrorInvalid" text="Error, please enter a valid information" textFill="RED" visible="false">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </HBox>
                </children>
-            </AnchorPane>
-         </center>
-      </BorderPane>
+               <padding>
+                  <Insets left="10.0" />
+               </padding>
+            </VBox>
+         </children>
+      </HBox>
+      <Button fx:id="btnReserve" layoutX="601.0" layoutY="721.0" mnemonicParsing="false" onAction="#reserveParkingLot" stylesheets="@styles/clickableBtn.css" text="Reserve" />
    </children>
 </AnchorPane>
