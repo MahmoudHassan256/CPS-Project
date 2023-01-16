@@ -3,17 +3,17 @@
     -fx-font-weight: bold;
     -fx-text-fill: white;
     -fx-background-color: black;
-    -fx-border-color: #4d79ff;
+    -fx-border-color: Blue;
     -fx-border-radius: 5px;
     -fx-padding: 10px;
 }
 
 .button:hover {
     -fx-background-color: red;
-    -fx-border-color: #6e9cff;
+    -fx-border-color: LightBlue;
 }
 
 .button:pressed {
     -fx-background-color: silver;
-    -fx-border-color: #3b5998;
+    -fx-border-color: LightBlue;
 }

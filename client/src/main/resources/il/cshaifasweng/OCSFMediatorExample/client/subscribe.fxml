@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
@@ -30,11 +29,7 @@
                         <Font name="Times New Roman Bold" size="32.0" />
                      </font>
                   </Label>
-                  <Button fx:id="btnBack" layoutX="1168.0" layoutY="38.0" mnemonicParsing="false" onAction="#gotoprimary" prefHeight="33.0" prefWidth="79.0" text="Back">
-                     <stylesheets>
-                        <URL value="@styles/clickableBtn.css" />
-                        <URL value="@styles/clickableBtn.css" />
-                     </stylesheets></Button>
+                  <Button fx:id="btnBack" layoutX="1168.0" layoutY="38.0" mnemonicParsing="false" onAction="#gotoprimary" prefHeight="33.0" prefWidth="79.0" stylesheets="@styles/clickableBtn.css" text="Back" />
                </children>
             </AnchorPane>
          </top>

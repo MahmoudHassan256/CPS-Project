@@ -180,6 +180,15 @@ public class App extends Application {
             e.printStackTrace();
         }
     }
+    @SuppressWarnings("unchecked")
+    @Subscribe
+    public void onShowComplaintEvent(ShowComplaintEvent event){
+        try {
+            App.setRoot("complaint");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
 
 	public static void main(String[] args) {

@@ -154,7 +154,7 @@ public class SimpleServer extends AbstractServer {
 			updateConnectedWorkerStatus((Worker) ((Message)msg).getObject());
 		}else if (msgString.startsWith("#ShowAddDisabledSpacesRequest")){
 			try {
-				client.sendToClient(new Message("ShowAddDisabledSpaces"));
+				client.sendToClient(new Message("#ShowAddDisabledSpaces"));
 			} catch (IOException e) {
 				throw new RuntimeException(e);
 			}
@@ -163,7 +163,6 @@ public class SimpleServer extends AbstractServer {
 			session=sessionFactory.openSession();
 			List<Complaint> complaints=null;
 			Complaint updatedComplaint=(Complaint) ((Message)msg).getObject();
-				System.out.println(updatedComplaint);
 			try {
 				complaints=getAllComplaints();
 			} catch (Exception e) {
@@ -198,6 +197,7 @@ public class SimpleServer extends AbstractServer {
 			} catch (IOException e) {
 				throw new RuntimeException(e);
 			}
+
 		} else if(msgString.startsWith("#AddSubscriberRequest"))
 		{
 			SubsriptionClient subsriptionClient=(SubsriptionClient) ((Message)msg).getObject();
@@ -205,6 +205,29 @@ public class SimpleServer extends AbstractServer {
 			session.save(subsriptionClient);
 			session.flush();
 			session.getTransaction().commit();
+
+		} else if(msgString.startsWith("#ShowComplaintRequest")){
+			try {
+				client.sendToClient(new Message("#ShowComplaint"));
+			} catch (IOException e) {
+				throw new RuntimeException(e);
+			}
+		} else if (msgString.startsWith("#AddComplaintRequest")) {
+			session = sessionFactory.openSession();
+			session.beginTransaction();
+			Complaint complaint = (Complaint) ((Message) msg).getObject();
+			session.save(complaint);
+			session.flush();
+			session.getTransaction().commit();
+			List<Complaint> complaintList=null;
+			while(complaintList==null){
+				try {
+					complaintList=getAllComplaints();
+				} catch (Exception e) {
+					throw new RuntimeException(e);
+				}
+			}
+			this.sendToAllClients(new Message("#RefreshComplaintList",complaintList));
 			session.close();
 		}
 
@@ -360,7 +383,7 @@ public class SimpleServer extends AbstractServer {
 			generateParkingLots();
 			generatePrices();
 			generateWorkers();
-			generateComplaints();
+			//generateComplaints();
 			generateRefunds();
 
 			addWorkerToParkingLot();
