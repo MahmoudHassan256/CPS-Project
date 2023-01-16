@@ -176,7 +176,6 @@ public class ReserveController {
         }
         else if (cbOneTimer.isSelected())
         {
-
             LocalDate expirationD = LocalDate.of(Integer.parseInt(expirationYear.getValue()), Integer.parseInt(expirationMonth.getValue()),1);
             Reservation reservation = new Reservation(tfID.getText(),tfLicense.getText(),
                     parkingLotComboBox.getValue(),arrivalDate, departureDate1, tfEmail.getText(),"one-Timer",

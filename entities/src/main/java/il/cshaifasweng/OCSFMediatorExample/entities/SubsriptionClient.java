@@ -1,23 +1,29 @@
 package il.cshaifasweng.OCSFMediatorExample.entities;
 
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
+import java.io.Serializable;
 import java.security.NoSuchAlgorithmException;
+import java.sql.Time;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
-public class SubsriptionClient extends Client {
+@Entity
+@Table(name="Subscribers")
+public class SubsriptionClient implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public int id;
 
     public String driverId;
     public String SubscriptionType;
+    @Column(nullable =true)
     public int desiredPrkinglot;
     public LocalDateTime subscriptionStartDate;
-    public LocalDateTime timeOfDepature;
+    public LocalDateTime subscriptionExpDate;
+    @Column(nullable =true)
+    public LocalTime timeOfDepature;
     public int numberOfCars;
     public List<String> carNumberList;
     public String creditCardNumber;
@@ -27,24 +33,25 @@ public class SubsriptionClient extends Client {
     public String email;
     public int RemainingHours;
 
-    public SubsriptionClient(String firstName, String lastName, String email, String password, String type, String driverId, String subscriptionType, int desiredPrkinglot, LocalDateTime subscriptionStartDate, LocalDateTime timeOfDepature, int numberOfCars, List<String> carNumberList, String creditCardNumber, LocalDateTime expDate, String cvv, String idHolder, String email1, int remainingHours) throws NoSuchAlgorithmException {
-        super(firstName, lastName, email, password, type);
+    public SubsriptionClient(String driverId, String subscriptionType, int desiredPrkinglot, LocalDateTime subscriptionStartDate,
+                             LocalTime timeOfDepature, int numberOfCars, List<String> carNumberList, String creditCardNumber,
+                             LocalDateTime expDate, String cvv, String idHolder, String email, int remainingHours) {
         this.driverId = driverId;
-        SubscriptionType = subscriptionType;
+        this.SubscriptionType = subscriptionType;
         this.desiredPrkinglot = desiredPrkinglot;
         this.subscriptionStartDate = subscriptionStartDate;
+        this.subscriptionExpDate = subscriptionStartDate.plusDays(28);
         this.timeOfDepature = timeOfDepature;
         this.numberOfCars = numberOfCars;
         this.carNumberList = carNumberList;
         this.creditCardNumber = creditCardNumber;
-        this.expDate = subscriptionStartDate.plusDays(28);
+        this.expDate = expDate;
         this.cvv = cvv;
         this.idHolder = idHolder;
-        this.email = email1;
+        this.email = email;
         RemainingHours = remainingHours;
     }
 
-    @Override
     public int getId() {
         return id;
     }
@@ -81,11 +88,19 @@ public class SubsriptionClient extends Client {
         this.subscriptionStartDate = subscriptionStartDate;
     }
 
-    public LocalDateTime getTimeOfDepature() {
+    public LocalDateTime getSubscriptionExpDate() {
+        return subscriptionExpDate;
+    }
+
+    public void setSubscriptionExpDate(LocalDateTime subscriptionExpDate) {
+        this.subscriptionExpDate = subscriptionExpDate;
+    }
+
+    public LocalTime getTimeOfDepature() {
         return timeOfDepature;
     }
 
-    public void setTimeOfDepature(LocalDateTime timeOfDepature) {
+    public void setTimeOfDepature(LocalTime timeOfDepature) {
         this.timeOfDepature = timeOfDepature;
     }
 
@@ -137,12 +152,10 @@ public class SubsriptionClient extends Client {
         this.idHolder = idHolder;
     }
 
-    @Override
     public String getEmail() {
         return email;
     }
 
-    @Override
     public void setEmail(String email) {
         this.email = email;
     }
@@ -155,3 +168,4 @@ public class SubsriptionClient extends Client {
         RemainingHours = remainingHours;
     }
 }
+
