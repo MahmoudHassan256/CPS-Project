@@ -30,7 +30,7 @@
             <VBox prefHeight="200.0" prefWidth="100.0" />
          </children>
       </HBox>
-      <VBox alignment="CENTER_LEFT" layoutX="614.0" layoutY="300.0" prefHeight="400.0" prefWidth="480.0" spacing="10.0" style="-fx-background-color: white;" AnchorPane.leftAnchor="400.0" AnchorPane.rightAnchor="400.0">
+      <VBox fx:id="vbitems" alignment="CENTER_LEFT" layoutX="614.0" layoutY="300.0" prefHeight="400.0" prefWidth="480.0" spacing="10.0" style="-fx-background-color: white;" AnchorPane.leftAnchor="400.0" AnchorPane.rightAnchor="400.0">
          <padding>
             <Insets left="10.0" />
          </padding>
