@@ -2,14 +2,20 @@
  * Sample Skeleton for 'subscribe.fxml' Controller Class
  */
 
+//need to check how to add the cars list
+
 package il.cshaifasweng.OCSFMediatorExample.client;
 
+import il.cshaifasweng.OCSFMediatorExample.entities.Message;
 import il.cshaifasweng.OCSFMediatorExample.entities.ParkingLot;
+import il.cshaifasweng.OCSFMediatorExample.entities.SubsriptionClient;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Orientation;
+import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -21,6 +27,8 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -47,6 +55,10 @@ public class SubscribeController {
     List<String> yearLst = Arrays.asList("23","24","25","26","27","28");
     @FXML // fx:id="btnBack"
     private Button btnBack; // Value injected by FXMLLoader
+    @FXML
+    private Label labelErrorInfo;
+    @FXML
+    private Label labelSubscriptionID;
 
     @FXML // fx:id="labelNumberError"
     private Label labelNumberError; // Value injected by FXMLLoader
@@ -100,8 +112,118 @@ public class SubscribeController {
 
     @FXML
     void addSubscription(ActionEvent event) {
-        LocalDateTime startDate = LocalDateTime.of(subscriptionStartingDate.getValue().getYear(), subscriptionStartingDate.getValue().getMonth(),
-                subscriptionStartingDate.getValue().getDayOfMonth(), 0,0);
+        labelErrorInfo.setVisible(false);
+        if(!tfID.getText().isEmpty() && !cbSubscriptionType.getSelectionModel().isEmpty() && subscriptionStartingDate.getValue()!= null)
+        {
+            if(cbSubscriptionType.getSelectionModel().getSelectedItem().startsWith("Casual subscription single car"))
+            {
+                if(!cbParkingLotID.getSelectionModel().isEmpty() && !cbDepartureHour.getSelectionModel().isEmpty()
+                && !cbDepartureMinute.getSelectionModel().isEmpty() && !tfCardNumber.getText().isEmpty()
+                && !cbExpirationYear.getSelectionModel().isEmpty() && !cbExpirationMonth.getSelectionModel().isEmpty()
+                && !tfCVV.getText().isEmpty() && !tfCardOwnerID.getText().isEmpty() && !tfEmail.getText().isEmpty() && tfNumberOfCars.getText().contentEquals("1"))
+                {
+                    LocalDateTime startDate = LocalDateTime.of(subscriptionStartingDate.getValue().getYear(), subscriptionStartingDate.getValue().getMonth(),
+                            subscriptionStartingDate.getValue().getDayOfMonth(), 0,0);
+                    LocalTime departureTime = LocalTime.of(Integer.parseInt(cbDepartureHour.getValue()),Integer.parseInt(cbDepartureMinute.getValue()));
+                    LocalDateTime cardExpirationDate = LocalDateTime.of(Integer.parseInt(cbExpirationYear.getValue()), Integer.parseInt(cbExpirationMonth.getValue()), 1,
+                            0,0);
+                    List<String> carNumberList =new ArrayList<>();
+                    List<Node> nodes = getAllNodes(scrollPane);
+                    for(Node node : nodes)
+                    {
+                        if(node instanceof TextField) {
+                            carNumberList.add(((TextField) node).getText());
+                        }
+                    }
+                    SubsriptionClient subsriptionClient = new SubsriptionClient(tfID.getText(), cbSubscriptionType.getValue(),
+                            cbParkingLotID.getValue(), startDate, departureTime, 1,carNumberList,
+                            tfCardNumber.getText(), cardExpirationDate, tfCVV.getText(),
+                            tfCardOwnerID.getText(), tfEmail.getText(), 60);
+                    labelSubscriptionID.setText("Welcome, you subscription ID is"+subsriptionClient.getId());
+                    labelSubscriptionID.setVisible(true);
+                    try {
+                        SimpleClient.getClient().sendToServer(new Message("#AddSubscriberRequest", subsriptionClient));
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+
+                }
+                else
+                    labelErrorInfo.setVisible(true);
+            }
+            else if(cbSubscriptionType.getSelectionModel().getSelectedItem().startsWith("Casual subscription, multiple cars"))
+            {
+                if(!cbParkingLotID.getSelectionModel().isEmpty() && !cbDepartureHour.getSelectionModel().isEmpty()
+                        && !cbDepartureMinute.getSelectionModel().isEmpty() && !tfCardNumber.getText().isEmpty()
+                        && !cbExpirationYear.getSelectionModel().isEmpty() && !cbExpirationMonth.getSelectionModel().isEmpty()
+                        && !tfCVV.getText().isEmpty() && !tfCardOwnerID.getText().isEmpty() && !tfEmail.getText().isEmpty()
+                        && Integer.parseInt(tfNumberOfCars.getText())>1)
+                {
+                    LocalDateTime startDate = LocalDateTime.of(subscriptionStartingDate.getValue().getYear(), subscriptionStartingDate.getValue().getMonth(),
+                            subscriptionStartingDate.getValue().getDayOfMonth(), 0,0);
+                    LocalTime departureTime = LocalTime.of(Integer.parseInt(cbDepartureHour.getValue()),Integer.parseInt(cbDepartureMinute.getValue()));
+                    LocalDateTime cardExpirationDate = LocalDateTime.of(Integer.parseInt(cbExpirationYear.getValue()), Integer.parseInt(cbExpirationMonth.getValue()), 1,
+                            0,0);
+                    List<String> carNumberList =new ArrayList<>();
+                    List<Node> nodes = getAllNodes(scrollPane);
+                    for(Node node : nodes)
+                    {
+                        if(node instanceof TextField) {
+                            carNumberList.add(((TextField) node).getText());
+                        }
+                    }
+                    SubsriptionClient subsriptionClient = new SubsriptionClient(tfID.getText(), cbSubscriptionType.getValue(),
+                            cbParkingLotID.getValue(), startDate, departureTime, Integer.parseInt(tfNumberOfCars.getText()),carNumberList,
+                            tfCardNumber.getText(), cardExpirationDate, tfCVV.getText(),
+                            tfCardOwnerID.getText(), tfEmail.getText(), 54*Integer.parseInt(tfNumberOfCars.getText()));
+                    labelSubscriptionID.setText("Welcome, you subscription ID is"+subsriptionClient.getId());
+                    labelSubscriptionID.setVisible(true);
+                    try {
+                        SimpleClient.getClient().sendToServer(new Message("#AddSubscriberRequest", subsriptionClient));
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+                else
+                    labelErrorInfo.setVisible(true);
+            }
+            else if(cbSubscriptionType.getSelectionModel().getSelectedItem().startsWith("Full subscription"))
+            {
+                if(!tfCardNumber.getText().isEmpty() && !cbExpirationYear.getSelectionModel().isEmpty() &&
+                        !cbExpirationMonth.getSelectionModel().isEmpty() && !tfCVV.getText().isEmpty() &&
+                        !tfCardOwnerID.getText().isEmpty() && !tfEmail.getText().isEmpty() && tfNumberOfCars.getText().contentEquals("1"))
+                {
+                    LocalDateTime startDate = LocalDateTime.of(subscriptionStartingDate.getValue().getYear(), subscriptionStartingDate.getValue().getMonth(),
+                            subscriptionStartingDate.getValue().getDayOfMonth(), 0,0);
+                    LocalDateTime cardExpirationDate = LocalDateTime.of(Integer.parseInt(cbExpirationYear.getValue()), Integer.parseInt(cbExpirationMonth.getValue()), 1,
+                            0,0);
+                    List<String> carNumberList =new ArrayList<>();
+                    List<Node> nodes = getAllNodes(scrollPane);
+                    for(Node node : nodes)
+                    {
+                        if(node instanceof TextField) {
+                            carNumberList.add(((TextField) node).getText());
+                        }
+                    }
+                    SubsriptionClient subsriptionClient = new SubsriptionClient(tfID.getText(), cbSubscriptionType.getValue(),
+                            -1, startDate, null , Integer.parseInt(tfNumberOfCars.getText()),carNumberList,
+                            tfCardNumber.getText(), cardExpirationDate, tfCVV.getText(),
+                            tfCardOwnerID.getText(), tfEmail.getText(), 72);
+                    labelSubscriptionID.setText("Welcome, you subscription ID is " +subsriptionClient.getId());
+                    labelSubscriptionID.setVisible(true);
+                    try {
+                        SimpleClient.getClient().sendToServer(new Message("#AddSubscriberRequest", subsriptionClient));
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+                else
+                    labelErrorInfo.setVisible(true);
+            }
+
+        }
+        else
+            labelErrorInfo.setVisible(true);
 
     }
 
@@ -117,7 +239,6 @@ public class SubscribeController {
             sp.setContent(vBox);
             for (int i=1; i <= Integer.parseInt(tfNumberOfCars.getText()); i++)
             {
-
                 Label label= new Label("Enter car number #"+i);
                 TextField textField=new TextField();
                 textField.setId("tfCarNumber"+i);
@@ -161,5 +282,33 @@ public class SubscribeController {
         cbExpirationMonth.setItems(FXCollections.observableArrayList(monthLst));
         cbExpirationYear.getItems().clear();
         cbExpirationYear.setItems(FXCollections.observableArrayList(yearLst));
+    }
+    @FXML
+    void subscriptionTypeSelected(ActionEvent event) {
+        if(cbSubscriptionType.getSelectionModel().getSelectedItem() == "Full subscription")
+        {
+            cbParkingLotID.setDisable(true);
+            cbDepartureHour.setDisable(true);
+            cbDepartureMinute.setDisable(true);
+        }
+        else
+        {
+            cbParkingLotID.setDisable(false);
+            cbDepartureHour.setDisable(false);
+            cbDepartureMinute.setDisable(false);
+        }
+    }
+    public static ArrayList<Node> getAllNodes(Parent root) {
+        ArrayList<Node> nodes = new ArrayList<Node>();
+        addAllDescendents(root, nodes);
+        return nodes;
+    }
+
+    private static void addAllDescendents(Parent parent, ArrayList<Node> nodes) {
+        for (Node node : parent.getChildrenUnmodifiable()) {
+            nodes.add(node);
+            if (node instanceof Parent)
+                addAllDescendents((Parent)node, nodes);
+        }
     }
 }

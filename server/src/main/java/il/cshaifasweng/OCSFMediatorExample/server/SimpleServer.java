@@ -119,7 +119,15 @@ public class SimpleServer extends AbstractServer {
 				throw new RuntimeException(e);
 			}
 
-		} else if (msgString.startsWith("#ShowCheckInRequest")) {
+		} else if (msgString.startsWith("#AddReservationRequest")){
+			Reservation reservation=(Reservation) ((Message)msg).getObject();
+			session.beginTransaction();
+			session.save(reservation);
+			session.flush();
+			session.getTransaction().commit();
+			session.close();
+		}
+		else if (msgString.startsWith("#ShowCheckInRequest")) {
 			try {
 				client.sendToClient(new Message("#ShowCheckIn"));
 			} catch (IOException e) {
@@ -189,7 +197,16 @@ public class SimpleServer extends AbstractServer {
 			} catch (IOException e) {
 				throw new RuntimeException(e);
 			}
+		} else if(msgString.startsWith("#AddSubscriberRequest"))
+		{
+			SubsriptionClient subsriptionClient=(SubsriptionClient) ((Message)msg).getObject();
+			session.beginTransaction();
+			session.save(subsriptionClient);
+			session.flush();
+			session.getTransaction().commit();
+			session.close();
 		}
+
 	}
 	public void updateConnectedWorkerStatus(Worker updateWorker){
 		session=sessionFactory.openSession();
@@ -353,6 +370,8 @@ public class SimpleServer extends AbstractServer {
 		configuration.addAnnotatedClass(Vehicle.class);
 		configuration.addAnnotatedClass(Complaint.class);
 		configuration.addAnnotatedClass(Refund.class);
+		configuration.addAnnotatedClass(Reservation.class);
+		configuration.addAnnotatedClass(SubsriptionClient.class);
 
 		ServiceRegistry serviceRegistry=new StandardServiceRegistryBuilder().applySettings(configuration.getProperties()).build();
 		return configuration.buildSessionFactory(serviceRegistry);
