@@ -24,7 +24,7 @@
           <TableColumn fx:id="capacity_t_c" prefWidth="251.99993896484375" text="capacity" />
         </columns>
       </TableView>
-      <VBox alignment="CENTER" layoutX="116.0" layoutY="79.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="58.0" prefWidth="1280.0" styleClass="headlinebox" stylesheets="@styles/headline.css" AnchorPane.leftAnchor="0.0">
+      <VBox alignment="CENTER" layoutX="116.0" layoutY="79.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="58.0" prefWidth="1280.0" style="-fx-background-color: white;" AnchorPane.leftAnchor="0.0">
          <children>
             <Text fx:id="text" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="headline" text="Parking Lots" textAlignment="CENTER">
                <font>
