@@ -188,7 +188,17 @@ public class App extends Application {
             throw new RuntimeException(e);
         }
     }
-
+    @SuppressWarnings("unchecked")
+    @Subscribe
+    public void onShowAdminReserveParkingEvent(ShowAdminReserveParkingEvent event){
+        ReserveAdminController.setParkingLots((List<ParkingLot>) event.getParkingLotList());
+        ReserveAdminController.setWorker((Worker) event.getWorker());
+        try {
+            App.setRoot("reserveadmin");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
 	public static void main(String[] args) {
         launch();

@@ -50,7 +50,7 @@ public class ParkingLotWorkerPageController {
 
     @FXML
     void gotoreservespace(ActionEvent event) throws IOException {
-        SimpleClient.getClient().sendToServer("#ShowAdminReserveParkingRequest");
+        SimpleClient.getClient().sendToServer(new Message("#ShowAdminReserveParkingRequest",worker));
 
     }
     @FXML
