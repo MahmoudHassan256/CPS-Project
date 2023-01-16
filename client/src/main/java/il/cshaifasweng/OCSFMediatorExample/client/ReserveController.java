@@ -7,6 +7,7 @@ package il.cshaifasweng.OCSFMediatorExample.client;
 import il.cshaifasweng.OCSFMediatorExample.entities.Message;
 import il.cshaifasweng.OCSFMediatorExample.entities.ParkingLot;
 import il.cshaifasweng.OCSFMediatorExample.entities.Reservation;
+import il.cshaifasweng.OCSFMediatorExample.entities.SubsriptionClient;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -23,6 +24,7 @@ import java.util.List;
 
 public class ReserveController {
     private  static List<ParkingLot> parkingLots;
+    private static List<SubsriptionClient> subsriptionClients;
 
     public static List<ParkingLot> getParkingLots() {
         return parkingLots;
@@ -30,6 +32,10 @@ public class ReserveController {
 
     public static void setParkingLots(List<ParkingLot> parkingLots) {
         ReserveController.parkingLots = parkingLots;
+    }
+    public static List<SubsriptionClient> getSubsriptionClients(){return subsriptionClients;}
+    public static void setSubsriptionClients(List<SubsriptionClient> subsriptionClients){
+        ReserveController.subsriptionClients= subsriptionClients;
     }
 
     List<String> hoursList = Arrays.asList("00","01","02","03","04","05","06","07","08",
@@ -40,7 +46,10 @@ public class ReserveController {
             "53","54","55","56","57","58","59");
     List<String> monthLst = Arrays.asList("01","02","03","04,","05","06","07","08,","09","10","11","12");
     List<String> yearLst = Arrays.asList("23","24","25","26","27","28");
+    List<String> typeList = Arrays.asList("Casual subscription","Full subscription");
 
+    @FXML // fx:id="cbSubsType"
+    private ComboBox<String> cbSubsType; // Value injected by FXMLLoader
     @FXML // fx:id="aririvalDate"
     private DatePicker aririvalDate; // Value injected  by FXMLLoader
 
@@ -105,6 +114,7 @@ public class ReserveController {
     void cbOneTimerSelected(ActionEvent event) {
         if(cbOneTimer.isSelected())
         {
+            cbSubsType.setDisable(true);
             cbSubscriber.setSelected(false);
             tfSubscribtionID.setDisable(true);
             tfCardNumber.setDisable(false);
@@ -115,6 +125,7 @@ public class ReserveController {
         }
         else
         {
+            tfCardNumber.setDisable(true);
             expirationMonth.setDisable(true);
             expirationYear.setDisable(true);
             tfCVV.setDisable(true);
@@ -127,6 +138,7 @@ public class ReserveController {
     void cbSubscriberSelected(ActionEvent event) {
         if(cbSubscriber.isSelected())
         {
+            cbSubsType.setDisable(false);
             tfSubscribtionID.setDisable(false);
             cbOneTimer.setSelected(false);
             tfCardNumber.setDisable(true);
@@ -135,8 +147,10 @@ public class ReserveController {
             tfCVV.setDisable(true);
             tfCardOwnerID.setDisable(true);
         }
-        else
+        else {
             tfSubscribtionID.setDisable(true);
+            cbSubsType.setDisable(true);
+        }
 
     }
 
@@ -205,6 +219,24 @@ public class ReserveController {
         for(ParkingLot ParkingLot: parkingLots)
         {
             parkingLotComboBox.getItems().addAll(ParkingLot.getId());
+        }
+        cbSubsType.getItems().clear();
+        cbSubsType.setItems(FXCollections.observableArrayList(typeList));
+    }
+    @FXML
+    void cbSubsTypeSelected(ActionEvent event) {
+        if(cbSubsType.getSelectionModel().getSelectedItem().startsWith("Full"))
+        {
+            parkingLotComboBox.setDisable(true);
+            departureDate.setDisable(true);
+            departureHour.setDisable(true);
+            departureMinute.setDisable(true);
+        }
+        else {
+            parkingLotComboBox.setDisable(false);
+            departureDate.setDisable(false);
+            departureHour.setDisable(false);
+            departureMinute.setDisable(false);
         }
     }
 }

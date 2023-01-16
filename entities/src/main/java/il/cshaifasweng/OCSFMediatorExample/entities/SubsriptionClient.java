@@ -33,6 +33,9 @@ public class SubsriptionClient implements Serializable {
     public String email;
     public int RemainingHours;
 
+    public SubsriptionClient() {
+    }
+
     public SubsriptionClient(String driverId, String subscriptionType, int desiredPrkinglot, LocalDateTime subscriptionStartDate,
                              LocalTime timeOfDepature, int numberOfCars, List<String> carNumberList, String creditCardNumber,
                              LocalDateTime expDate, String cvv, String idHolder, String email, int remainingHours) {

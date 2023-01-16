@@ -122,6 +122,7 @@ public class App extends Application {
     @Subscribe
     public void onShowReserveEvent(ShowReserveEvent event){
         ReserveController.setParkingLots((List<ParkingLot>)event.getParkingLotsList());
+        ReserveController.setSubsriptionClients((List<SubsriptionClient>)event.getSubscriptionList());
         try {
             App.setRoot("reserve");
         } catch (IOException e) {
