@@ -141,7 +141,7 @@ public class SimpleServer extends AbstractServer {
 			}
 		} else if (msgString.startsWith("#ShowAdminPageRequset")) {
 			try {
-				updateConnectedWorkerStatus((Worker) ((Message)msg).getObject());
+				updateConnectedWorkerStatus((Worker) ((Message)msg).getObject(),true);
 				List<Complaint> complaintList=getAllComplaints();
 				List<Refund> refundList=getAllRefunds();
 				client.sendToClient(new Message("#ShowAdminPage",((Worker) ((Message)msg).getObject()),complaintList,refundList));
@@ -150,7 +150,7 @@ public class SimpleServer extends AbstractServer {
 			}
 
 		} else if (msgString.startsWith("#UpdateWorkerState")) {
-			updateConnectedWorkerStatus((Worker) ((Message)msg).getObject());
+			updateConnectedWorkerStatus((Worker) ((Message)msg).getObject(),false);
 		}else if (msgString.startsWith("#ShowAddDisabledSpacesRequest")){
 			try {
 				client.sendToClient(new Message("#ShowAddDisabledSpaces"));
@@ -228,10 +228,23 @@ public class SimpleServer extends AbstractServer {
 			}
 			this.sendToAllClients(new Message("#RefreshComplaintList",complaintList));
 			session.close();
+		} else if (msgString.startsWith("#ShowAdminReserveParkingRequest")) {
+			Worker worker= (Worker) ((Message)msg).getObject();
+			List<ParkingLot> parkingLotList;
+			try {
+				parkingLotList = getAllParkingLots();
+			} catch (Exception e) {
+				throw new RuntimeException(e);
+			}
+			try {
+				client.sendToClient(new Message("#ShowAdminReserveParking", parkingLotList,worker));
+			} catch (IOException e) {
+				throw new RuntimeException(e);
+			}
 		}
 
 	}
-	public void updateConnectedWorkerStatus(Worker updateWorker){
+	public void updateConnectedWorkerStatus(Worker updateWorker,boolean state){
 		session=sessionFactory.openSession();
 		List<Worker> workerList=null;
 		try {
@@ -242,7 +255,7 @@ public class SimpleServer extends AbstractServer {
 		for (Worker worker:workerList){
 			if(worker.getId()==updateWorker.getId()){
 				session.beginTransaction();
-				worker.setConnected(!worker.isConnected());
+				worker.setConnected(state);
 				session.save(worker);
 				session.flush();
 				session.getTransaction().commit();

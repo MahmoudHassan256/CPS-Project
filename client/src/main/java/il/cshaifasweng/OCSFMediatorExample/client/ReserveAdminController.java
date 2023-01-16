@@ -1,5 +1,5 @@
 /**
- * Sample Skeleton for 'reserve.fxml' Controller Class
+ * Sample Skeleton for 'reserveadmin.fxml' Controller Class
  */
 
 package il.cshaifasweng.OCSFMediatorExample.client;
@@ -7,26 +7,39 @@ package il.cshaifasweng.OCSFMediatorExample.client;
 import il.cshaifasweng.OCSFMediatorExample.entities.Message;
 import il.cshaifasweng.OCSFMediatorExample.entities.ParkingLot;
 import il.cshaifasweng.OCSFMediatorExample.entities.Reservation;
+import il.cshaifasweng.OCSFMediatorExample.entities.Worker;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.layout.VBox;
 
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
-public class ReserveController {
-    private  static List<ParkingLot> parkingLots;
+public class ReserveAdminController {
+    private static List<ParkingLot> parkingLots;
+    private static Worker worker;
+
+    public static Worker getWorker() {
+        return worker;
+    }
+
+    public static void setWorker(Worker worker) {
+        ReserveAdminController.worker = worker;
+    }
 
     public static List<ParkingLot> getParkingLots() {
         return parkingLots;
     }
 
     public static void setParkingLots(List<ParkingLot> parkingLots) {
-        ReserveController.parkingLots = parkingLots;
+        ReserveAdminController.parkingLots = parkingLots;
     }
 
     List<String> hoursList = Arrays.asList("00","01","02","03","04","05","06","07","08",
@@ -38,8 +51,9 @@ public class ReserveController {
     List<String> monthLst = Arrays.asList("01","02","03","04,","05","06","07","08,","09","10","11","12");
     List<String> yearLst = Arrays.asList("23","24","25","26","27","28");
 
+
     @FXML // fx:id="aririvalDate"
-    private DatePicker aririvalDate; // Value injected  by FXMLLoader
+    private DatePicker aririvalDate; // Value injected by FXMLLoader
 
     @FXML // fx:id="arrivalHour"
     private ComboBox<String> arrivalHour; // Value injected by FXMLLoader
@@ -74,8 +88,14 @@ public class ReserveController {
     @FXML // fx:id="expirationYear"
     private ComboBox<String> expirationYear; // Value injected by FXMLLoader
 
+    @FXML // fx:id="left"
+    private VBox left; // Value injected by FXMLLoader
+
     @FXML // fx:id="parkingLotComboBox"
     private ComboBox<Integer> parkingLotComboBox; // Value injected by FXMLLoader
+
+    @FXML // fx:id="right"
+    private VBox right; // Value injected by FXMLLoader
 
     @FXML // fx:id="tfCVV"
     private TextField tfCVV; // Value injected by FXMLLoader
@@ -138,19 +158,12 @@ public class ReserveController {
     }
 
     @FXML
-    void gotoprimary(ActionEvent event) {
-        try {
-            App.setRoot("firstscene");
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-
+    void gotoprimary(ActionEvent event) throws IOException {
+         SimpleClient.getClient().sendToServer(new Message("#ShowAdminPageRequset",worker));
     }
-
     @FXML
-    void reserveParkingLot(ActionEvent event){
-        //check if all data is inserted + if subscribed
+    void reserveParkingLot(ActionEvent event) {
+//check if all data is inserted + if subscribed
         LocalDateTime arrivalDate = LocalDateTime.of(aririvalDate.getValue().getYear(), aririvalDate.getValue().getMonth(),
                 aririvalDate.getValue().getDayOfMonth(), Integer.parseInt(arrivalHour.getValue()),Integer.parseInt(arrivalMinute.getValue()));
         LocalDateTime departureDate1 = LocalDateTime.of(departureDate.getValue().getYear(), departureDate.getValue().getMonth(),
@@ -162,13 +175,25 @@ public class ReserveController {
         }
         else if(cbSubscriber.isSelected())
         {
-         Reservation reservation = new Reservation(tfID.getText(), tfLicense.getText(),
-                 parkingLotComboBox.getValue(),arrivalDate, departureDate1, tfEmail.getText(),"Subscriber", tfSubscribtionID.getText());
-                        try {
+            Reservation reservation = new Reservation(tfID.getText(), tfLicense.getText(),
+                    parkingLotComboBox.getValue(),arrivalDate, departureDate1, tfEmail.getText(),"Subscriber", tfSubscribtionID.getText());
+            try {
                 SimpleClient.getClient().sendToServer(new Message("#AddReservationRequest", reservation));
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
+            Timer timer=new Timer();
+            timer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    try {
+                        SimpleClient.getClient().sendToServer(new Message("#ShowAdminPageRequset",worker));
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            },1000);
+
         }
         else if (cbOneTimer.isSelected())
         {
@@ -181,10 +206,23 @@ public class ReserveController {
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
+            Timer timer=new Timer();
+            timer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    try {
+                        SimpleClient.getClient().sendToServer(new Message("#ShowAdminPageRequset",worker));
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            },1000);
+
+
+
         }
 
     }
-
     public void initialize(){
         arrivalHour.getItems().clear();
         arrivalHour.setItems(FXCollections.observableArrayList(hoursList));
@@ -203,4 +241,5 @@ public class ReserveController {
             parkingLotComboBox.getItems().addAll(ParkingLot.getId());
         }
     }
+
 }
