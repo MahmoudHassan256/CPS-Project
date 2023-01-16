@@ -54,10 +54,6 @@ public class SubsriptionClient implements Serializable {
         RemainingHours = remainingHours;
     }
 
-    public SubsriptionClient() {
-
-    }
-
     public int getId() {
         return id;
     }
