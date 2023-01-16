@@ -83,8 +83,8 @@ public class FirstSceneController {
 
     }
     @FXML
-    void gotocomplaint(ActionEvent event) {
-
+    void gotocomplaint(ActionEvent event) throws IOException {
+        SimpleClient.getClient().sendToServer("#ShowComplaintRequest");
     }
 
     @FXML
