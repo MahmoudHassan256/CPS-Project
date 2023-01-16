@@ -37,6 +37,7 @@ public class Reservation implements Serializable {
 
     private Integer parkingLotID;
     private LocalDateTime timeOfArrival;
+    @Column(nullable = true)
     private LocalDateTime timeOfDeparture;
     private String email;
     private String typeOfClient;

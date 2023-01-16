@@ -112,7 +112,8 @@ public class SimpleServer extends AbstractServer {
 			try {
 				session = sessionFactory.openSession();
 				List<ParkingLot> parkingLots = getAllParkingLots();
-				client.sendToClient(new Message("#ShowReserve",parkingLots));
+				List<SubsriptionClient> subsriptionClients = getAllSubscriptions();
+				client.sendToClient(new Message("#ShowReserve",parkingLots, subsriptionClients));
 			} catch (IOException e) {
 				throw new RuntimeException(e);
 			} catch (Exception e) {
@@ -204,6 +205,18 @@ public class SimpleServer extends AbstractServer {
 			session.save(subsriptionClient);
 			session.flush();
 			session.getTransaction().commit();
+			try {
+				List<SubsriptionClient> subsriptionClients = getAllSubscriptions();
+				for(SubsriptionClient subsriptionClient1 : subsriptionClients)
+				{
+					if(subsriptionClient.getDriverId().equals(subsriptionClient1.getDriverId()))
+						client.sendToClient(new Message(("#ShowSubscriptionID"), subsriptionClient1.getId()));
+				}
+			} catch (Exception e) {
+				throw new RuntimeException(e);
+			}
+
+			session.close();
 
 		} else if(msgString.startsWith("#ShowComplaintRequest")){
 			try {
@@ -346,6 +359,20 @@ public class SimpleServer extends AbstractServer {
 		CriteriaQuery<Refund> query=builder.createQuery(Refund.class);
 		query.from(Refund.class);
 		ArrayList<Refund> data=(ArrayList<Refund>) session.createQuery(query).getResultList();
+		return data;
+	}
+	private static ArrayList<Reservation> getAllReservations()throws  Exception{
+		CriteriaBuilder builder=session.getCriteriaBuilder();
+		CriteriaQuery<Reservation> query=builder.createQuery(Reservation.class);
+		query.from(Reservation.class);
+		ArrayList<Reservation> data=(ArrayList<Reservation>) session.createQuery(query).getResultList();
+		return data;
+	}
+	private static ArrayList<SubsriptionClient> getAllSubscriptions()throws  Exception{
+		CriteriaBuilder builder=session.getCriteriaBuilder();
+		CriteriaQuery<SubsriptionClient> query=builder.createQuery(SubsriptionClient.class);
+		query.from(SubsriptionClient.class);
+		ArrayList<SubsriptionClient> data=(ArrayList<SubsriptionClient>) session.createQuery(query).getResultList();
 		return data;
 	}
 	private static void addWorkerToParkingLot()throws Exception{

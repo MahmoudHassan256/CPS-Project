@@ -19,6 +19,8 @@ import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import org.apache.commons.lang3.StringUtils;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -44,7 +46,7 @@ public class SubscribeController {
             "34","35","36","37","38","39","40","41","42","43","44","45","46","47","48","49","50","51","52",
             "53","54","55","56","57","58","59");
     List<String> numberOfCarsList = Arrays.asList("1","2","3","4","5");
-    List<String> monthLst = Arrays.asList("01","02","03","04,","05","06","07","08,","09","10","11","12");
+    List<String> monthLst = Arrays.asList("01","02","03","04","05","06","07","08","09","10","11","12");
     List<String> yearLst = Arrays.asList("23","24","25","26","27","28");
     @FXML // fx:id="btnBack"
     private Button btnBack; // Value injected by FXMLLoader
@@ -132,8 +134,6 @@ public class SubscribeController {
                             cbParkingLotID.getValue(), startDate, departureTime, 1,carNumberList,
                             tfCardNumber.getText(), cardExpirationDate, tfCVV.getText(),
                             tfCardOwnerID.getText(), tfEmail.getText(), 60);
-                    labelSubscriptionID.setText("Welcome, you subscription ID is "+subsriptionClient.getId());
-                    labelSubscriptionID.setVisible(true);
                     try {
                         SimpleClient.getClient().sendToServer(new Message("#AddSubscriberRequest", subsriptionClient));
                     } catch (IOException e) {
@@ -150,6 +150,7 @@ public class SubscribeController {
                             }
                         }
                     },2000);
+
 
                 }
                 else
@@ -180,8 +181,6 @@ public class SubscribeController {
                             cbParkingLotID.getValue(), startDate, departureTime, Integer.parseInt(tfNumberOfCars.getText()),carNumberList,
                             tfCardNumber.getText(), cardExpirationDate, tfCVV.getText(),
                             tfCardOwnerID.getText(), tfEmail.getText(), 54*Integer.parseInt(tfNumberOfCars.getText()));
-                    labelSubscriptionID.setText("Welcome, you subscription ID is "+subsriptionClient.getId());
-                    labelSubscriptionID.setVisible(true);
                     try {
                         SimpleClient.getClient().sendToServer(new Message("#AddSubscriberRequest ", subsriptionClient));
                     } catch (IOException e) {
@@ -224,8 +223,6 @@ public class SubscribeController {
                             -1, startDate, null , Integer.parseInt(tfNumberOfCars.getText()),carNumberList,
                             tfCardNumber.getText(), cardExpirationDate, tfCVV.getText(),
                             tfCardOwnerID.getText(), tfEmail.getText(), 72);
-                    labelSubscriptionID.setText("Welcome, you subscription ID is " +subsriptionClient.getId());
-                    labelSubscriptionID.setVisible(true);
                     try {
                         SimpleClient.getClient().sendToServer(new Message("#AddSubscriberRequest", subsriptionClient));
                     } catch (IOException e) {
@@ -293,6 +290,7 @@ public class SubscribeController {
         }
     }
     public void initialize(){
+        EventBus.getDefault().register(this);
         cbSubscriptionType.getItems().clear();
         cbSubscriptionType.setItems(FXCollections.observableArrayList(subscriptionTypeList));
         cbParkingLotID.getItems().clear();
@@ -336,5 +334,25 @@ public class SubscribeController {
             if (node instanceof Parent)
                 addAllDescendents((Parent)node, nodes);
         }
+    }
+    @SuppressWarnings("unchecked")
+    @Subscribe
+    public void onShowSubscriptionIDEvent(ShowSubscriptionIDEvent event){
+        Platform.runLater(() -> {
+                    labelSubscriptionID.setText("Welcome, your subscription ID is " +event.getId());
+                    labelSubscriptionID.setVisible(true);
+                    Timer timer = new Timer();
+                    timer.schedule(new TimerTask() {
+                        @Override
+                        public void run() {
+                            try {
+                                App.setRoot("firstscene");
+                            } catch (IOException e) {
+                                throw new RuntimeException(e);
+                            }
+                        }
+                    },3000);
+                }
+                );
     }
 }
