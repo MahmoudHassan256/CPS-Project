@@ -1,18 +1,17 @@
 package il.cshaifasweng.OCSFMediatorExample.client;
 
-import il.cshaifasweng.OCSFMediatorExample.entities.Message;
-import il.cshaifasweng.OCSFMediatorExample.entities.ParkingLot;
+import il.cshaifasweng.OCSFMediatorExample.entities.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import il.cshaifasweng.OCSFMediatorExample.entities.Reservation;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.IOException;
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +20,26 @@ import java.util.TimerTask;
 
 public class CancelReservationController {
     private static List<Reservation> reservation;
-    public static Reservation chosenReservation;
+    private static List<SubsriptionClient> subsriptionClients;
+    private static List<Price> prices;
+
+    public static List<SubsriptionClient> getSubsriptionClients() {
+        return subsriptionClients;
+    }
+
+    public static void setSubsriptionClients(List<SubsriptionClient> subsriptionClients) {
+        CancelReservationController.subsriptionClients = subsriptionClients;
+    }
+
+    public static List<Price> getPrices() {
+        return prices;
+    }
+
+    public static void setPrices(List<Price> prices) {
+        CancelReservationController.prices = prices;
+    }
+
+    public static Reservation chosenReservation = null;
     public static List<Reservation> getReservation() {
         return reservation;
     }
@@ -64,6 +82,8 @@ public class CancelReservationController {
     private TextField tfLicensePlate; // Value injected by FXMLLoader
     @FXML // fx:id="reservationTable"
     private TableView<Reservation> reservationTable; // Value injected by FXMLLoader
+    @FXML // fx:id="labelPayment"
+    private Label labelPayment; // Value injected by FXMLLoader
 
     @FXML
     void confirmBtnPressed(ActionEvent event) {
@@ -96,10 +116,79 @@ public class CancelReservationController {
     @FXML
     void cancelReservationPressed(ActionEvent event){
         if(chosenReservation != null){
+            SubsriptionClient subsriptionClient1 = null;
+            LocalDateTime time = LocalDateTime.now();
+            Duration timeElapsed = Duration.between(time,chosenReservation.getTimeOfArrival());
+            Duration howLong = Duration.between(chosenReservation.getTimeOfArrival(), chosenReservation.getTimeOfDeparture());
+            if(!chosenReservation.getSubsriptionID().isEmpty())
+            {
+                for(SubsriptionClient subsriptionClient: subsriptionClients)
+                {
+                    if(subsriptionClient.getCarNumberList().contains(chosenReservation.getLicensePlate()))
+                    {
+                        subsriptionClient1=subsriptionClient;
+                        if(timeElapsed.toHours()>=3)
+                        {
+                            subsriptionClient1.setRemainingHours((int)(subsriptionClient.getRemainingHours()- 0.1*howLong.toHours()));
 
+                        }
+                        else if(timeElapsed.toHours()<3 && timeElapsed.toHours()>=1)
+                        {
+                            subsriptionClient1.setRemainingHours((int)(subsriptionClient.getRemainingHours()- 0.5*howLong.toHours()));
+                        }
+                        else
+                            subsriptionClient1.setRemainingHours((int)(subsriptionClient.getRemainingHours()- howLong.toHours()));
+
+                        labelPayment.setText("You have "+subsriptionClient1.getRemainingHours()+" remaining hours");
+                        labelPayment.setVisible(true);
+                    }
+                }
+            }
+            else{
+                int perhour = 0;
+                double payment;
+                for(Price price: prices)
+                {
+                    if(price.getParkingType().startsWith("Requested One"))
+                    {
+                        perhour = Integer.parseInt(price.getPrice());
+                    }
+                }
+                if(timeElapsed.toHours()>=3)
+                {
+                    payment = perhour*howLong.toHours()*0.1;
+                }
+                else if(timeElapsed.toHours()<3 && timeElapsed.toHours()>=1)
+                {
+                    payment = perhour*howLong.toHours()*0.5;
+                }
+                else{
+                    payment = perhour*howLong.toHours();
+                }
+                labelPayment.setText("you were charged "+ payment);
+                labelPayment.setVisible(true);
+            }
+            try {
+                SimpleClient.getClient().sendToServer(new Message("#CancelReservationRequest", chosenReservation, subsriptionClient1));
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            labelReservationCanceled.setVisible(true);
+            Timer timer = new Timer();
+            timer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    try {
+                        App.setRoot("firstscene");
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            },2000);
         }
         else {
-            labelErrorInput.setVisible(true);
+
+            labelNoReservation.setVisible(true);
         }
             }
     @FXML

@@ -144,6 +144,8 @@ public class App extends Application {
     @Subscribe
     public void onShowCancelReservationEvent(ShowCancelReservationRequest event){
         CancelReservationController.setReservation((List<Reservation>)event.getReservationList());
+        CancelReservationController.setSubsriptionClients((List<SubsriptionClient>)event.getSubscriptionList());
+        CancelReservationController.setPrices((List<Price>)event.getPrices());
         try {
             App.setRoot("cancelreservation");
         } catch (IOException e) {
