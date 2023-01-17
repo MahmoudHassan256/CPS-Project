@@ -127,6 +127,12 @@ public class SimpleServer extends AbstractServer {
 			session.flush();
 			session.getTransaction().commit();
 			session.close();
+			try {
+				List<Reservation> reservationList=getAllReservations();
+				this.sendToAllClients(new Message("#RefreshReservationList",reservationList));
+			} catch (Exception e) {
+				throw new RuntimeException(e);
+			}
 		}
 		else if (msgString.startsWith("#ShowCheckInRequest")) {
 			try {
@@ -291,6 +297,12 @@ public class SimpleServer extends AbstractServer {
 			session.flush();
 			session.getTransaction().commit();
 			session.close();
+			try {
+				List<Reservation> reservationList=getAllReservations();
+				this.sendToAllClients(new Message("#RefreshReservationList",reservationList));
+			} catch (Exception e) {
+				throw new RuntimeException(e);
+			}
 		}
 
 	}

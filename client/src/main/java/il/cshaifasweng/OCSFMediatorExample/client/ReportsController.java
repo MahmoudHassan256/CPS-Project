@@ -121,6 +121,14 @@ public class ReportsController {
         List<Complaint> newcomplaintList= (List<Complaint>) event.getComplaintList();
         complaintTable.setItems(FXCollections.observableArrayList(newcomplaintList));
     }
+    @SuppressWarnings("unchecked")
+    @Subscribe
+    public void onRefreshReservationListEvent(RefreshReservationListEvent event){
+        reservationTable.getItems().clear();
+        setReservationList((List<Reservation>) event.getReservationList());
+        List<Reservation> newreservationList= (List<Reservation>) event.getReservationList();
+        reservationTable.setItems(FXCollections.observableArrayList(newreservationList));
+    }
     @FXML
     void initialize(){
         EventBus.getDefault().register(this);
