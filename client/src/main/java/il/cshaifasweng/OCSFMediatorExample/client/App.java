@@ -227,7 +227,19 @@ public class App extends Application {
             throw new RuntimeException(e);
         }
     }
-
+    @SuppressWarnings("unchecked")
+    @Subscribe
+    public void onShowMyProfileEvent(ShowMyProfileEvent event){
+        List<Reservation> reservationList= (List<Reservation>) event.getReservationList();
+        List<SubsriptionClient> subsriptionClients= (List<SubsriptionClient>) event.getSubscriptionList();
+        ProfileController.setSubsriptionClientList(subsriptionClients);
+        ProfileController.setReservationList(reservationList);
+        try {
+            App.setRoot("profile");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
 	public static void main(String[] args) {
         launch();

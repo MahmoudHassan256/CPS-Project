@@ -303,6 +303,18 @@ public class SimpleServer extends AbstractServer {
 			} catch (Exception e) {
 				throw new RuntimeException(e);
 			}
+		} else if (msgString.startsWith("#ShowMyProfileRequest")) {
+			session=sessionFactory.openSession();
+			try {
+				List<Reservation> reservationList=getAllReservations();
+				List<SubsriptionClient> subsriptionClients=getAllSubscriptions();
+				client.sendToClient(new Message("#ShowMyProfile",reservationList,subsriptionClients));
+			} catch (IOException e) {
+				throw new RuntimeException(e);
+			}catch (Exception e){
+				e.printStackTrace();
+			}
+			session.close();
 		}
 
 	}
@@ -457,7 +469,7 @@ public class SimpleServer extends AbstractServer {
 			generateParkingLots();
 			generatePrices();
 			generateWorkers();
-			generateComplaints();
+			//generateComplaints();
 			generateRefunds();
 
 			addWorkerToParkingLot();

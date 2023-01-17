@@ -58,10 +58,12 @@ public class SimpleClient extends AbstractClient {
 			EventBus.getDefault().post((new ShowCancelReservationRequest((Message)msg)));
 		} else if (strmsg.startsWith("#RefreshReservationList")) {
 			EventBus.getDefault().post(new RefreshReservationListEvent((Message)msg));
+		} else if (strmsg.startsWith("#ShowMyProfile")) {
+			EventBus.getDefault().post(new ShowMyProfileEvent((Message)msg));
 		}
 
 	}
-	
+
 	public static SimpleClient getClient() {
 		if (client == null) {
 			client = new SimpleClient("localhost", 3000);

@@ -88,7 +88,7 @@ public class FirstSceneController {
     }
 
     @FXML
-    void gotomyprofile(ActionEvent event) {
-
+    void gotomyprofile(ActionEvent event) throws IOException {
+        SimpleClient.getClient().sendToServer("#ShowMyProfileRequest");
     }
 }
