@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="800.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.cshaifasweng.OCSFMediatorExample.client.CancelReservationController">
+   <children>
+      <ImageView fitHeight="800.0" fitWidth="1280.0" layoutX="344.0" layoutY="236.0" opacity="0.5" pickOnBounds="true" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <image>
+            <Image url="@images/background.png" />
+         </image>
+      </ImageView>
+      <HBox layoutX="510.0" prefHeight="100.0" prefWidth="1280.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="100.0" prefWidth="1206.0" text="Reservation cancel page" textAlignment="CENTER">
+               <font>
+                  <Font size="31.0" />
+               </font>
+            </Label>
+            <Button fx:id="backBtn" mnemonicParsing="false" onAction="#gotoprimary" prefHeight="49.0" prefWidth="169.0" stylesheets="@styles/clickableBtn.css" text="Back" />
+         </children>
+      </HBox>
+      <Button fx:id="cancelReservationBtn" layoutX="565.0" layoutY="696.0" mnemonicParsing="false" onAction="#cancelReservationPressed" stylesheets="@styles/clickableBtn.css" text="Cancel Reservation" />
+      <Label fx:id="labelErrorInput" layoutX="554.0" layoutY="585.0" prefHeight="27.0" prefWidth="223.0" text="Please enter a valid number" textFill="RED" visible="false">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Label fx:id="labelNoReservation" layoutX="558.0" layoutY="616.0" text="No Reservation Found" textFill="RED" visible="false">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Label fx:id="labelReservationCanceled" layoutX="566.0" layoutY="646.0" text="Reservation Canceled" textFill="#000dff" visible="false">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <HBox layoutX="253.0" layoutY="205.0" prefHeight="57.0" prefWidth="559.0">
+         <children>
+            <Label prefHeight="27.0" prefWidth="212.0" text="Enter car's license plate:">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <TextField fx:id="tfLicensePlate" prefHeight="25.0" prefWidth="281.0" />
+         </children>
+      </HBox>
+      <Button fx:id="confirmBtn" layoutX="789.0" layoutY="190.0" mnemonicParsing="false" onAction="#confirmBtnPressed" stylesheets="@styles/clickableBtn.css" text="confirm" />
+      <VBox layoutX="331.0" layoutY="270.0" prefHeight="296.0" prefWidth="687.0">
+         <children>
+            <TableView fx:id="reservationTable" onMouseClicked="#getReservationInfo" prefHeight="301.0" prefWidth="687.0">
+              <columns>
+                <TableColumn fx:id="idTableColumn" prefWidth="75.0" text="ID" />
+                <TableColumn fx:id="driverIDTableColumn" prefWidth="103.66665649414062" text="Driver ID" />
+                  <TableColumn fx:id="licensePlateTableColumn" prefWidth="109.0" text="License Plate" />
+                  <TableColumn fx:id="parkingLotIDTableColumn" prefWidth="108.33331298828125" text="Parking Lot ID" />
+                  <TableColumn fx:id="arrivalTableColumn" prefWidth="107.0" text="Time of arrival" />
+                  <TableColumn fx:id="departureTableColumn" prefWidth="120.33331298828125" text="time of departure" />
+              </columns>
+            </TableView>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>

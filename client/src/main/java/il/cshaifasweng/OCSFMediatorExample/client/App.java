@@ -141,6 +141,16 @@ public class App extends Application {
     }
     @SuppressWarnings("unchecked")
     @Subscribe
+    public void onShowCancelReservationEvent(ShowCancelReservationRequest event){
+        CancelReservationController.setReservation((List<Reservation>)event.getReservationList());
+        try {
+            App.setRoot("cancelreservation");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    @SuppressWarnings("unchecked")
+    @Subscribe
     public void onShowAdminPageEvent(ShowAdminPageEvent event){
         List<Complaint> complaintList=(List<Complaint>) event.getComplaintList();
         List<Refund> refundList=(List<Refund>) event.getRefundList();
