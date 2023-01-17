@@ -68,7 +68,7 @@ public class ChainManagerPageController {
 
     @FXML
     void gotoshowreports(ActionEvent event) throws IOException {
-    SimpleClient.getClient().sendToServer("#ShowReportsRequest");
+    SimpleClient.getClient().sendToServer(new Message("#ShowReportsRequest",worker));
     }
     @SuppressWarnings("unchecked")
     @Subscribe
@@ -84,9 +84,11 @@ public class ChainManagerPageController {
     void initialize(){
         EventBus.getDefault().register(this);
         hello.setText("Hello "+worker.getName()+"=>"+worker.getOccupation());
-        confirmpriceBtn.setDisable(true);
-        pricesbox.setVisible(false);
-        pricetoupdate.setVisible(false);
+        if(updatedPrice!=null) {
+            confirmpriceBtn.setDisable(true);
+            pricesbox.setVisible(false);
+            pricetoupdate.setVisible(false);
+        }
 
     }
 }

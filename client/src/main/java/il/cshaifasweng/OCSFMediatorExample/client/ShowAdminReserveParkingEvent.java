@@ -5,9 +5,19 @@ import il.cshaifasweng.OCSFMediatorExample.entities.Message;
 public class ShowAdminReserveParkingEvent {
     private Object parkingLotList;
     private Object worker;
+    private  Object subscriptionList;
     public ShowAdminReserveParkingEvent(Message msg) {
         parkingLotList=msg.getObject();
         worker=msg.getObject2();
+        subscriptionList=msg.getObject3();
+    }
+
+    public Object getSubscriptionList() {
+        return subscriptionList;
+    }
+
+    public void setSubscriptionList(Object subscriptionList) {
+        this.subscriptionList = subscriptionList;
     }
 
     public Object getParkingLotList() {
