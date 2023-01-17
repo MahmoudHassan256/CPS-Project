@@ -1,22 +1,27 @@
 package il.cshaifasweng.OCSFMediatorExample.client;
 
 import il.cshaifasweng.OCSFMediatorExample.entities.Message;
+import il.cshaifasweng.OCSFMediatorExample.entities.ParkingLot;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import il.cshaifasweng.OCSFMediatorExample.entities.Reservation;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
 public class CancelReservationController {
     private static List<Reservation> reservation;
-
+    public static Reservation chosenReservation;
     public static List<Reservation> getReservation() {
         return reservation;
     }
@@ -25,6 +30,23 @@ public class CancelReservationController {
         CancelReservationController.reservation = reservation;
     }
 
+
+    @FXML // fx:id="arrivalTableColumn"
+    private TableColumn<Reservation, LocalDateTime> arrivalTableColumn; // Value injected by FXMLLoader
+
+    @FXML // fx:id="departureTableColumn"
+    private TableColumn<Reservation, LocalDateTime> departureTableColumn; // Value injected by FXMLLoader
+    @FXML // fx:id="driverIDTableColumn"
+    private TableColumn<Reservation, String> driverIDTableColumn; // Value injected by FXMLLoader
+    @FXML // fx:id="idTableColumn"
+    private TableColumn<Reservation, Integer> idTableColumn; // Value injected by FXMLLoader
+    @FXML // fx:id="licensePlateTableColumn"
+    private TableColumn<Reservation, String> licensePlateTableColumn; // Value injected by FXMLLoader
+
+    @FXML // fx:id="parkingLotIDTableColumn"
+    private TableColumn<Reservation, Integer> parkingLotIDTableColumn; // Value injected by FXMLLoader
+    @FXML // fx:id="confirmBtn"
+    private Button confirmBtn; // Value injected by FXMLLoader
     @FXML // fx:id="labelReservationCanceled"
     private Label labelReservationCanceled; // Value injected by FXMLLoader
     @FXML // fx:id="labelErrorInput"
@@ -40,57 +62,64 @@ public class CancelReservationController {
 
     @FXML // fx:id="tfLicensePlate"
     private TextField tfLicensePlate; // Value injected by FXMLLoader
+    @FXML // fx:id="reservationTable"
+    private TableView<Reservation> reservationTable; // Value injected by FXMLLoader
 
     @FXML
-    void cancelReservationPressed(ActionEvent event) {
+    void confirmBtnPressed(ActionEvent event) {
+        List<Reservation> reservation2 = new ArrayList<Reservation>();
         labelErrorInput.setVisible(false);
         labelNoReservation.setVisible(false);
-        if (!tfLicensePlate.getText().isEmpty() && StringUtils.isNumeric(tfLicensePlate.getText()))
-        {
-            Reservation reservation2 = null;
+        if (!tfLicensePlate.getText().isEmpty() && StringUtils.isNumeric(tfLicensePlate.getText())) {
             for (Reservation reservation1 : reservation) {
                 if (reservation1.getLicensePlate().contains(tfLicensePlate.getText())) {
-                    reservation2 = reservation1;
+                    reservation2.add(reservation1);
                 }
             }
-            if(reservation2==null)
-            {
+            if (reservation2.isEmpty()) {
                 labelNoReservation.setVisible(true);
+            } else {
+                reservationTable.setItems(FXCollections.observableArrayList(reservation2));
+                reservationTable.setVisible(true);
             }
-            else
-            {
-                Reservation reservation1=reservation2;
-                try {
-                    SimpleClient.getClient().sendToServer(new Message("#CancelReservationRequest", reservation1));
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-                labelReservationCanceled.setVisible(true);
-                Timer timer = new Timer();
-                timer.schedule(new TimerTask() {
-                    @Override
-                    public void run() {
-                        try {
-                            App.setRoot("firstscene");
-                        } catch (IOException e) {
-                            throw new RuntimeException(e);
-                        }
-                    }
-                },2000);
-            }
+
+        }
+        else{
+            labelErrorInput.setVisible(true);
+        }
+    }
+    @FXML
+    void getReservationInfo(MouseEvent event) {
+        chosenReservation = reservationTable.getItems().get(reservationTable.getSelectionModel().getSelectedIndex());
+
+    }
+    @FXML
+    void cancelReservationPressed(ActionEvent event){
+        if(chosenReservation != null){
 
         }
         else {
             labelErrorInput.setVisible(true);
         }
-    }
+            }
     @FXML
-    void gotoprimary(ActionEvent event) {
+    void gotoprimary(ActionEvent event){
         try {
             App.setRoot("firstscene");
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
+    public void initialize() {
+        reservationTable.setVisible(false);
+        idTableColumn.setCellValueFactory(new PropertyValueFactory<Reservation,Integer>("id"));
+        driverIDTableColumn.setCellValueFactory(new PropertyValueFactory<Reservation,String>("driverID"));
+        licensePlateTableColumn.setCellValueFactory(new PropertyValueFactory<Reservation,String>("licensePlate"));
+        parkingLotIDTableColumn.setCellValueFactory(new PropertyValueFactory<Reservation,Integer>("parkingLotID"));
+        arrivalTableColumn.setCellValueFactory(new PropertyValueFactory<Reservation,LocalDateTime>("timeOfArrival"));
+        departureTableColumn.setCellValueFactory(new PropertyValueFactory<Reservation,LocalDateTime>("timeOfDeparture"));
+
+    }
+
 
 }
