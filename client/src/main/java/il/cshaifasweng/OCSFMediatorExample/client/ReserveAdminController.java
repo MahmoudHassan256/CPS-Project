@@ -10,6 +10,8 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -58,6 +60,7 @@ public class ReserveAdminController {
     List<String> yearLst = Arrays.asList("23","24","25","26","27","28");
     List<String> typeList = Arrays.asList("Casual subscription single car",
             "Casual subscription, multiple cars","Full subscription");
+    //Error, please enter a valid information
     @FXML // fx:id="labelErrorInvalid"
     private Label labelErrorInvalid; // Value injected by FXMLLoader
     @FXML // fx:id="aririvalDate"
@@ -205,6 +208,7 @@ public class ReserveAdminController {
                                     departureDate.getValue().getDayOfMonth(), Integer.parseInt(departureHour.getValue()), Integer.parseInt(departureMinute.getValue()));
                         }
                         else {
+                            labelErrorInvalid.setText("Error, please enter a valid information");
                             labelErrorInvalid.setVisible(true);
                             break;
                         }
@@ -231,6 +235,7 @@ public class ReserveAdminController {
                     }
                     else
                     {
+                        labelErrorInvalid.setText("Error, please enter a valid information");
                         labelErrorInvalid.setVisible(true);
                     }
                 }
@@ -262,15 +267,24 @@ public class ReserveAdminController {
                 },2000);
             }
             else {
+                labelErrorInvalid.setText("Error, please enter a valid information");
                 labelErrorInvalid.setVisible(true);
             }
         }
         else{
+            labelErrorInvalid.setText("Error, please enter a valid information");
             labelErrorInvalid.setVisible(true);
         }
     }
+    @SuppressWarnings("unchecked")
+    @Subscribe
+    public void onReservationCantBeDoneEvent(ReservationCantBeDoneEvent event){
+        labelErrorInvalid.setText("Reservation didn't came through\nplease choose another parking lot");
+        labelErrorInvalid.setVisible(true);
+    }
     @FXML
     public void initialize(){
+        EventBus.getDefault().register(this);
         arrivalHour.getItems().clear();
         arrivalHour.setItems(FXCollections.observableArrayList(hoursList));
         departureHour.getItems().clear();

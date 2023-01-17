@@ -8,18 +8,20 @@ import il.cshaifasweng.OCSFMediatorExample.entities.Message;
 import il.cshaifasweng.OCSFMediatorExample.entities.ParkingLot;
 import il.cshaifasweng.OCSFMediatorExample.entities.Reservation;
 import il.cshaifasweng.OCSFMediatorExample.entities.SubsriptionClient;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.io.IOException;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.YearMonth;
-import java.util.*;
+import java.time.*;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 
 public class ReserveController {
@@ -174,63 +176,83 @@ public class ReserveController {
 
         if(!tfID.getText().isEmpty() && !tfLicense.getText().isEmpty() && !parkingLotComboBox.getSelectionModel().isEmpty()
                 && aririvalDate.getValue()!=null && !arrivalHour.getSelectionModel().isEmpty() && !arrivalMinute.getSelectionModel().isEmpty()
-        && !tfEmail.getText().isEmpty() && (cbSubscriber.isSelected() || cbOneTimer.isSelected())) {
+                && departureDate.getValue()!=null && !departureHour.getSelectionModel().isEmpty() && !departureMinute.getSelectionModel().isEmpty()
+                && !tfEmail.getText().isEmpty() && (cbSubscriber.isSelected() || cbOneTimer.isSelected())) {
             LocalDateTime arrivalDate = LocalDateTime.of(aririvalDate.getValue().getYear(), aririvalDate.getValue().getMonth(),
                     aririvalDate.getValue().getDayOfMonth(), Integer.parseInt(arrivalHour.getValue()), Integer.parseInt(arrivalMinute.getValue()));
             LocalDateTime departureDate1;
             if (cbSubscriber.isSelected()) {
                 for(SubsriptionClient subsriptionClient: subsriptionClients)
                 {
-                    System.out.println(subsriptionClient.getId());
                     if(subsriptionClient.getId()==Integer.parseInt(tfSubscribtionID.getText()) &&
                             subsriptionClient.getCarNumberList().contains(tfLicense.getText()) &&
                             cbSubsType.getSelectionModel().getSelectedItem().equals(subsriptionClient.SubscriptionType))
                     {
-                        if(cbSubsType.getSelectionModel().getSelectedItem().startsWith("Full"))
-                        {
-                            departureDate1 = null;
-
+                        departureDate1 = LocalDateTime.of(departureDate.getValue().getYear(), departureDate.getValue().getMonth(), departureDate.getValue().getDayOfMonth(), Integer.parseInt(departureHour.getValue()), Integer.parseInt(departureMinute.getValue()));
+                        if(subsriptionClient.getSubscriptionType().startsWith("Casual")){
+                            if(subsriptionClient.getDesiredPrkinglot()==parkingLotComboBox.getValue()){
+                                if(subsriptionClient.getTimeOfDepature().isBefore(LocalTime.MIDNIGHT)){
+                                   if(subsriptionClient.getTimeOfDepature().isBefore(LocalTime.of(Integer.parseInt(departureHour.getValue()),Integer.parseInt(departureMinute.getValue())))){
+                                       if(!(departureDate.getValue().getDayOfWeek().equals(DayOfWeek.FRIDAY)||departureDate.getValue().getDayOfWeek().equals(DayOfWeek.SATURDAY))&&
+                                       !(aririvalDate.getValue().getDayOfWeek().equals(DayOfWeek.FRIDAY)||aririvalDate.getValue().getDayOfWeek().equals(DayOfWeek.SATURDAY))){
+                                           continue;
+                                       }
+                                       else {
+                                           labelErrorInvalid.setVisible(true);
+                                           break;
+                                       }
+                                   }
+                                   else {
+                                       labelErrorInvalid.setVisible(true);
+                                       break;
+                                   }
+                                }
+                                else{
+                                    labelErrorInvalid.setVisible(true);
+                                    break;
+                                }
+                            }
+                            else{
+                                labelErrorInvalid.setVisible(true);
+                                break;
+                            }
                         }
-                        else if(departureDate.getValue()!=null && !departureHour.getSelectionModel().isEmpty() && !departureMinute.getSelectionModel().isEmpty()
-                                && parkingLotComboBox.getSelectionModel().getSelectedItem()== subsriptionClient.getDesiredPrkinglot())
-                        {
-                            departureDate1 = LocalDateTime.of(departureDate.getValue().getYear(), departureDate.getValue().getMonth(),
-                                    departureDate.getValue().getDayOfMonth(), Integer.parseInt(departureHour.getValue()), Integer.parseInt(departureMinute.getValue()));
+                        if(Duration.between(arrivalDate,departureDate1).toHours()>subsriptionClient.getRemainingHours()){
+                            Reservation reservation = new Reservation(tfID.getText(), tfLicense.getText(),
+                                    parkingLotComboBox.getValue(), arrivalDate, departureDate1, tfEmail.getText(),
+                                    cbSubsType.getSelectionModel().getSelectedItem(), tfSubscribtionID.getText());
+                            try {
+                                SimpleClient.getClient().sendToServer(new Message("#AddReservationRequest", reservation));
+                            } catch (IOException e) {
+                                throw new RuntimeException(e);
+                            }
+                            Timer timer = new Timer();
+                            timer.schedule(new TimerTask() {
+                                @Override
+                                public void run() {
+                                    try {
+                                        App.setRoot("firstscene");
+                                    } catch (IOException e) {
+                                        throw new RuntimeException(e);
+                                    }
+                                }
+                            },2000);
                         }
                         else {
                             labelErrorInvalid.setVisible(true);
-                            break;
+                            labelErrorInvalid.setText("Insufficient remaining hours!");
                         }
-                        Reservation reservation = new Reservation(tfID.getText(), tfLicense.getText(),
-                                parkingLotComboBox.getValue(), arrivalDate, departureDate1, tfEmail.getText(),
-                                cbSubsType.getSelectionModel().getSelectedItem(), tfSubscribtionID.getText());
-                        try {
-                            SimpleClient.getClient().sendToServer(new Message("#AddReservationRequest", reservation));
-                        } catch (IOException e) {
-                            throw new RuntimeException(e);
-                        }
-                        Timer timer = new Timer();
-                        timer.schedule(new TimerTask() {
-                            @Override
-                            public void run() {
-                                try {
-                                    App.setRoot("firstscene");
-                                } catch (IOException e) {
-                                    throw new RuntimeException(e);
-                                }
-                            }
-                        },2000);
-
                     }
                     else
                     {
+                        labelErrorInvalid.setText("Error, please enter a valid information");
                         labelErrorInvalid.setVisible(true);
                     }
                 }
 
             } else if (cbOneTimer.isSelected() &&departureDate.getValue()!=null && !departureHour.getSelectionModel().isEmpty()
-            && !departureMinute.getSelectionModel().isEmpty() && !tfCardNumber.getText().isEmpty() && !expirationMonth.getSelectionModel().isEmpty()
-            && !expirationYear.getSelectionModel().isEmpty() && !tfCVV.getText().isEmpty() && !tfCardOwnerID.getText().isEmpty()) {
+                    && !departureMinute.getSelectionModel().isEmpty() && !tfCardNumber.getText().isEmpty() && !expirationMonth.getSelectionModel().isEmpty()
+                    && !expirationYear.getSelectionModel().isEmpty() && !tfCVV.getText().isEmpty() && !tfCardOwnerID.getText().isEmpty()) {
                 departureDate1 = LocalDateTime.of(departureDate.getValue().getYear(), departureDate.getValue().getMonth(),
                         departureDate.getValue().getDayOfMonth(), Integer.parseInt(departureHour.getValue()), Integer.parseInt(departureMinute.getValue()));
                 LocalDate expirationD = LocalDate.of(Integer.parseInt(expirationYear.getValue()), Integer.parseInt(expirationMonth.getValue()), 1);
@@ -255,15 +277,25 @@ public class ReserveController {
                 },2000);
             }
             else {
+                labelErrorInvalid.setText("Error, please enter a valid information");
                 labelErrorInvalid.setVisible(true);
             }
         }
         else{
-        labelErrorInvalid.setVisible(true);
+            labelErrorInvalid.setText("Error, please enter a valid information");
+            labelErrorInvalid.setVisible(true);
         }
     }
-
+    @SuppressWarnings("unchecked")
+    @Subscribe
+    public void onReservationCantBeDoneEvent(ReservationCantBeDoneEvent event){
+        Platform.runLater(() -> {
+            labelErrorInvalid.setText("Reservation didn't came through\nplease choose another parking lot");
+            labelErrorInvalid.setVisible(true);
+        });
+    }
     public void initialize(){
+        EventBus.getDefault().register(this);
         arrivalHour.getItems().clear();
         arrivalHour.setItems(FXCollections.observableArrayList(hoursList));
         departureHour.getItems().clear();
@@ -285,16 +317,5 @@ public class ReserveController {
     }
     @FXML
     void cbSubsTypeSelected(ActionEvent event) {
-        if(cbSubsType.getSelectionModel().getSelectedItem().startsWith("Full"))
-        {
-            departureDate.setDisable(true);
-            departureHour.setDisable(true);
-            departureMinute.setDisable(true);
-        }
-        else {
-            departureDate.setDisable(false);
-            departureHour.setDisable(false);
-            departureMinute.setDisable(false);
-        }
     }
 }

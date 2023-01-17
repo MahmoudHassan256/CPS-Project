@@ -120,19 +120,23 @@ public class SimpleServer extends AbstractServer {
 				throw new RuntimeException(e);
 			}
 
-		} else if (msgString.startsWith("#AddReservationRequest")){
-			Reservation reservation=(Reservation) ((Message)msg).getObject();
-			session.beginTransaction();
-			session.save(reservation);
-			session.flush();
-			session.getTransaction().commit();
-			session.close();
+		} else if (msgString.startsWith("#AddReservationRequest")) {
+			Reservation reservation = (Reservation) ((Message) msg).getObject();
+			if (!canBeAdded(reservation)) {
+				this.sendToAllClients(new Message("#ReservationCantBeDone"));
+			} else {
+				session.beginTransaction();
+				session.save(reservation);
+				session.flush();
+				session.getTransaction().commit();
+				session.close();
 			try {
-				List<Reservation> reservationList=getAllReservations();
-				this.sendToAllClients(new Message("#RefreshReservationList",reservationList));
+				List<Reservation> reservationList = getAllReservations();
+				this.sendToAllClients(new Message("#RefreshReservationList", reservationList));
 			} catch (Exception e) {
 				throw new RuntimeException(e);
 			}
+		}
 		}
 		else if (msgString.startsWith("#ShowCheckInRequest")) {
 			try {
@@ -364,7 +368,7 @@ public class SimpleServer extends AbstractServer {
 		}
 	}
 	public void generateParkingLots(){
-			ParkingLot parkingLot1 =new ParkingLot(3,3,5);session.save(parkingLot1);session.flush();
+			ParkingLot parkingLot1 =new ParkingLot(1,1,1);session.save(parkingLot1);session.flush();
 			ParkingLot parkingLot2 =new ParkingLot(3,3,8);session.save(parkingLot2);session.flush();
 			ParkingLot parkingLot3 =new ParkingLot(3,3,9);session.save(parkingLot3);session.flush();
 	}
@@ -397,12 +401,6 @@ public class SimpleServer extends AbstractServer {
 		CustomerService.setLastName("Shalabe");CustomerService.setFirstName("Rojeh");
 		CustomerService.setOccupation("Customer Service");CustomerService.setPassword("admin");
 		session.save(CustomerService);session.flush();
-	}
-	public void generateComplaints(){
-		Complaint complaint=new Complaint("20","Car got damaged during parking",LocalDateTime.now());
-		Complaint complaint1=new Complaint("30","Too expensive",LocalDateTime.now().minusDays(2));
-		session.save(complaint);session.flush();
-		session.save(complaint1);session.flush();
 	}
 	public void generateRefunds(){
 		Refund refund1=new Refund("up to no less than three hours before the parking start time","%90");
@@ -495,7 +493,6 @@ public class SimpleServer extends AbstractServer {
 			generateParkingLots();
 			generatePrices();
 			generateWorkers();
-			//generateComplaints();
 			generateRefunds();
 
 			addWorkerToParkingLot();
@@ -510,6 +507,53 @@ public class SimpleServer extends AbstractServer {
 		}finally {
 			session.close();
 		}
+	}
+	private boolean canBeAdded(Object object){
+		try {
+			int totalSpaces=0;
+			int id;
+			LocalDateTime arrival;
+			LocalDateTime depature;
+			if(object.getClass().equals(Reservation.class)) {
+				id = ((Reservation) object).getParkingLotID();
+				 arrival = ((Reservation) object).getTimeOfArrival();
+				 depature = ((Reservation) object).getTimeOfDeparture();
+			} else if (object.getClass().equals(Vehicle.class)) {
+				 id=((Vehicle) object).getId();
+				 arrival=((Vehicle) object).getArrivalTime();
+				 depature=((Vehicle) object).getExitingTime();
+
+			} else {
+				return false;
+			}
+			List<Reservation> reservationList = getAllReservations();
+			List<ParkingLot> parkingLotList=getAllParkingLots();
+			for (ParkingLot parkingLot:parkingLotList){
+				if(parkingLot.getId()==id){
+				List<Object> array=parkingLot.getParkingLotStatus();
+				for (Object state:array){
+					if(state.getClass().equals(Vehicle.class)){
+						if(((Vehicle) state).getExitingTime().isBefore(arrival) || depature.isBefore(((Vehicle) state).getArrivalTime())) {
+							totalSpaces+=1;
+						}
+					}
+					if(state.equals("Open")){
+						totalSpaces+=1;
+					}
+				}
+				break;
+				}
+			}
+			for(Reservation reservationelement:reservationList){
+				if(!(reservationelement.getTimeOfDeparture().isBefore(arrival) || depature.isBefore(reservationelement.getTimeOfArrival()))){
+				totalSpaces-=1;
+				}
+			}
+			return (totalSpaces>0);
+		}catch (Exception e){
+			e.printStackTrace();
+		}
+		return false;
 	}
 	private static SessionFactory getSessionFactory() throws HibernateError {
 		Configuration configuration=new Configuration();

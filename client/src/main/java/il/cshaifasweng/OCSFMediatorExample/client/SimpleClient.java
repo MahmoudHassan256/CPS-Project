@@ -60,6 +60,8 @@ public class SimpleClient extends AbstractClient {
 			EventBus.getDefault().post(new RefreshReservationListEvent((Message)msg));
 		} else if (strmsg.startsWith("#ShowMyProfile")) {
 			EventBus.getDefault().post(new ShowMyProfileEvent((Message)msg));
+		} else if (strmsg.startsWith("#ReservationCantBeDone")) {
+			EventBus.getDefault().post(new ReservationCantBeDoneEvent((Message)msg));
 		}
 
 	}
