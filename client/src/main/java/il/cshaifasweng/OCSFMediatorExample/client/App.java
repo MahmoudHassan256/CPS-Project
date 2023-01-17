@@ -1,4 +1,5 @@
 package il.cshaifasweng.OCSFMediatorExample.client;
+
 import il.cshaifasweng.OCSFMediatorExample.entities.*;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -194,12 +195,29 @@ public class App extends Application {
     public void onShowAdminReserveParkingEvent(ShowAdminReserveParkingEvent event){
         ReserveAdminController.setParkingLots((List<ParkingLot>) event.getParkingLotList());
         ReserveAdminController.setWorker((Worker) event.getWorker());
+        ReserveAdminController.setSubsriptionClients((List<SubsriptionClient>) event.getSubscriptionList());
         try {
             App.setRoot("reserveadmin");
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
+    @SuppressWarnings("unchecked")
+    @Subscribe
+    public void onShowReportsEvent(ShowReportsEvent event){
+        List<Reservation> reservationList= (List<Reservation>) event.getReservationList();
+        List<Complaint> complaintList= (List<Complaint>) event.getComplaintList();
+        Worker worker= (Worker) event.getWorker();
+        ReportsController.setReservationList(reservationList);
+        ReportsController.setWorker(worker);
+        ReportsController.setComplaintList(complaintList);
+        try {
+            App.setRoot("reports");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 
 	public static void main(String[] args) {
         launch();

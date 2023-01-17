@@ -244,15 +244,28 @@ public class SimpleServer extends AbstractServer {
 		} else if (msgString.startsWith("#ShowAdminReserveParkingRequest")) {
 			Worker worker= (Worker) ((Message)msg).getObject();
 			List<ParkingLot> parkingLotList;
+			List<SubsriptionClient> subsriptionClients;
 			try {
 				parkingLotList = getAllParkingLots();
+				subsriptionClients=getAllSubscriptions();
 			} catch (Exception e) {
 				throw new RuntimeException(e);
 			}
 			try {
-				client.sendToClient(new Message("#ShowAdminReserveParking", parkingLotList,worker));
+				client.sendToClient(new Message("#ShowAdminReserveParking", parkingLotList,worker,subsriptionClients));
 			} catch (IOException e) {
 				throw new RuntimeException(e);
+			}
+		}else if(msgString.startsWith("#ShowReportsRequest")){
+			try {
+				List<Reservation> reservationList = getAllReservations();
+				List<Complaint> complaintList=getAllComplaints();
+				Worker worker= (Worker) ((Message)msg).getObject();
+				client.sendToClient(new Message("#ShowReports",reservationList,complaintList,worker));
+			}catch (IOException e){
+				e.printStackTrace();
+			}catch (Exception e){
+				e.printStackTrace();
 			}
 		}
 
@@ -408,7 +421,7 @@ public class SimpleServer extends AbstractServer {
 			generateParkingLots();
 			generatePrices();
 			generateWorkers();
-			//generateComplaints();
+			generateComplaints();
 			generateRefunds();
 
 			addWorkerToParkingLot();

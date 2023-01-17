@@ -31,7 +31,8 @@
             </Label>
          </children>
       </HBox>
-      <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="1000.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="250.0">
+      <HBox alignment="CENTER" layoutY="203.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="1000.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="203.0">
+
          <children>
             <VBox fx:id="left" prefHeight="312.0" prefWidth="500.0" spacing="5.0" style="-fx-background-color: white;">
                <children>
@@ -43,6 +44,21 @@
                         <Insets bottom="40.0" />
                      </VBox.margin>
                   </Label>
+                  <HBox prefHeight="34.0" prefWidth="490.0">
+                     <children>
+                        <CheckBox fx:id="cbSubscriber" mnemonicParsing="false" onAction="#cbSubscriberSelected" prefHeight="27.0" prefWidth="216.0" text="Subscriber?">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </CheckBox>
+                        <CheckBox fx:id="cbOneTimer" mnemonicParsing="false" onAction="#cbOneTimerSelected" text="One Timer">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </CheckBox>
+                     </children>
+                  </HBox>
+
                   <HBox alignment="CENTER_LEFT" prefHeight="0.0" prefWidth="490.0" spacing="10.0">
                      <children>
                         <Label prefHeight="35.0" prefWidth="166.0" text="Driver's ID">
@@ -150,11 +166,16 @@
                         <Insets bottom="40.0" />
                      </VBox.margin>
                   </Label>
-                  <CheckBox fx:id="cbSubscriber" mnemonicParsing="false" onAction="#cbSubscriberSelected" text="Subscriber?">
-                     <font>
-                        <Font size="18.0" />
-                     </font>
-                  </CheckBox>
+                  <HBox prefHeight="48.0" prefWidth="490.0">
+                     <children>
+                        <Label prefHeight="27.0" prefWidth="165.0" text="Subscription Type">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Label>
+                        <ComboBox fx:id="cbSubsType" onAction="#cbSubsTypeSelected" prefHeight="25.0" prefWidth="317.0" />
+                     </children>
+                  </HBox>
                   <HBox alignment="CENTER_LEFT" prefHeight="0.0" prefWidth="490.0" spacing="5.0">
                      <children>
                         <Label prefHeight="27.0" prefWidth="171.0" text="Subscription ID">
@@ -165,11 +186,6 @@
                         <TextField fx:id="tfSubscribtionID" disable="true" prefHeight="25.0" prefWidth="224.0" />
                      </children>
                   </HBox>
-                  <CheckBox fx:id="cbOneTimer" mnemonicParsing="false" onAction="#cbOneTimerSelected" text="One Timer">
-                     <font>
-                        <Font size="18.0" />
-                     </font>
-                  </CheckBox>
                   <Label prefHeight="39.0" prefWidth="513.0" style="-fx-background-color: black;" text="Payment Method Details" textFill="WHITE">
                      <font>
                         <Font name="System Bold Italic" size="27.0" />
@@ -227,6 +243,15 @@
                            </font>
                         </Label>
                         <TextField fx:id="tfCardOwnerID" disable="true" prefHeight="26.0" prefWidth="266.0" />
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER" prefHeight="91.0" prefWidth="499.0">
+                     <children>
+                        <Label fx:id="labelErrorInvalid" text="Error, please enter a valid information" textFill="RED" visible="false">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Label>
                      </children>
                   </HBox>
                </children>

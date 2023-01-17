@@ -50,10 +50,10 @@ public class SimpleClient extends AbstractClient {
 			EventBus.getDefault().post(new ShowComplaintEvent((Message)msg));
 		}else if(strmsg.startsWith("#ShowAdminReserveParking")){
 			EventBus.getDefault().post(new ShowAdminReserveParkingEvent((Message)msg));
-		}
-		else if(strmsg.startsWith("#ShowSubscriptionID"))
-		{
+		} else if(strmsg.startsWith("#ShowSubscriptionID")) {
 			EventBus.getDefault().post(new ShowSubscriptionIDEvent((Message)msg));
+		} else if (strmsg.startsWith("#ShowReports")) {
+			EventBus.getDefault().post(new ShowReportsEvent((Message)msg));
 		}
 
 	}
