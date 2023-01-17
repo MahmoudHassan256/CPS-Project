@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Entity
@@ -14,17 +15,18 @@ public class ParkingLot implements Serializable {
     private int id;
     private int capacity;
     @Column(name = "parkinglot_status",columnDefinition = "BLOB")
-    private String[] parkingLotStatus;
+    private List<Object> parkingLotStatus;
     @OneToMany
     private List<Vehicle> vehicleList;
     @OneToMany
     private List<Worker> workerList;
     public ParkingLot(int floor,int row,int depth){
     this.capacity=floor*row*depth;
-    parkingLotStatus=new String[capacity];
+    Object[] temp=new Object[capacity];
         for (int i = 0; i < capacity; i++) {
-            parkingLotStatus[i]="Open";
+            temp[i]="Open";
         }
+    parkingLotStatus= Arrays.asList(temp);
     }
 
 
@@ -48,11 +50,11 @@ public class ParkingLot implements Serializable {
         return workerList;
     }
 
-    public String[] getParkingLotStatus() {
+    public List<Object> getParkingLotStatus() {
         return parkingLotStatus;
     }
 
-    public void setParkingLotStatus(String[] parkingLotStatus) {
+    public void setParkingLotStatus(List<Object> parkingLotStatus) {
         this.parkingLotStatus = parkingLotStatus;
     }
 

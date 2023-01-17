@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 public class Vehicle implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Long id;
+    private int id;
 
     @ManyToOne(optional = true)
     @JoinColumn(name = "parking_lot_id")
@@ -59,7 +59,7 @@ public class Vehicle implements Serializable {
         this.depthNumber = depthNumber;
     }
 
-    public Long getId() {
+    public int getId() {
         return id;
     }
     
