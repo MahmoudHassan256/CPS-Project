@@ -259,13 +259,25 @@ public class SimpleServer extends AbstractServer {
 		{
 			session=sessionFactory.openSession();
 			List<Reservation> reservations= null;
+			List<SubsriptionClient> subsriptionClients =null;
+			List<Price> prices =null;
 			try {
 				reservations = getAllReservations();
 			} catch (Exception e) {
 				throw new RuntimeException(e);
 			}
 			try {
-				client.sendToClient(new Message("#ShowCancelReservation",reservations));
+				subsriptionClients=getAllSubscriptions();
+			} catch (Exception e) {
+				throw new RuntimeException(e);
+			}
+			try {
+				prices=getAllPrices();
+			} catch (Exception e) {
+				throw new RuntimeException(e);
+			}
+			try {
+				client.sendToClient(new Message("#ShowCancelReservation",reservations,subsriptionClients,prices));
 			} catch (IOException e) {
 				throw new RuntimeException(e);
 			}
@@ -274,7 +286,21 @@ public class SimpleServer extends AbstractServer {
 			session = sessionFactory.openSession();
 			session.beginTransaction();
 			Reservation reservation = (Reservation) ((Message)msg).getObject();
+			SubsriptionClient subsriptionClient = (SubsriptionClient) ((Message)msg).getObject2();
 			session.delete(reservation);
+			if(subsriptionClient != null)
+			{
+					try {
+						List<SubsriptionClient> subsriptionClientList = getAllSubscriptions();
+						for(SubsriptionClient subsriptionClient1: subsriptionClientList)
+						{
+							if(subsriptionClient.getId() == subsriptionClient1.getId())
+								subsriptionClient1.setRemainingHours(subsriptionClient.getRemainingHours());
+						}
+					} catch (Exception e) {
+						throw new RuntimeException(e);
+					}
+			}
 			session.flush();
 			session.getTransaction().commit();
 			session.close();
