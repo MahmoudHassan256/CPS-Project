@@ -55,6 +55,10 @@ public class SimpleClient extends AbstractClient {
 		{
 			EventBus.getDefault().post(new ShowSubscriptionIDEvent((Message)msg));
 		}
+		else if(strmsg.startsWith("#ShowCancelReservation"))
+		{
+			EventBus.getDefault().post((new ShowCancelReservationRequest((Message)msg)));
+		}
 
 	}
 	

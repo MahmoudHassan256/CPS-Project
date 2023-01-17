@@ -79,8 +79,8 @@ public class FirstSceneController {
         SimpleClient.getClient().sendToServer("#ShowSubscribeRequest");
     }
     @FXML
-    void gotocancelreservation(ActionEvent event) {
-
+    void gotocancelreservation(ActionEvent event) throws IOException {
+        SimpleClient.getClient().sendToServer("#ShowCancelReservationReqeust");
     }
     @FXML
     void gotocomplaint(ActionEvent event) throws IOException {

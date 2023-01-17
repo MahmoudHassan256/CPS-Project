@@ -255,6 +255,30 @@ public class SimpleServer extends AbstractServer {
 				throw new RuntimeException(e);
 			}
 		}
+		else if(msgString.startsWith("#ShowCancelReservationReqeust"))
+		{
+			session=sessionFactory.openSession();
+			List<Reservation> reservations= null;
+			try {
+				reservations = getAllReservations();
+			} catch (Exception e) {
+				throw new RuntimeException(e);
+			}
+			try {
+				client.sendToClient(new Message("#ShowCancelReservation",reservations));
+			} catch (IOException e) {
+				throw new RuntimeException(e);
+			}
+		}
+		else if(msgString.startsWith("#CancelReservationRequest")){
+			session = sessionFactory.openSession();
+			session.beginTransaction();
+			Reservation reservation = (Reservation) ((Message)msg).getObject();
+			session.delete(reservation);
+			session.flush();
+			session.getTransaction().commit();
+			session.close();
+		}
 
 	}
 	public void updateConnectedWorkerStatus(Worker updateWorker,boolean state){
