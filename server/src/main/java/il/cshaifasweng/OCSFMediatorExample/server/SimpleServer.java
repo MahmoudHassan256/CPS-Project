@@ -113,7 +113,12 @@ public class SimpleServer extends AbstractServer {
 				session = sessionFactory.openSession();
 				List<ParkingLot> parkingLots = getAllParkingLots();
 				List<SubsriptionClient> subsriptionClients = getAllSubscriptions();
-				client.sendToClient(new Message("#ShowReserve",parkingLots, subsriptionClients));
+				Worker worker= (Worker) ((Message)msg).getObject();
+				if(worker!=null){
+					client.sendToClient(new Message("#ShowReserve", parkingLots, subsriptionClients,worker));
+				}else {
+					client.sendToClient(new Message("#ShowReserve", parkingLots, subsriptionClients));
+				}
 			} catch (IOException e) {
 				throw new RuntimeException(e);
 			} catch (Exception e) {
@@ -129,19 +134,26 @@ public class SimpleServer extends AbstractServer {
 				session.save(reservation);
 				session.flush();
 				session.getTransaction().commit();
-				session.close();
 			try {
 				List<Reservation> reservationList = getAllReservations();
 				this.sendToAllClients(new Message("#RefreshReservationList", reservationList));
+				client.sendToClient(new Message("#ReservationDone"));
 			} catch (Exception e) {
 				throw new RuntimeException(e);
 			}
-		}
+				session.close();
+
+			}
 		}
 		else if (msgString.startsWith("#ShowCheckInRequest")) {
 			try {
-				client.sendToClient(new Message("#ShowCheckIn"));
+				session=sessionFactory.openSession();
+				List<ParkingLot> parkingLotList=getAllParkingLots();
+				List<Reservation> reservationList=getAllReservations();
+				client.sendToClient(new Message("#ShowCheckIn",parkingLotList,reservationList));
 			} catch (IOException e) {
+				throw new RuntimeException(e);
+			} catch (Exception e) {
 				throw new RuntimeException(e);
 			}
 		}else if (msgString.startsWith("#ShowCheckOutRequest")) {
@@ -518,10 +530,10 @@ public class SimpleServer extends AbstractServer {
 				id = ((Reservation) object).getParkingLotID();
 				 arrival = ((Reservation) object).getTimeOfArrival();
 				 depature = ((Reservation) object).getTimeOfDeparture();
-			} else if (object.getClass().equals(Vehicle.class)) {
-				 id=((Vehicle) object).getId();
-				 arrival=((Vehicle) object).getArrivalTime();
-				 depature=((Vehicle) object).getExitingTime();
+			} else if (object.getClass().equals(Spot.class) && ((Spot) object).getCar().getClass().equals(Vehicle.class)) {
+				 id= ((Vehicle)(((Spot) object).getCar())).getId();
+				 arrival=((Vehicle)(((Spot) object).getCar())).getArrivalTime();
+				 depature=((Vehicle)(((Spot) object).getCar())).getExitingTime();
 
 			} else {
 				return false;
@@ -530,14 +542,15 @@ public class SimpleServer extends AbstractServer {
 			List<ParkingLot> parkingLotList=getAllParkingLots();
 			for (ParkingLot parkingLot:parkingLotList){
 				if(parkingLot.getId()==id){
-				List<Object> array=parkingLot.getParkingLotStatus();
+				List<Spot> array=parkingLot.getParkingLotStatus();
 				for (Object state:array){
-					if(state.getClass().equals(Vehicle.class)){
-						if(((Vehicle) state).getExitingTime().isBefore(arrival) || depature.isBefore(((Vehicle) state).getArrivalTime())) {
+					if(state.getClass().equals(Spot.class) && ((Spot) state).getCar().getClass().equals(Vehicle.class)){
+						Vehicle vehicle=((Vehicle)(((Spot) state).getCar()));
+						if(vehicle.getExitingTime().isBefore(arrival) || depature.isBefore(vehicle.getArrivalTime())) {
 							totalSpaces+=1;
 						}
 					}
-					if(state.equals("Open")){
+					if(((Spot)state).getCar().equals("Open")){
 						totalSpaces+=1;
 					}
 				}
@@ -562,6 +575,7 @@ public class SimpleServer extends AbstractServer {
 		configuration.addAnnotatedClass(Price.class);
 		configuration.addAnnotatedClass(Worker.class);
 		configuration.addAnnotatedClass(Vehicle.class);
+		//configuration.addAnnotatedClass(Spot.class);
 		configuration.addAnnotatedClass(Complaint.class);
 		configuration.addAnnotatedClass(Refund.class);
 		configuration.addAnnotatedClass(Reservation.class);

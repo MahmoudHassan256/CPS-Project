@@ -48,8 +48,6 @@ public class SimpleClient extends AbstractClient {
 			EventBus.getDefault().post(new ShowSubscribeEvent((Message) msg));
 		} else if (strmsg.startsWith("#ShowComplaint")) {
 			EventBus.getDefault().post(new ShowComplaintEvent((Message)msg));
-		}else if(strmsg.startsWith("#ShowAdminReserveParking")){
-			EventBus.getDefault().post(new ShowAdminReserveParkingEvent((Message)msg));
 		} else if(strmsg.startsWith("#ShowSubscriptionID")) {
 			EventBus.getDefault().post(new ShowSubscriptionIDEvent((Message)msg));
 		} else if (strmsg.startsWith("#ShowReports")) {
@@ -62,6 +60,8 @@ public class SimpleClient extends AbstractClient {
 			EventBus.getDefault().post(new ShowMyProfileEvent((Message)msg));
 		} else if (strmsg.startsWith("#ReservationCantBeDone")) {
 			EventBus.getDefault().post(new ReservationCantBeDoneEvent((Message)msg));
+		}else if(strmsg.startsWith("#ReservationDone")){
+			EventBus.getDefault().post(new ReservationDoneEvent((Message)msg));
 		}
 
 	}

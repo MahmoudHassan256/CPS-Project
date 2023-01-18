@@ -104,6 +104,8 @@ public class App extends Application {
     @SuppressWarnings("unchecked")
     @Subscribe
     public void onShowCheckInEvent(ShowCheckInEvent event){
+        CheckInController.setReservations((List<Reservation>) event.getReservationList());
+        CheckInController.setParkingLots((List<ParkingLot>) event.getParkinglotList());
         try {
             App.setRoot("checkin");
         } catch (IOException e) {
@@ -124,6 +126,9 @@ public class App extends Application {
     public void onShowReserveEvent(ShowReserveEvent event){
         ReserveController.setParkingLots((List<ParkingLot>)event.getParkingLotsList());
         ReserveController.setSubsriptionClients((List<SubsriptionClient>)event.getSubscriptionList());
+        if(event.getWorker()!=null){
+            ReserveController.setWorker((Worker) event.getWorker());
+        }
         try {
             App.setRoot("reserve");
         } catch (IOException e) {
@@ -198,18 +203,6 @@ public class App extends Application {
     public void onShowComplaintEvent(ShowComplaintEvent event){
         try {
             App.setRoot("complaint");
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-    @SuppressWarnings("unchecked")
-    @Subscribe
-    public void onShowAdminReserveParkingEvent(ShowAdminReserveParkingEvent event){
-        ReserveAdminController.setParkingLots((List<ParkingLot>) event.getParkingLotList());
-        ReserveAdminController.setWorker((Worker) event.getWorker());
-        ReserveAdminController.setSubsriptionClients((List<SubsriptionClient>) event.getSubscriptionList());
-        try {
-            App.setRoot("reserveadmin");
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
