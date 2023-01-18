@@ -197,5 +197,6 @@
             </VBox>
          </children>
       </HBox>
+      <Text fx:id="errormsg" fill="RED" layoutX="617.0" layoutY="710.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Error msg" textAlignment="CENTER" />
    </children>
 </AnchorPane>
