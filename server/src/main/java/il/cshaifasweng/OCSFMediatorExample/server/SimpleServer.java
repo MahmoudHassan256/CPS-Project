@@ -1,11 +1,12 @@
 package il.cshaifasweng.OCSFMediatorExample.server;
 
+import il.cshaifasweng.OCSFMediatorExample.HelperMethods.ScheduledTask;
 import il.cshaifasweng.OCSFMediatorExample.entities.*;
 import il.cshaifasweng.OCSFMediatorExample.server.ocsf.AbstractServer;
 import il.cshaifasweng.OCSFMediatorExample.server.ocsf.ConnectionToClient;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
-import org.hibernate.HibernateError;
+import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
@@ -15,14 +16,13 @@ import org.hibernate.service.ServiceRegistry;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Random;
+import java.util.*;
 
 public class SimpleServer extends AbstractServer {
 	private static SessionFactory sessionFactory=getSessionFactory();
 	private static Session session;
+	private static Timer timer=new Timer();
+	private static ScheduledTask scheduledTask=new ScheduledTask();
 	public SimpleServer(int port) {super(port);}
 
 	@Override
@@ -136,8 +136,13 @@ public class SimpleServer extends AbstractServer {
 				session.getTransaction().commit();
 			try {
 				List<Reservation> reservationList = getAllReservations();
+				App.sendEmailMethod.SendMailTo(reservation.getEmail(),"Reserevation done","Thanks for reserving a" +
+						" parking space in: "+reservation.getParkingLotID());
 				this.sendToAllClients(new Message("#RefreshReservationList", reservationList));
 				client.sendToClient(new Message("#ReservationDone"));
+
+
+
 			} catch (Exception e) {
 				throw new RuntimeException(e);
 			}
@@ -519,6 +524,7 @@ public class SimpleServer extends AbstractServer {
 		}finally {
 			session.close();
 		}
+		//timer.scheduleAtFixedRate(scheduledTask,0, (1000)*3);
 	}
 	private boolean canBeAdded(Object object){
 		try {
@@ -568,7 +574,7 @@ public class SimpleServer extends AbstractServer {
 		}
 		return false;
 	}
-	private static SessionFactory getSessionFactory() throws HibernateError {
+	private static SessionFactory getSessionFactory() throws HibernateException {
 		Configuration configuration=new Configuration();
 
 		configuration.addAnnotatedClass(ParkingLot.class);

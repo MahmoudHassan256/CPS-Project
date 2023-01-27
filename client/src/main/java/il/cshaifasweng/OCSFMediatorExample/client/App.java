@@ -52,6 +52,9 @@ public class App extends Application {
     @Override
 	public void stop() throws Exception {
 		// TODO Auto-generated method stub
+        if(SimpleClient.getClient()!=null){
+
+        }
     	EventBus.getDefault().unregister(this);
 		super.stop();
 	}
