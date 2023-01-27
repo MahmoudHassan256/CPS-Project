@@ -5,7 +5,6 @@ import jakarta.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Date;
 
 @Entity
 @Table (name="Reservation")
@@ -15,6 +14,7 @@ public class Reservation implements Serializable {
     private int id;
     private String driverID;
     private String licensePlate;
+    private boolean notified;
 
     @Override
     public String toString() {
@@ -65,6 +65,7 @@ public class Reservation implements Serializable {
         this.email = email;
         this.typeOfClient = typeOfClient;
         this.subsriptionID = subsriptionID;
+        this.notified=false;
     }
 
     public Reservation(String driverID, String licensePlate, Integer parkingLotID, LocalDateTime timeOfArrival,
@@ -82,6 +83,15 @@ public class Reservation implements Serializable {
         this.expirationDate = expirationDate;
         this.cvv = cvv;
         this.creditCardHolderID = creditCardHolderID;
+        this.notified=false;
+    }
+
+    public boolean isNotified() {
+        return notified;
+    }
+
+    public void setNotified(boolean notified) {
+        this.notified = notified;
     }
 
     public int getId() {
