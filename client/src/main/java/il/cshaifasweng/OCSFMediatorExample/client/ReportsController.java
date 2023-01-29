@@ -5,6 +5,7 @@
 package il.cshaifasweng.OCSFMediatorExample.client;
 
 import il.cshaifasweng.OCSFMediatorExample.entities.Complaint;
+import il.cshaifasweng.OCSFMediatorExample.entities.ParkingLot;
 import il.cshaifasweng.OCSFMediatorExample.entities.Reservation;
 import il.cshaifasweng.OCSFMediatorExample.entities.Worker;
 import javafx.collections.FXCollections;
@@ -26,7 +27,16 @@ public class ReportsController {
 
     private static List<Complaint> complaintList;
     private static List<Reservation> reservationList;
+    private static List<ParkingLot> parkingLotList;
     private static Worker worker;
+
+    public static List<ParkingLot> getParkingLotList() {
+        return parkingLotList;
+    }
+
+    public static void setParkingLotList(List<ParkingLot> parkingLotList) {
+        ReportsController.parkingLotList = parkingLotList;
+    }
 
     public static List<Complaint> getComplaintList() {
         return complaintList;
@@ -63,6 +73,14 @@ public class ReportsController {
     private TableColumn<Complaint,String> carNumber; // Value injected by FXMLLoader
     @FXML // fx:id="description"
     private TableColumn<Complaint,String> description; // Value injected by FXMLLoader
+    @FXML // fx:id="parkinglotTable"
+    private TableView<ParkingLot> parkinglotTable; // Value injected by FXMLLoader
+
+    @FXML // fx:id="plT_id"
+    private TableColumn<ParkingLot,Integer> plT_id; // Value injected by FXMLLoader
+
+    @FXML // fx:id="plT_capacity"
+    private TableColumn<ParkingLot,Integer> plT_capacity; // Value injected by FXMLLoader
     @FXML // fx:id="refundValue"
     private TableColumn<Complaint,String> refundValue; // Value injected by FXMLLoader
     @FXML // fx:id="response"
@@ -103,8 +121,7 @@ public class ReportsController {
     @FXML // fx:id="typeOfClient"
     private TableColumn<Reservation,String> typeOfClient; // Value injected by FXMLLoader
 
-   // ObservableList<Complaint> complaints=FXCollections.observableArrayList(complaintList);
-   // ObservableList<Reservation> reservations=FXCollections.observableArrayList(reservationList)
+
     @FXML
     void goback(ActionEvent event) {
         try {
@@ -156,6 +173,11 @@ public class ReportsController {
         status.setCellValueFactory(new PropertyValueFactory<>("status"));
         submitionDate.setCellValueFactory(new PropertyValueFactory<>("submitionDate"));
 
+
+        plT_id.setCellValueFactory(new PropertyValueFactory<>("id"));
+        plT_capacity.setCellValueFactory(new PropertyValueFactory<>("capacity"));
+
+        parkinglotTable.setItems(FXCollections.observableArrayList(parkingLotList));
         reservationTable.setItems(FXCollections.observableArrayList(reservationList));
         complaintTable.setItems(FXCollections.observableArrayList(complaintList));
 
