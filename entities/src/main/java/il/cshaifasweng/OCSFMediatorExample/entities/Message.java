@@ -1,4 +1,5 @@
 package il.cshaifasweng.OCSFMediatorExample.entities;
+
 import java.io.Serializable;
 
 public class Message implements Serializable{
@@ -6,6 +7,8 @@ public class Message implements Serializable{
     private Object object;
     private Object object2;
     private Object object3;
+    private Object object4;
+
 
     public Message(String message, Object object) {
         this.message = message;
@@ -23,6 +26,21 @@ public class Message implements Serializable{
         this.object = object;
         this.object2 = object2;
         this.object3 = object3;
+    }
+    public Message(String message, Object object, Object object2, Object object3, Object object4) {
+        this.message = message;
+        this.object = object;
+        this.object2 = object2;
+        this.object3 = object3;
+        this.object4=object4;
+    }
+
+    public Object getObject4() {
+        return object4;
+    }
+
+    public void setObject4(Object object4) {
+        this.object4 = object4;
     }
 
     public Object getObject2() {

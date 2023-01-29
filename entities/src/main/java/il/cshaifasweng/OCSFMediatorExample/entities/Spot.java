@@ -48,6 +48,16 @@ public class Spot implements Serializable {
         return car;
     }
 
+    @Override
+    public String toString() {
+        return "Spot{" +
+                "car=" + car +
+                ", rowNum=" + rowNum +
+                ", floorNum=" + floorNum +
+                ", depthNum=" + depthNum +
+                '}';
+    }
+
     public void setCar(Object car) {
         this.car = car;
     }

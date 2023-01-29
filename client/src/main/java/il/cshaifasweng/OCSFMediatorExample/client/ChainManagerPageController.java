@@ -63,7 +63,7 @@ public class ChainManagerPageController {
     }
     @FXML
     void gotoshowparkinglotstate(ActionEvent event) throws IOException {
-    SimpleClient.getClient().sendToServer("#ShowParkingLotStateRequest");
+    SimpleClient.getClient().sendToServer(new Message("#ShowParkingLotStateRequest",worker));
     }
 
     @FXML
@@ -79,15 +79,19 @@ public class ChainManagerPageController {
         setUpdatedPrice((Price) event.getUpdatedprice());
         newprice.setText(event.getUpdatedprice().toString());
     }
-
     @FXML
     void initialize(){
         EventBus.getDefault().register(this);
         hello.setText("Hello "+worker.getName()+"=>"+worker.getOccupation());
-        if(updatedPrice!=null) {
+        if(updatedPrice==null) {
             confirmpriceBtn.setDisable(true);
             pricesbox.setVisible(false);
             pricetoupdate.setVisible(false);
+        }
+        else{
+            confirmpriceBtn.setDisable(false);
+            pricesbox.setVisible(true);
+            pricetoupdate.setVisible(true);
         }
 
     }

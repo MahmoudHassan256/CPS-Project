@@ -15,7 +15,7 @@ public class ParkingLot implements Serializable {
     private int id;
     private int capacity;
     @Column(name = "parkinglot_status",columnDefinition = "BLOB")
-    @ElementCollection(targetClass = Spot.class)
+    @ElementCollection(targetClass = Spot.class,fetch = FetchType.EAGER)
     private List<Spot> parkingLotStatus;
     @OneToMany
     private List<Worker> workerList;
