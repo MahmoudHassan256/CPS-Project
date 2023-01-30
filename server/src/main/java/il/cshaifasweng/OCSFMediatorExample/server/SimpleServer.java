@@ -44,7 +44,7 @@ public class SimpleServer extends AbstractServer {
         } else if (msgString.startsWith("#ShowParkingLotsRequest")) {
             try {
                 session = sessionFactory.openSession();
-                ArrayList<ParkingLot> parkingLots = getAllParkingLots();
+                ArrayList<ParkingLot> parkingLots = getAll(ParkingLot.class);
                 client.sendToClient(new Message("#ShowParkingLots", parkingLots));
             } catch (IOException e) {
                 e.printStackTrace();
@@ -54,7 +54,7 @@ public class SimpleServer extends AbstractServer {
         } else if (msgString.startsWith("#ShowPricesRequest")) {
             try {
                 session = sessionFactory.openSession();
-                ArrayList<Price> prices = getAllPrices();
+                ArrayList<Price> prices = getAll(Price.class);
                 client.sendToClient(new Message("#ShowPrices", prices));
             } catch (IOException e) {
                 e.printStackTrace();
@@ -64,7 +64,7 @@ public class SimpleServer extends AbstractServer {
         } else if (msgString.startsWith("#UpdatePricesRequest")) {
             try {
                 session = sessionFactory.openSession();
-                ArrayList<Price> prices = getAllPrices();
+                ArrayList<Price> prices = getAll(Price.class);
                 client.sendToClient(new Message("#UpdatePrices", prices));
             } catch (IOException e) {
                 e.printStackTrace();
@@ -80,7 +80,7 @@ public class SimpleServer extends AbstractServer {
                 List<Price> priceList = null;
                 Price pricetoupdate = ((Price) ((Message) msg).getObject());
                 try {
-                    priceList = getAllPrices();
+                    priceList = getAll(Price.class);
                 } catch (Exception e1) {
                     // TODO Auto-generated catch block
                     e1.printStackTrace();
@@ -106,7 +106,7 @@ public class SimpleServer extends AbstractServer {
         } else if (msgString.startsWith("#ShowSignInRequest")) {
             try {
                 session = sessionFactory.openSession();
-                ArrayList<Worker> workers = getAllWorkers();
+                ArrayList<Worker> workers = getAll(Worker.class);
                 client.sendToClient(new Message("#ShowSignIn", workers));
             } catch (IOException e) {
                 e.printStackTrace();
@@ -116,8 +116,8 @@ public class SimpleServer extends AbstractServer {
         } else if (msgString.startsWith("#ShowReserveRequest")) {
             try {
                 session = sessionFactory.openSession();
-                List<ParkingLot> parkingLots = getAllParkingLots();
-                List<SubsriptionClient> subsriptionClients = getAllSubscriptions();
+                List<ParkingLot> parkingLots = getAll(ParkingLot.class);
+                List<SubsriptionClient> subsriptionClients = getAll(SubsriptionClient.class);
                 Worker worker = (Worker) ((Message) msg).getObject();
                 if (worker != null) {
                     client.sendToClient(new Message("#ShowReserve", parkingLots, subsriptionClients, worker));
@@ -140,9 +140,9 @@ public class SimpleServer extends AbstractServer {
                 session.flush();
                 session.getTransaction().commit();
                 try {
-                    List<Reservation> reservationList = getAllReservations();
-                    App.sendEmailMethod.SendMailTo(reservation.getEmail(), "Reserevation done", "Thanks for reserving a" +
-                            " parking space in: " + reservation.getParkingLotID());
+                    List<Reservation> reservationList = getAll(Reservation.class);
+                    //App.sendEmailMethod.SendMailTo(reservation.getEmail(), "Reserevation done", "Thanks for reserving a" +
+                            //" parking space in: " + reservation.getParkingLotID());
                     this.sendToAllClients(new Message("#RefreshReservationList", reservationList));
                     client.sendToClient(new Message("#ReservationDone"));
 
@@ -156,8 +156,8 @@ public class SimpleServer extends AbstractServer {
         } else if (msgString.startsWith("#ShowCheckInRequest")) {
             try {
                 session = sessionFactory.openSession();
-                List<ParkingLot> parkingLotList = getAllParkingLots();
-                List<Reservation> reservationList = getAllReservations();
+                List<ParkingLot> parkingLotList = getAll(ParkingLot.class);
+                List<Reservation> reservationList = getAll(Reservation.class);
                 client.sendToClient(new Message("#ShowCheckIn", parkingLotList, reservationList));
             } catch (IOException e) {
                 throw new RuntimeException(e);
@@ -173,8 +173,8 @@ public class SimpleServer extends AbstractServer {
         } else if (msgString.startsWith("#ShowAdminPageRequset")) {
             try {
                 updateConnectedWorkerStatus((Worker) ((Message) msg).getObject(), true);
-                List<Complaint> complaintList = getAllComplaints();
-                List<Refund> refundList = getAllRefunds();
+                List<Complaint> complaintList = getAll(Complaint.class);
+                List<Refund> refundList = getAll(Refund.class);
                 client.sendToClient(new Message("#ShowAdminPage", ((Worker) ((Message) msg).getObject()), complaintList, refundList));
             } catch (Exception e) {
                 throw new RuntimeException(e);
@@ -188,7 +188,7 @@ public class SimpleServer extends AbstractServer {
                 List<Complaint> complaints = null;
                 Complaint updatedComplaint = (Complaint) ((Message) msg).getObject();
                 try {
-                    complaints = getAllComplaints();
+                    complaints = getAll(Complaint.class);
                 } catch (Exception e) {
                     throw new RuntimeException(e);
                 }
@@ -215,7 +215,7 @@ public class SimpleServer extends AbstractServer {
             session = sessionFactory.openSession();
             List<ParkingLot> parkingLots = null;
             try {
-                parkingLots = getAllParkingLots();
+                parkingLots = getAll(ParkingLot.class);
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
@@ -232,7 +232,7 @@ public class SimpleServer extends AbstractServer {
             session.flush();
             session.getTransaction().commit();
             try {
-                List<SubsriptionClient> subsriptionClients = getAllSubscriptions();
+                List<SubsriptionClient> subsriptionClients = getAll(SubsriptionClient.class);
                 for (SubsriptionClient subsriptionClient1 : subsriptionClients) {
                     if (subsriptionClient.getDriverId().equals(subsriptionClient1.getDriverId()))
                         client.sendToClient(new Message(("#ShowSubscriptionID"), subsriptionClient1.getId()));
@@ -259,7 +259,7 @@ public class SimpleServer extends AbstractServer {
             List<Complaint> complaintList = null;
             while (complaintList == null) {
                 try {
-                    complaintList = getAllComplaints();
+                    complaintList = getAll(Complaint.class);
                 } catch (Exception e) {
                     throw new RuntimeException(e);
                 }
@@ -271,8 +271,8 @@ public class SimpleServer extends AbstractServer {
             List<ParkingLot> parkingLotList;
             List<SubsriptionClient> subsriptionClients;
             try {
-                parkingLotList = getAllParkingLots();
-                subsriptionClients = getAllSubscriptions();
+                parkingLotList = getAll(ParkingLot.class);
+                subsriptionClients = getAll(SubsriptionClient.class);
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
@@ -283,10 +283,10 @@ public class SimpleServer extends AbstractServer {
             }
         } else if (msgString.startsWith("#ShowReportsRequest")) {
             try {
-                List<Reservation> reservationList = getAllReservations();
-                List<Complaint> complaintList = getAllComplaints();
+                List<Reservation> reservationList = getAll(Reservation.class);
+                List<Complaint> complaintList = getAll(Complaint.class);
                 Worker worker = (Worker) ((Message) msg).getObject();
-                List<ParkingLot> parkingLotList = getAllParkingLots();
+                List<ParkingLot> parkingLotList = getAll(ParkingLot.class);
                 client.sendToClient(new Message("#ShowReports", reservationList, complaintList, worker, parkingLotList));
             } catch (IOException e) {
                 e.printStackTrace();
@@ -299,17 +299,17 @@ public class SimpleServer extends AbstractServer {
             List<SubsriptionClient> subsriptionClients = null;
             List<Price> prices = null;
             try {
-                reservations = getAllReservations();
+                reservations = getAll(Reservation.class);
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
             try {
-                subsriptionClients = getAllSubscriptions();
+                subsriptionClients = getAll(SubsriptionClient.class);
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
             try {
-                prices = getAllPrices();
+                prices = getAll(Price.class);
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
@@ -326,7 +326,7 @@ public class SimpleServer extends AbstractServer {
             session.delete(reservation);
             if (subsriptionClient != null) {
                 try {
-                    List<SubsriptionClient> subsriptionClientList = getAllSubscriptions();
+                    List<SubsriptionClient> subsriptionClientList = getAll(SubsriptionClient.class);
                     for (SubsriptionClient subsriptionClient1 : subsriptionClientList) {
                         if (subsriptionClient.getId() == subsriptionClient1.getId())
                             subsriptionClient1.setRemainingHours(subsriptionClient.getRemainingHours());
@@ -339,7 +339,7 @@ public class SimpleServer extends AbstractServer {
             session.getTransaction().commit();
             session.close();
             try {
-                List<Reservation> reservationList = getAllReservations();
+                List<Reservation> reservationList = getAll(Reservation.class);
                 this.sendToAllClients(new Message("#RefreshReservationList", reservationList));
             } catch (Exception e) {
                 throw new RuntimeException(e);
@@ -347,8 +347,8 @@ public class SimpleServer extends AbstractServer {
         } else if (msgString.startsWith("#ShowMyProfileRequest")) {
             session = sessionFactory.openSession();
             try {
-                List<Reservation> reservationList = getAllReservations();
-                List<SubsriptionClient> subsriptionClients = getAllSubscriptions();
+                List<Reservation> reservationList = getAll(Reservation.class);
+                List<SubsriptionClient> subsriptionClients = getAll(SubsriptionClient.class);
                 client.sendToClient(new Message("#ShowMyProfile", reservationList, subsriptionClients));
             } catch (IOException e) {
                 throw new RuntimeException(e);
@@ -359,7 +359,7 @@ public class SimpleServer extends AbstractServer {
         } else if (msgString.startsWith("#ShowParkingLotStateRequest")) {
             session=sessionFactory.openSession();
             try {
-                List<ParkingLot> parkingLotList = getAllParkingLots();
+                List<ParkingLot> parkingLotList = getAll(ParkingLot.class);
                 Worker worker = (Worker) ((Message) msg).getObject();
                 client.sendToClient(new Message("#ShowParkingLotState",worker,parkingLotList));
             }catch (Exception e){
@@ -371,7 +371,7 @@ public class SimpleServer extends AbstractServer {
             try{
                 ParkingLot choosenParkingLot= (ParkingLot) ((Message)msg).getObject();
                 Spot choosenSpot= (Spot) ((Message)msg).getObject2();
-                List<ParkingLot> parkingLotList=getAllParkingLots();
+                List<ParkingLot> parkingLotList=getAll(ParkingLot.class);
                 for (ParkingLot parkingLot:parkingLotList){
                     if(choosenParkingLot.getId()==parkingLot.getId()){
                         session.beginTransaction();
@@ -396,12 +396,18 @@ public class SimpleServer extends AbstractServer {
         }
 
     }
-
+    public static<T> ArrayList<T> getAll(Class<T> object) {
+        CriteriaBuilder builder=session.getCriteriaBuilder();
+        CriteriaQuery<T> query =builder.createQuery(object);
+        query.from(object);
+        ArrayList<T> data= (ArrayList<T>) session.createQuery(query).getResultList();
+        return data;
+    }
     public void updateConnectedWorkerStatus(Worker updateWorker, boolean state) {
         session = sessionFactory.openSession();
         List<Worker> workerList = null;
         try {
-            workerList = getAllWorkers();
+            workerList = getAll(Worker.class);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -500,65 +506,9 @@ public class SimpleServer extends AbstractServer {
 
     }
 
-    private static ArrayList<ParkingLot> getAllParkingLots() throws Exception {
-        CriteriaBuilder builder = session.getCriteriaBuilder();
-        CriteriaQuery<ParkingLot> query = builder.createQuery(ParkingLot.class);
-        query.from(ParkingLot.class);
-        ArrayList<ParkingLot> data = (ArrayList<ParkingLot>) session.createQuery(query).getResultList();
-        return data;
-    }
-
-    private static ArrayList<Price> getAllPrices() throws Exception {
-        CriteriaBuilder builder = session.getCriteriaBuilder();
-        CriteriaQuery<Price> query = builder.createQuery(Price.class);
-        query.from(Price.class);
-        ArrayList<Price> data = (ArrayList<Price>) session.createQuery(query).getResultList();
-        return data;
-    }
-
-    private static ArrayList<Worker> getAllWorkers() throws Exception {
-        CriteriaBuilder builder = session.getCriteriaBuilder();
-        CriteriaQuery<Worker> query = builder.createQuery(Worker.class);
-        query.from(Worker.class);
-        ArrayList<Worker> data = (ArrayList<Worker>) session.createQuery(query).getResultList();
-        return data;
-    }
-
-    private static ArrayList<Complaint> getAllComplaints() throws Exception {
-        CriteriaBuilder builder = session.getCriteriaBuilder();
-        CriteriaQuery<Complaint> query = builder.createQuery(Complaint.class);
-        query.from(Complaint.class);
-        ArrayList<Complaint> data = (ArrayList<Complaint>) session.createQuery(query).getResultList();
-        return data;
-    }
-
-    private static ArrayList<Refund> getAllRefunds() throws Exception {
-        CriteriaBuilder builder = session.getCriteriaBuilder();
-        CriteriaQuery<Refund> query = builder.createQuery(Refund.class);
-        query.from(Refund.class);
-        ArrayList<Refund> data = (ArrayList<Refund>) session.createQuery(query).getResultList();
-        return data;
-    }
-
-    private static ArrayList<Reservation> getAllReservations() throws Exception {
-        CriteriaBuilder builder = session.getCriteriaBuilder();
-        CriteriaQuery<Reservation> query = builder.createQuery(Reservation.class);
-        query.from(Reservation.class);
-        ArrayList<Reservation> data = (ArrayList<Reservation>) session.createQuery(query).getResultList();
-        return data;
-    }
-
-    private static ArrayList<SubsriptionClient> getAllSubscriptions() throws Exception {
-        CriteriaBuilder builder = session.getCriteriaBuilder();
-        CriteriaQuery<SubsriptionClient> query = builder.createQuery(SubsriptionClient.class);
-        query.from(SubsriptionClient.class);
-        ArrayList<SubsriptionClient> data = (ArrayList<SubsriptionClient>) session.createQuery(query).getResultList();
-        return data;
-    }
-
-    private static void addWorkerToParkingLot() throws Exception {
-        List<Worker> workers = getAllWorkers();
-        List<ParkingLot> parkingLots = getAllParkingLots();
+   private static void addWorkerToParkingLot() throws Exception {
+        List<Worker> workers = getAll(Worker.class);
+        List<ParkingLot> parkingLots = getAll(ParkingLot.class);
 
         for (Worker worker : workers) {
             Random random = new Random();
@@ -625,8 +575,8 @@ public class SimpleServer extends AbstractServer {
             } else {
                 return false;
             }
-            List<Reservation> reservationList = getAllReservations();
-            List<ParkingLot> parkingLotList = getAllParkingLots();
+            List<Reservation> reservationList = getAll(Reservation.class);
+            List<ParkingLot> parkingLotList = getAll(ParkingLot.class);
             for (ParkingLot parkingLot : parkingLotList) {
                 if (parkingLot.getId() == id) {
                     List<Spot> array = parkingLot.getParkingLotStatus();

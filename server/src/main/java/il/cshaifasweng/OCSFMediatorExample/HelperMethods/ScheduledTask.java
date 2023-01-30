@@ -27,7 +27,7 @@ public class ScheduledTask extends TimerTask {
             String temp="minute";
             try{
                 LocalDateTime now=LocalDateTime.now();
-                if(now.plusMinutes(1).isAfter(reservation.getTimeOfArrival()) && !reservation.isNotified()){
+                if(now.plusMinutes(10).isAfter(reservation.getTimeOfArrival()) && !reservation.isNotified()){
                     //reminder for the reservation before 10 minutes
                     SendEmailMethod sendEmailMethod=new SendEmailMethod();
                     sendEmailMethod.SendMailTo(email,"Reminder","Your reservation is is to-do the next "+temp+"!\n" +

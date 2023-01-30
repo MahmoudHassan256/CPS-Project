@@ -5,7 +5,7 @@ import java.io.Serializable;
 
 public class Spot implements Serializable {
 
-    private Object car;
+    private Object car;//open/damaged/{car info in string}
     private int rowNum;
     private int floorNum;
     private int depthNum;
