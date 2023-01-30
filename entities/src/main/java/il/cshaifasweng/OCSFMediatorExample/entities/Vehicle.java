@@ -19,7 +19,7 @@ public class Vehicle implements Serializable {
     private String LicensePlateNumber;
     private LocalDateTime ArrivalTime;
     private LocalDateTime ExitingTime;
-    private String Type;
+    private String Type;//client type
     private int floorNumber;
     private int rowNumber;
     private int depthNumber;

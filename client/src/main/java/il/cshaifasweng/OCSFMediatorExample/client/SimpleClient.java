@@ -196,7 +196,8 @@ public class SimpleClient extends AbstractClient {
 		}
 		else if(strmsg.startsWith("#ReservationDone")){
 			EventBus.getDefault().post(new ReservationDoneEvent((Message)msg));
-		} else if (strmsg.startsWith("#ShowParkingLotState")) {
+		}
+		else if (strmsg.startsWith("#ShowParkingLotState")) {
 			Message event=(Message) msg;
 			Worker worker = (Worker) event.getObject();
 			List<ParkingLot> parkingLotList= (List<ParkingLot>) event.getObject2();
@@ -208,7 +209,8 @@ public class SimpleClient extends AbstractClient {
 				e.printStackTrace();
 			}
 
-		} else if (strmsg.startsWith("#RefreshParkingLots")) {
+		}
+		else if (strmsg.startsWith("#RefreshParkingLots")) {
 			EventBus.getDefault().post(new RefreshParkingLotsEvent((Message)msg));
 		}
 
