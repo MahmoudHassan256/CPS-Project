@@ -15,6 +15,9 @@ public class Reservation implements Serializable {
     private String driverID;
     private String licensePlate;
     private boolean notified;
+    private boolean expired;
+
+
 
     @Override
     public String toString() {
@@ -66,6 +69,7 @@ public class Reservation implements Serializable {
         this.typeOfClient = typeOfClient;
         this.subsriptionID = subsriptionID;
         this.notified=false;
+        this.expired=false;
     }
 
     public Reservation(String driverID, String licensePlate, Integer parkingLotID, LocalDateTime timeOfArrival,
@@ -84,6 +88,7 @@ public class Reservation implements Serializable {
         this.cvv = cvv;
         this.creditCardHolderID = creditCardHolderID;
         this.notified=false;
+        this.expired=false;
     }
 
     public boolean isNotified() {
@@ -92,6 +97,14 @@ public class Reservation implements Serializable {
 
     public void setNotified(boolean notified) {
         this.notified = notified;
+    }
+
+    public boolean isExpired() {
+        return expired;
+    }
+
+    public void setExpired(boolean expired) {
+        this.expired = expired;
     }
 
     public int getId() {

@@ -109,6 +109,7 @@ public class ProfileController {
             errormsgbox.setVisible(false);
         }
         else{
+
             reservationTable.getItems().clear();
             subscriptionTable.getItems().clear();
             List<Reservation> newreservationList=new ArrayList<Reservation>();
