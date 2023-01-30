@@ -34,7 +34,7 @@
             </Text>
          </children>
       </HBox>
-      <TabPane fx:id="tabTable" layoutX="78.0" layoutY="197.0" prefHeight="383.0" prefWidth="674.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="200.0">
+      <TabPane fx:id="tabTable" layoutX="78.0" layoutY="197.0" prefHeight="383.0" prefWidth="774.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.leftAnchor="300.0" AnchorPane.rightAnchor="205.60000000000002" AnchorPane.topAnchor="200.0">
         <tabs>
           <Tab fx:id="priorityTab" text="High priority">
                <content>
@@ -105,20 +105,5 @@
                </opaqueInsets>
             </VBox>
          </children></HBox>
-      <VBox layoutX="773.0" layoutY="214.0" prefHeight="356.0" prefWidth="506.0" style="-fx-background-color: white;" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="200.0">
-         <children>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Refund Table" wrappingWidth="480.8033447265625">
-               <font>
-                  <Font size="36.0" />
-               </font>
-            </Text>
-            <TableView fx:id="refundTable" prefHeight="290.0" prefWidth="482.0">
-              <columns>
-                <TableColumn fx:id="cancellationCol" prefWidth="330.13330078125" text="Cancellation time" />
-                <TableColumn fx:id="amountCol" minWidth="0.0" prefWidth="152.2667236328125" text="The amount of the credit" />
-              </columns>
-            </TableView>
-         </children>
-      </VBox>
    </children>
 </AnchorPane>

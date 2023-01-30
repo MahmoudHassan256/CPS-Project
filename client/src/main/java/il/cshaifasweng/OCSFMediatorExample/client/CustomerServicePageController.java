@@ -22,19 +22,12 @@ public class CustomerServicePageController {
 
     private static Worker worker;
     private static List<Complaint> complaintList;
-    private static List<Refund> refundList;
     private Complaint choosencomplaint;
     private List<Complaint> openComplaints;
     private List<Complaint> closedComplaints;
     private List<Complaint> priorityComplaints;
 
-    public static List<Refund> getRefundList() {
-        return refundList;
-    }
 
-    public static void setRefundList(List<Refund> refundList) {
-        CustomerServicePageController.refundList = refundList;
-    }
 
     public static List<Complaint> getComplaintList() {
         return complaintList;
@@ -57,16 +50,10 @@ public class CustomerServicePageController {
     @FXML // fx:id="closedTable"
     private TableView<Complaint> closedTable; // Value injected by FXMLLoader
 
-    @FXML // fx:id="amountCol"
-    private TableColumn<Refund,String> amountCol; // Value injected by FXMLLoader
-
-    @FXML // fx:id="cancellationCol"
-    private TableColumn<Refund,String> cancellationCol; // Value injected by FXMLLoader
     @FXML // fx:id="complaintDescrition"
     private TextArea complaintDescrition; // Value injected by FXMLLoader
 
-    @FXML // fx:id="refundTable"
-    private TableView<Refund> refundTable; // Value injected by FXMLLoader
+
     @FXML // fx:id="descriptionCol1"
     private TableColumn<Complaint,String> descriptionCol1; // Value injected by FXMLLoader
     @FXML // fx:id="descriptionCol2"
@@ -119,7 +106,6 @@ public class CustomerServicePageController {
     private TabPane tabTable; // Value injected by FXMLLoader
 
     ObservableList<Complaint> complaints= FXCollections.observableArrayList(complaintList);
-    ObservableList<Refund> refunds=FXCollections.observableArrayList(refundList);
     @FXML
     void signout(ActionEvent event) throws IOException {
         SimpleClient.getClient().sendToServer(new Message("#UpdateWorkerState",worker));
@@ -241,9 +227,6 @@ public class CustomerServicePageController {
         submitiondateCol3.setCellValueFactory(new PropertyValueFactory<Complaint,LocalDateTime>("submitionDate"));
         descriptionCol3.setCellValueFactory(new PropertyValueFactory<Complaint,String>("description"));
         filter(complaintList);
-        amountCol.setCellValueFactory(new PropertyValueFactory<Refund,String>("refundValue"));
-        cancellationCol.setCellValueFactory(new PropertyValueFactory<Refund,String>("refundDescription"));
-        refundTable.setItems(refunds);
         errormsg.setVisible(false);
         refundValue.setDisable(true);
     }

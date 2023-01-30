@@ -92,7 +92,6 @@ public class SimpleClient extends AbstractClient {
 		else if (strmsg.startsWith("#ShowAdminPage")) {
 			Message event= (Message) msg;
 			List<Complaint> complaintList=(List<Complaint>) event.getObject2();
-			List<Refund> refundList=(List<Refund>) event.getObject3();
 			Worker worker=(Worker) event.getObject();
 			if(worker.getOccupation().startsWith("Parking Lot")) {
 				ParkingLotWorkerPageController.setWorker((Worker) event.getObject());
@@ -111,7 +110,6 @@ public class SimpleClient extends AbstractClient {
 			} else if (worker.getOccupation().startsWith("Customer Service")) {
 				CustomerServicePageController.setWorker(worker);
 				CustomerServicePageController.setComplaintList(complaintList);
-				CustomerServicePageController.setRefundList(refundList);
 				try {
 					App.setRoot("customerservicepage");
 				} catch (IOException e) {
