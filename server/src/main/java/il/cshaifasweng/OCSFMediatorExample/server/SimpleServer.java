@@ -46,6 +46,7 @@ public class SimpleServer extends AbstractServer {
                 session = sessionFactory.openSession();
                 ArrayList<ParkingLot> parkingLots = getAll(ParkingLot.class);
                 client.sendToClient(new Message("#ShowParkingLots", parkingLots));
+                session.close();
             } catch (IOException e) {
                 e.printStackTrace();
             } catch (Exception e) {
@@ -56,6 +57,7 @@ public class SimpleServer extends AbstractServer {
                 session = sessionFactory.openSession();
                 ArrayList<Price> prices = getAll(Price.class);
                 client.sendToClient(new Message("#ShowPrices", prices));
+                session.close();
             } catch (IOException e) {
                 e.printStackTrace();
             } catch (Exception e) {
@@ -66,14 +68,26 @@ public class SimpleServer extends AbstractServer {
                 session = sessionFactory.openSession();
                 ArrayList<Price> prices = getAll(Price.class);
                 client.sendToClient(new Message("#UpdatePrices", prices));
+                session.close();
             } catch (IOException e) {
                 e.printStackTrace();
             } catch (Exception e) {
                 e.printStackTrace();
             }
         } else if (msgString.startsWith("#ChangePriceRequest")) {
-            Price pricetoupdate = ((Price) ((Message) msg).getObject());
-            this.sendToAllClients(new Message("#ChangePriceChainRequest", pricetoupdate));
+            try {
+                session = sessionFactory.openSession();
+                session.beginTransaction();
+                session.save(((Message) msg).getObject());
+                session.flush();
+                session.getTransaction().commit();
+                List<NewPrice> newPriceList = getAll(NewPrice.class);
+                List<Price> priceList=getAll(Price.class);
+                this.sendToAllClients(new Message("#RefreshPricesList", priceList,newPriceList));
+                session.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         } else if (msgString.startsWith("#ChangePriceGrantedRequest")) {
             try {
                 session = sessionFactory.openSession();
@@ -98,16 +112,17 @@ public class SimpleServer extends AbstractServer {
                         session.getTransaction().commit();
                     }
                 }
-                this.sendToAllClients(new Message("#RefreshPrices", priceList));
+                this.sendToAllClients(new Message("#RefreshPricesList", priceList,null));
+                session.close();
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            session.close();
         } else if (msgString.startsWith("#ShowSignInRequest")) {
             try {
                 session = sessionFactory.openSession();
                 ArrayList<Worker> workers = getAll(Worker.class);
                 client.sendToClient(new Message("#ShowSignIn", workers));
+                session.close();
             } catch (IOException e) {
                 e.printStackTrace();
             } catch (Exception e) {
@@ -124,6 +139,7 @@ public class SimpleServer extends AbstractServer {
                 } else {
                     client.sendToClient(new Message("#ShowReserve", parkingLots, subsriptionClients));
                 }
+                session.close();
             } catch (IOException e) {
                 throw new RuntimeException(e);
             } catch (Exception e) {
@@ -135,22 +151,21 @@ public class SimpleServer extends AbstractServer {
             if (!canBeAdded(reservation)) {
                 this.sendToAllClients(new Message("#ReservationCantBeDone"));
             } else {
-                session.beginTransaction();
-                session.save(reservation);
-                session.flush();
-                session.getTransaction().commit();
                 try {
+                    session = sessionFactory.openSession();
+                    session.beginTransaction();
+                    session.save(reservation);
+                    session.flush();
+                    session.getTransaction().commit();
                     List<Reservation> reservationList = getAll(Reservation.class);
                     //App.sendEmailMethod.SendMailTo(reservation.getEmail(), "Reserevation done", "Thanks for reserving a" +
-                            //" parking space in: " + reservation.getParkingLotID());
+                    //" parking space in: " + reservation.getParkingLotID());
                     this.sendToAllClients(new Message("#RefreshReservationList", reservationList));
                     client.sendToClient(new Message("#ReservationDone"));
-
-
+                    session.close();
                 } catch (Exception e) {
                     throw new RuntimeException(e);
                 }
-                session.close();
 
             }
         } else if (msgString.startsWith("#ShowCheckInRequest")) {
@@ -159,6 +174,7 @@ public class SimpleServer extends AbstractServer {
                 List<ParkingLot> parkingLotList = getAll(ParkingLot.class);
                 List<Reservation> reservationList = getAll(Reservation.class);
                 client.sendToClient(new Message("#ShowCheckIn", parkingLotList, reservationList));
+                session.close();
             } catch (IOException e) {
                 throw new RuntimeException(e);
             } catch (Exception e) {
@@ -172,16 +188,47 @@ public class SimpleServer extends AbstractServer {
             }
         } else if (msgString.startsWith("#ShowAdminPageRequset")) {
             try {
-                updateConnectedWorkerStatus((Worker) ((Message) msg).getObject(), true);
+                session = sessionFactory.openSession();
+                List<Worker> workerList = null;
+                workerList = getAll(Worker.class);
+                for (Worker worker : workerList) {
+                    if (worker.getId() == ((Worker) ((Message) msg).getObject()).getId()) {
+                        session.beginTransaction();
+                        worker.setConnected(true);
+                        session.save(worker);
+                        session.flush();
+                        session.getTransaction().commit();
+                        break;
+                    }
+                }
                 List<Complaint> complaintList = getAll(Complaint.class);
                 List<Refund> refundList = getAll(Refund.class);
-                client.sendToClient(new Message("#ShowAdminPage", ((Worker) ((Message) msg).getObject()), complaintList, refundList));
+                List<NewPrice> newPriceList = getAll(NewPrice.class);
+                client.sendToClient(new Message("#ShowAdminPage", ((Worker) ((Message) msg).getObject()), complaintList, refundList, newPriceList));
+                session.close();
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
 
         } else if (msgString.startsWith("#UpdateWorkerState")) {
-            updateConnectedWorkerStatus((Worker) ((Message) msg).getObject(), false);
+            try {
+                session = sessionFactory.openSession();
+                List<Worker> workerList = null;
+                workerList = getAll(Worker.class);
+                for (Worker worker : workerList) {
+                    if (worker.getId() == ((Worker) ((Message) msg).getObject()).getId()) {
+                        session.beginTransaction();
+                        worker.setConnected(false);
+                        session.save(worker);
+                        session.flush();
+                        session.getTransaction().commit();
+                        break;
+                    }
+                }
+                session.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         } else if (msgString.startsWith("#UpdateComplaint")) {
             try {
                 session = sessionFactory.openSession();
@@ -207,42 +254,37 @@ public class SimpleServer extends AbstractServer {
                     }
                 }
                 this.sendToAllClients(new Message("#RefreshComplaintList", complaints));
+                session.close();
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            session.close();
         } else if (msgString.startsWith("#ShowSubscribeRequest")) {
-            session = sessionFactory.openSession();
-            List<ParkingLot> parkingLots = null;
             try {
-                parkingLots = getAll(ParkingLot.class);
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-            try {
+                session = sessionFactory.openSession();
+                List<ParkingLot> parkingLots = getAll(ParkingLot.class);
                 client.sendToClient(new Message("#ShowSubscribe", parkingLots));
+                session.close();
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
 
         } else if (msgString.startsWith("#AddSubscriberRequest")) {
-            SubsriptionClient subsriptionClient = (SubsriptionClient) ((Message) msg).getObject();
-            session.beginTransaction();
-            session.save(subsriptionClient);
-            session.flush();
-            session.getTransaction().commit();
             try {
+                session = sessionFactory.openSession();
+                SubsriptionClient subsriptionClient = (SubsriptionClient) ((Message) msg).getObject();
+                session.beginTransaction();
+                session.save(subsriptionClient);
+                session.flush();
+                session.getTransaction().commit();
                 List<SubsriptionClient> subsriptionClients = getAll(SubsriptionClient.class);
                 for (SubsriptionClient subsriptionClient1 : subsriptionClients) {
                     if (subsriptionClient.getDriverId().equals(subsriptionClient1.getDriverId()))
                         client.sendToClient(new Message(("#ShowSubscriptionID"), subsriptionClient1.getId()));
                 }
+                session.close();
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
-
-            session.close();
-
         } else if (msgString.startsWith("#ShowComplaintRequest")) {
             try {
                 client.sendToClient(new Message("#ShowComplaint"));
@@ -267,118 +309,106 @@ public class SimpleServer extends AbstractServer {
             this.sendToAllClients(new Message("#RefreshComplaintList", complaintList));
             session.close();
         } else if (msgString.startsWith("#ShowAdminReserveParkingRequest")) {
-            Worker worker = (Worker) ((Message) msg).getObject();
-            List<ParkingLot> parkingLotList;
-            List<SubsriptionClient> subsriptionClients;
             try {
+                session = sessionFactory.openSession();
+                Worker worker = (Worker) ((Message) msg).getObject();
+                List<ParkingLot> parkingLotList;
+                List<SubsriptionClient> subsriptionClients;
                 parkingLotList = getAll(ParkingLot.class);
                 subsriptionClients = getAll(SubsriptionClient.class);
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-            try {
                 client.sendToClient(new Message("#ShowAdminReserveParking", parkingLotList, worker, subsriptionClients));
-            } catch (IOException e) {
+                session.close();
+            } catch (Exception e) {
                 throw new RuntimeException(e);
             }
         } else if (msgString.startsWith("#ShowReportsRequest")) {
             try {
+                session = sessionFactory.openSession();
                 List<Reservation> reservationList = getAll(Reservation.class);
                 List<Complaint> complaintList = getAll(Complaint.class);
                 Worker worker = (Worker) ((Message) msg).getObject();
                 List<ParkingLot> parkingLotList = getAll(ParkingLot.class);
                 client.sendToClient(new Message("#ShowReports", reservationList, complaintList, worker, parkingLotList));
+                session.close();
             } catch (IOException e) {
                 e.printStackTrace();
             } catch (Exception e) {
                 e.printStackTrace();
             }
         } else if (msgString.startsWith("#ShowCancelReservationReqeust")) {
-            session = sessionFactory.openSession();
-            List<Reservation> reservations = null;
-            List<SubsriptionClient> subsriptionClients = null;
-            List<Price> prices = null;
             try {
+                session = sessionFactory.openSession();
+                List<Reservation> reservations = null;
+                List<SubsriptionClient> subsriptionClients = null;
+                List<Price> prices = null;
                 reservations = getAll(Reservation.class);
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-            try {
                 subsriptionClients = getAll(SubsriptionClient.class);
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-            try {
                 prices = getAll(Price.class);
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-            try {
                 client.sendToClient(new Message("#ShowCancelReservation", reservations, subsriptionClients, prices));
-            } catch (IOException e) {
+                session.close();
+            } catch (Exception e) {
                 throw new RuntimeException(e);
             }
         } else if (msgString.startsWith("#CancelReservationRequest")) {
-            session = sessionFactory.openSession();
-            session.beginTransaction();
-            Reservation reservation = (Reservation) ((Message) msg).getObject();
-            SubsriptionClient subsriptionClient = (SubsriptionClient) ((Message) msg).getObject2();
-            session.delete(reservation);
-            if (subsriptionClient != null) {
-                try {
-                    List<SubsriptionClient> subsriptionClientList = getAll(SubsriptionClient.class);
-                    for (SubsriptionClient subsriptionClient1 : subsriptionClientList) {
-                        if (subsriptionClient.getId() == subsriptionClient1.getId())
-                            subsriptionClient1.setRemainingHours(subsriptionClient.getRemainingHours());
-                    }
-                } catch (Exception e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            session.flush();
-            session.getTransaction().commit();
-            session.close();
             try {
+                session = sessionFactory.openSession();
+                session.beginTransaction();
+                Reservation reservation = (Reservation) ((Message) msg).getObject();
+                SubsriptionClient subsriptionClient = (SubsriptionClient) ((Message) msg).getObject2();
+                session.delete(reservation);
+                if (subsriptionClient != null) {
+                    try {
+                        List<SubsriptionClient> subsriptionClientList = getAll(SubsriptionClient.class);
+                        for (SubsriptionClient subsriptionClient1 : subsriptionClientList) {
+                            if (subsriptionClient.getId() == subsriptionClient1.getId())
+                                subsriptionClient1.setRemainingHours(subsriptionClient.getRemainingHours());
+                        }
+                    } catch (Exception e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+                session.flush();
+                session.getTransaction().commit();
                 List<Reservation> reservationList = getAll(Reservation.class);
                 this.sendToAllClients(new Message("#RefreshReservationList", reservationList));
+                session.close();
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
         } else if (msgString.startsWith("#ShowMyProfileRequest")) {
-            session = sessionFactory.openSession();
             try {
+                session = sessionFactory.openSession();
                 List<Reservation> reservationList = getAll(Reservation.class);
                 List<SubsriptionClient> subsriptionClients = getAll(SubsriptionClient.class);
                 client.sendToClient(new Message("#ShowMyProfile", reservationList, subsriptionClients));
-            } catch (IOException e) {
-                throw new RuntimeException(e);
+                session.close();
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            session.close();
         } else if (msgString.startsWith("#ShowParkingLotStateRequest")) {
-            session=sessionFactory.openSession();
             try {
+                session = sessionFactory.openSession();
                 List<ParkingLot> parkingLotList = getAll(ParkingLot.class);
                 Worker worker = (Worker) ((Message) msg).getObject();
-                client.sendToClient(new Message("#ShowParkingLotState",worker,parkingLotList));
-            }catch (Exception e){
+                client.sendToClient(new Message("#ShowParkingLotState", worker, parkingLotList));
+                session.close();
+            } catch (Exception e) {
                 e.printStackTrace();
             }
 
         } else if (msgString.startsWith("#updateParkingLotRequest")) {
-            session=sessionFactory.openSession();
-            try{
-                ParkingLot choosenParkingLot= (ParkingLot) ((Message)msg).getObject();
-                Spot choosenSpot= (Spot) ((Message)msg).getObject2();
-                List<ParkingLot> parkingLotList=getAll(ParkingLot.class);
-                for (ParkingLot parkingLot:parkingLotList){
-                    if(choosenParkingLot.getId()==parkingLot.getId()){
+            try {
+                session = sessionFactory.openSession();
+                ParkingLot choosenParkingLot = (ParkingLot) ((Message) msg).getObject();
+                Spot choosenSpot = (Spot) ((Message) msg).getObject2();
+                List<ParkingLot> parkingLotList = getAll(ParkingLot.class);
+                for (ParkingLot parkingLot : parkingLotList) {
+                    if (choosenParkingLot.getId() == parkingLot.getId()) {
                         session.beginTransaction();
-                        List<Spot> spotList=parkingLot.getParkingLotStatus();
-                        for (Spot spot:spotList){
-                            if(spot.getDepthNum()==choosenSpot.getDepthNum() && spot.getFloorNum()==choosenSpot.getFloorNum() &&
-                            spot.getRowNum()==choosenSpot.getRowNum()){
+                        List<Spot> spotList = parkingLot.getParkingLotStatus();
+                        for (Spot spot : spotList) {
+                            if (spot.getDepthNum() == choosenSpot.getDepthNum() && spot.getFloorNum() == choosenSpot.getFloorNum() &&
+                                    spot.getRowNum() == choosenSpot.getRowNum()) {
                                 spot.setCar(choosenSpot.getCar());
                             }
                         }
@@ -387,42 +417,70 @@ public class SimpleServer extends AbstractServer {
                         session.getTransaction().commit();
                     }
                 }
-             this.sendToAllClients(new Message("#RefreshParkingLots",parkingLotList));
+                this.sendToAllClients(new Message("#RefreshParkingLots", parkingLotList));
+                session.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else if (msgString.startsWith("#UpdateNewPrice")) {
+            try {
+                session = sessionFactory.openSession();
+                session.beginTransaction();
+                NewPrice updatedNewPrice = (NewPrice) ((Message) msg).getObject();
+                List<NewPrice> newPriceList = getAll(NewPrice.class);
+                List<Price> priceList = getAll(Price.class);
+                for (Price price : priceList) {
+                    if (price.getId() == updatedNewPrice.getPriceId()) {
+                        price.setPrice(updatedNewPrice.getNewPrice());
+                        session.update(price);
+                        session.flush();
+                        break;
+                    }
+                }
+                for (NewPrice newPrice : newPriceList) {
+                    if (newPrice.getId() == updatedNewPrice.getId()) {
+                        newPriceList.remove(newPrice);
+                        session.delete(newPrice);
+                        session.flush();
+                        session.getTransaction().commit();
+                        this.sendToAllClients(new Message("#RefreshPricesList", priceList,newPriceList));
+                        session.close();
+                        break;
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else if (msgString.startsWith("#RemoveNewPrice")) {
+            try {
+                session = sessionFactory.openSession();
+                session.beginTransaction();
+                NewPrice updatedNewPrice = (NewPrice) ((Message) msg).getObject();
+                List<NewPrice> newPriceList = getAll(NewPrice.class);
+                List<Price> priceList = getAll(Price.class);
+                for (NewPrice newPrice : newPriceList) {
+                    if (newPrice.getId() == updatedNewPrice.getId()) {
+                        newPriceList.remove(newPrice);
+                        session.delete(newPrice);
+                        session.flush();
+                        session.getTransaction().commit();
+                        this.sendToAllClients(new Message("#RefreshPricesList", priceList,newPriceList));
+                        session.close();
+                        break;
+                    }
+                }
             }catch (Exception e){
                 e.printStackTrace();
             }
-            session.close();
-
         }
-
     }
-    public static<T> ArrayList<T> getAll(Class<T> object) {
-        CriteriaBuilder builder=session.getCriteriaBuilder();
-        CriteriaQuery<T> query =builder.createQuery(object);
+    public static <T> ArrayList<T> getAll(Class<T> object) {
+        CriteriaBuilder builder = session.getCriteriaBuilder();
+        CriteriaQuery<T> query = builder.createQuery(object);
         query.from(object);
-        ArrayList<T> data= (ArrayList<T>) session.createQuery(query).getResultList();
+        ArrayList<T> data = (ArrayList<T>) session.createQuery(query).getResultList();
         return data;
     }
-    public void updateConnectedWorkerStatus(Worker updateWorker, boolean state) {
-        session = sessionFactory.openSession();
-        List<Worker> workerList = null;
-        try {
-            workerList = getAll(Worker.class);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-        for (Worker worker : workerList) {
-            if (worker.getId() == updateWorker.getId()) {
-                session.beginTransaction();
-                worker.setConnected(state);
-                session.save(worker);
-                session.flush();
-                session.getTransaction().commit();
-                break;
-            }
-        }
-    }
-
     public void generateParkingLots() {
         ParkingLot parkingLot1 = new ParkingLot(3, 5, 3);
         session.save(parkingLot1);
@@ -506,7 +564,7 @@ public class SimpleServer extends AbstractServer {
 
     }
 
-   private static void addWorkerToParkingLot() throws Exception {
+    private static void addWorkerToParkingLot() throws Exception {
         List<Worker> workers = getAll(Worker.class);
         List<ParkingLot> parkingLots = getAll(ParkingLot.class);
 
@@ -618,6 +676,7 @@ public class SimpleServer extends AbstractServer {
         configuration.addAnnotatedClass(Refund.class);
         configuration.addAnnotatedClass(Reservation.class);
         configuration.addAnnotatedClass(SubsriptionClient.class);
+        configuration.addAnnotatedClass(NewPrice.class);
 
         ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder().applySettings(configuration.getProperties()).build();
         return configuration.buildSessionFactory(serviceRegistry);

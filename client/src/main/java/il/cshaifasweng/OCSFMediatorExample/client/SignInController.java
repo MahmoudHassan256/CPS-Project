@@ -49,49 +49,53 @@ public class SignInController {
             e.printStackTrace();
         }
     }
+
     private String hashPassword(String Password) throws NoSuchAlgorithmException {
         MessageDigest md = MessageDigest.getInstance("SHA-512");
-        byte[] hash=md.digest(Password.getBytes());
-        StringBuilder sb=new StringBuilder();
-        for (byte b:hash){
-            sb.append(String.format("%02x",b));
+        byte[] hash = md.digest(Password.getBytes());
+        StringBuilder sb = new StringBuilder();
+        for (byte b : hash) {
+            sb.append(String.format("%02x", b));
         }
         return sb.toString();
     }
+
     @FXML
     void signin(ActionEvent event) throws NoSuchAlgorithmException {
-    if(emailbox.getText()=="" || passwordbox.getText()==""){
-        errormsg.setVisible(true);
-        errormsg.setText("Fill All Fields!!");
-    }
-    else {
-        errormsg.setVisible(false);
-        for (Worker worker:workerList){
-         if(worker.getEmail().toLowerCase().equals(emailbox.getText().toLowerCase())){
-             if(worker.getPassword().equals(hashPassword(passwordbox.getText()))){
-                 if(!worker.isConnected()){
-                     errormsg.setText("is signed");
-                     try {
-                         SimpleClient.getClient().sendToServer(new Message("#ShowAdminPageRequset",worker));
-                     } catch (IOException e) {
-                         throw new RuntimeException(e);
-                     }
-                 }
-                 else {
-                     errormsg.setText("Account is Already Connecter!");
-                 }
-             }
-             else {
-                 errormsg.setText("Login Failed: Your Email or Password is incorrect!!");
+        if (emailbox.getText() == "" || passwordbox.getText() == "") {
+            errormsg.setVisible(true);
+            errormsg.setText("Fill All Fields!!");
+        } else {
+            errormsg.setVisible(false);
+            for (Worker worker : workerList) {
+                if (worker.getEmail().toLowerCase().equals(emailbox.getText().toLowerCase())) {
+                    if (worker.getPassword().equals(hashPassword(passwordbox.getText()))) {
+                        if (!worker.isConnected()) {
+                            errormsg.setText("Is signed");
+                            try {
+                                SimpleClient.getClient().sendToServer(new Message("#ShowAdminPageRequset", worker));
+                                break;
+                            } catch (IOException e) {
+                                throw new RuntimeException(e);
+                            }
+                        } else {
+                            errormsg.setText("Account is Already Connected!");
+                        }
+                    } else {
+                        errormsg.setText("Login Failed: Your Email or Password is incorrect!!");
 
-             }
-         }
-     }
-        errormsg.setVisible(true);
+                    }
+                }
+            }
+            if (errormsg.getText().equals("error msg"))
+                errormsg.setText("Something went wrong please try again!!");
+
+            errormsg.setVisible(true);
+        }
     }
-    }
+
     @FXML
-    void initialize(){
+    void initialize() {
         errormsg.setVisible(false);
     }
 

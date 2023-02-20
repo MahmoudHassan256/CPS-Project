@@ -92,6 +92,7 @@ public class SimpleClient extends AbstractClient {
 		else if (strmsg.startsWith("#ShowAdminPage")) {
 			Message event= (Message) msg;
 			List<Complaint> complaintList=(List<Complaint>) event.getObject2();
+			List<NewPrice> newPriceList= (List<NewPrice>) event.getObject4();
 			Worker worker=(Worker) event.getObject();
 			if(worker.getOccupation().startsWith("Parking Lot")) {
 				ParkingLotWorkerPageController.setWorker((Worker) event.getObject());
@@ -102,6 +103,7 @@ public class SimpleClient extends AbstractClient {
 				}
 			} else if (worker.getOccupation().startsWith("Chain")) {
 				ChainManagerPageController.setWorker(worker);
+				ChainManagerPageController.setNewPriceList(newPriceList);
 				try {
 					App.setRoot("chainmanagerpage");
 				} catch (IOException e) {
@@ -117,11 +119,8 @@ public class SimpleClient extends AbstractClient {
 				}
 			}
 		}
-		else if (strmsg.startsWith("#RefreshPrices")) {
-			EventBus.getDefault().post(new RefreshPricesEvent((Message) msg));
-		}
-		else if(strmsg.startsWith("#ChangePriceChainRequest")){
-			EventBus.getDefault().post(new ChangePriceChainEvent((Message)msg));
+		else if (strmsg.startsWith("#RefreshPricesList")) {
+			EventBus.getDefault().post(new RefreshPricesListEvent((Message)msg));
 		}
 		else if (strmsg.startsWith("#RefreshComplaintList")) {
 			EventBus.getDefault().post(new RefreshComplaintListEvent((Message)msg));
