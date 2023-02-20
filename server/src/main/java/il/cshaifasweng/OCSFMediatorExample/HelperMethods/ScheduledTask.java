@@ -92,6 +92,7 @@ public class ScheduledTask extends TimerTask {
         configuration.addAnnotatedClass(Refund.class);
         configuration.addAnnotatedClass(Reservation.class);
         configuration.addAnnotatedClass(SubsriptionClient.class);
+        configuration.addAnnotatedClass(NewPrice.class);
         ServiceRegistry serviceRegistry=new StandardServiceRegistryBuilder().applySettings(configuration.getProperties()).build();
         return configuration.buildSessionFactory(serviceRegistry);
     }

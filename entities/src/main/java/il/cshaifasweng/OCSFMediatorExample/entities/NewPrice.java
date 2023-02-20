@@ -1,46 +1,43 @@
 package il.cshaifasweng.OCSFMediatorExample.entities;
 
-
 import jakarta.persistence.*;
 
 import java.io.Serializable;
 
 @Entity
-@Table(name="prices")
-public class Price implements Serializable {
-    public Price(String parkingType, String paymentPlan, String price) {
-        this.parkingType = parkingType;
-        this.paymentPlan = paymentPlan;
-        this.price = price;
-    }
-
+public class NewPrice implements Serializable  {
     @Id
+    @Column(name = "id", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private int id;
 
     private String parkingType;
     private String paymentPlan;
     private String price;
+    private String newPrice;
+    private int priceId;
 
-    @Override
-    public String toString() {
-        return
-                "id=" + id +
-                "\nparkingType=" + parkingType  +
-                "\npaymentPlan=" + paymentPlan +
-                "\nprice=" + price;
+    public NewPrice() {
     }
 
-    public Price() {
-
+    public int getPriceId() {
+        return priceId;
     }
 
-    public Long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setPriceId(int priceId) {
+        this.priceId = priceId;
+    }
+
+    public String getNewPrice() {
+        return newPrice;
+    }
+
+    public void setNewPrice(String NewPrice) {
+        this.newPrice = NewPrice;
     }
 
     public String getParkingType() {
