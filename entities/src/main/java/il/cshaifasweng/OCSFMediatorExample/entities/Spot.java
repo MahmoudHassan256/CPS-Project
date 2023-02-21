@@ -3,7 +3,7 @@ package il.cshaifasweng.OCSFMediatorExample.entities;
 import java.io.Serializable;
 
 
-public class Spot implements Serializable {
+public class Spot implements Serializable,Comparable<Spot> {
 
     private Object car;//open/damaged/{car info in string}
     private int rowNum;
@@ -62,4 +62,14 @@ public class Spot implements Serializable {
         this.car = car;
     }
 
+    @Override
+    public int compareTo(Spot other) {
+        if(this.rowNum==other.rowNum){
+            if(this.floorNum==other.floorNum){
+                return this.depthNum-other.depthNum;
+            }
+            return this.floorNum-other.floorNum;
+        }
+        return this.rowNum-other.rowNum;
+    }
 }
