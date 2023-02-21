@@ -16,28 +16,6 @@ public class Reservation implements Serializable {
     private String licensePlate;
     private boolean notified;
     private boolean expired;
-
-
-
-    @Override
-    public String toString() {
-        return "Reservation{" +
-                "id=" + id +
-                ", driverID='" + driverID + '\'' +
-                ", licensePlate='" + licensePlate + '\'' +
-                ", parkingLotID=" + parkingLotID +
-                ", timeOfArrival=" + timeOfArrival +
-                ", timeOfDeparture=" + timeOfDeparture +
-                ", email='" + email + '\'' +
-                ", typeOfClient='" + typeOfClient + '\'' +
-                ", subsriptionID='" + subsriptionID + '\'' +
-                ", creditCardNumber='" + creditCardNumber + '\'' +
-                ", expirationDate=" + expirationDate +
-                ", cvv='" + cvv + '\'' +
-                ", creditCardHolderID='" + creditCardHolderID + '\'' +
-                '}';
-    }
-
     private Integer parkingLotID;
     private LocalDateTime timeOfArrival;
     @Column(nullable = true)

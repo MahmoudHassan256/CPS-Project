@@ -627,8 +627,8 @@ public class SimpleServer extends AbstractServer {
                 depature = ((Reservation) object).getTimeOfDeparture();
             } else if (object.getClass().equals(Spot.class) && ((Spot) object).getCar().getClass().equals(Vehicle.class)) {
                 id = ((Vehicle) (((Spot) object).getCar())).getId();
-                arrival = ((Vehicle) (((Spot) object).getCar())).getArrivalTime();
-                depature = ((Vehicle) (((Spot) object).getCar())).getExitingTime();
+                arrival = ((Vehicle) (((Spot) object).getCar())).getTimeOfArrival();
+                depature = ((Vehicle) (((Spot) object).getCar())).getTimeOfDeparture();
 
             } else {
                 return false;
@@ -641,7 +641,7 @@ public class SimpleServer extends AbstractServer {
                     for (Object state : array) {
                         if (state.getClass().equals(Spot.class) && ((Spot) state).getCar().getClass().equals(Vehicle.class)) {
                             Vehicle vehicle = ((Vehicle) (((Spot) state).getCar()));
-                            if (vehicle.getExitingTime().isBefore(arrival) || depature.isBefore(vehicle.getArrivalTime())) {
+                            if (vehicle.getTimeOfDeparture().isBefore(arrival) || depature.isBefore(vehicle.getTimeOfArrival())) {
                                 totalSpaces += 1;
                             }
                         }
