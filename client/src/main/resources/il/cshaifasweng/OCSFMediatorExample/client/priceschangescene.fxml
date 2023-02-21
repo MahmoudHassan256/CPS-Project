@@ -2,7 +2,6 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
@@ -32,7 +31,7 @@
                   <Insets bottom="20.0" />
                </VBox.margin>
             </Text>
-            <TableView fx:id="pricestable" prefHeight="203.0" prefWidth="727.0">
+            <TableView fx:id="pricestable" onMouseClicked="#choosePrice" prefHeight="203.0" prefWidth="727.0">
               <columns>
                   <TableColumn fx:id="id_t_c" prefWidth="26.4000244140625" text="Id" />
                 <TableColumn fx:id="parkingtype_t_c" prefWidth="255.20001220703125" text="Parking Type" />
@@ -45,14 +44,14 @@
             </TableView>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                <children>
-                  <VBox alignment="CENTER" prefHeight="200.0" prefWidth="300.0">
+                  <VBox alignment="CENTER" prefHeight="100.0" prefWidth="144.0">
                      <children>
                         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Id">
                            <font>
                               <Font size="18.0" />
                            </font>
                         </Text>
-                        <ComboBox fx:id="idbox" onAction="#chooseid" prefHeight="26.0" prefWidth="250.0" />
+                        <TextField fx:id="idbox" editable="false" />
                      </children>
                      <HBox.margin>
                         <Insets right="30.0" />
@@ -65,20 +64,20 @@
                               <Font size="18.0" />
                            </font>
                         </Text>
-                        <ComboBox fx:id="parkingtypebox" prefHeight="26.0" prefWidth="257.0" />
+                        <TextField fx:id="parkingtypebox" editable="false" />
                      </children>
                      <HBox.margin>
                         <Insets right="30.0" />
                      </HBox.margin>
                   </VBox>
-                  <VBox alignment="CENTER" prefHeight="200.0" prefWidth="300.0">
+                  <VBox alignment="CENTER" prefHeight="100.0" prefWidth="203.0">
                      <children>
                         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Payment Method">
                            <font>
                               <Font size="18.0" />
                            </font>
                         </Text>
-                        <ComboBox fx:id="paymentmethodbox" prefHeight="26.0" prefWidth="303.0" />
+                        <TextField fx:id="paymentmethodbox" editable="false" />
                      </children>
                      <HBox.margin>
                         <Insets right="30.0" />
@@ -91,7 +90,7 @@
                               <Font size="18.0" />
                            </font>
                         </Text>
-                        <TextField fx:id="pricebtn" prefHeight="26.0" prefWidth="238.0" />
+                        <TextField fx:id="pricebox" prefHeight="26.0" prefWidth="238.0" promptText="New Price..." />
                      </children>
                      <HBox.margin>
                         <Insets right="30.0" />
@@ -104,7 +103,12 @@
             </HBox>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                <children>
-                  <Button fx:id="updatebtn" contentDisplay="CENTER" mnemonicParsing="false" onAction="#updatepricestable" stylesheets="@styles/clickableBtn.css" text="Update" textAlignment="RIGHT" />
+                  <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
+                     <children>
+                        <Button fx:id="updatebtn" contentDisplay="CENTER" mnemonicParsing="false" onAction="#updatepricestable" prefHeight="49.0" prefWidth="108.0" stylesheets="@styles/clickableBtn.css" text="Update" textAlignment="RIGHT" />
+                        <Text fx:id="errorMsg" fill="RED" strokeType="OUTSIDE" strokeWidth="0.0" text="Error Msg" />
+                     </children>
+                  </VBox>
                </children>
             </HBox>
          </children>

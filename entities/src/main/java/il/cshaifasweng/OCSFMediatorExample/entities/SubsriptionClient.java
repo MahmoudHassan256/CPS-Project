@@ -31,6 +31,7 @@ public class SubsriptionClient implements Serializable {
     public String idHolder;
     public String email;
     public int RemainingHours;
+    private boolean notified;
 
     public SubsriptionClient() {
     }
@@ -52,6 +53,7 @@ public class SubsriptionClient implements Serializable {
         this.idHolder = idHolder;
         this.email = email;
         RemainingHours = remainingHours;
+        this.notified=false;
     }
 
     public int getId() {
@@ -96,6 +98,14 @@ public class SubsriptionClient implements Serializable {
 
     public void setSubscriptionExpDate(LocalDateTime subscriptionExpDate) {
         this.subscriptionExpDate = subscriptionExpDate;
+    }
+
+    public boolean isNotified() {
+        return notified;
+    }
+
+    public void setNotified(boolean notified) {
+        this.notified = notified;
     }
 
     public LocalTime getTimeOfDepature() {

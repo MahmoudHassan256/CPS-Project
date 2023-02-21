@@ -10,90 +10,71 @@ import java.time.LocalDateTime;
 public class Vehicle implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Long id;
-
-    @ManyToOne(optional = true)
-    @JoinColumn(name = "parking_lot_id")
-    private ParkingLot parkingLot;
-    private String DriverId;
-    private String LicensePlateNumber;
-    private LocalDateTime ArrivalTime;
-    private LocalDateTime ExitingTime;
-    private String Type;
-    private int floorNumber;
-    private int rowNumber;
-    private int depthNumber;
-
-    public ParkingLot getParkingLot() {
-        return parkingLot;
-    }
-
-    public void setParkingLot(ParkingLot parkingLot) {
-        this.parkingLot = parkingLot;
-    }
+    private int id;
+    private String driverID;
+    private String licensePlate;
+    private Integer parkingLotID;
+    private LocalDateTime timeOfArrival;
+    private LocalDateTime timeOfDeparture;
+    private String Type;//client type
 
     public Vehicle() {
+
     }
 
-    public int getFloorNumber() {
-        return floorNumber;
+    public String getDriverID() {
+        return driverID;
     }
 
-    public void setFloorNumber(int floorNumber) {
-        this.floorNumber = floorNumber;
+
+
+    public Vehicle(String driverID, String licensePlate, Integer parkingLotID, LocalDateTime timeOfArrival, LocalDateTime timeOfDeparture, String type) {
+        this.driverID = driverID;
+        this.licensePlate = licensePlate;
+        this.parkingLotID = parkingLotID;
+        this.timeOfArrival = timeOfArrival;
+        this.timeOfDeparture = timeOfDeparture;
+        Type = type;
     }
 
-    public int getRowNumber() {
-        return rowNumber;
-    }
-
-    public void setRowNumber(int rowNumber) {
-        this.rowNumber = rowNumber;
-    }
-
-    public int getDepthNumber() {
-        return depthNumber;
-    }
-
-    public void setDepthNumber(int depthNumber) {
-        this.depthNumber = depthNumber;
-    }
-
-    public Long getId() {
+    public int getId() {
         return id;
     }
-    
 
-    public String getDriverId() {
-        return DriverId;
+    public void setDriverID(String driverID) {
+        this.driverID = driverID;
     }
 
-    public void setDriverId(String driverId) {
-        DriverId = driverId;
+    public String getLicensePlate() {
+        return licensePlate;
     }
 
-    public String getLicensePlateNumber() {
-        return LicensePlateNumber;
+    public void setLicensePlate(String licensePlate) {
+        this.licensePlate = licensePlate;
     }
 
-    public void setLicensePlateNumber(String licensePlateNumber) {
-        LicensePlateNumber = licensePlateNumber;
+    public Integer getParkingLotID() {
+        return parkingLotID;
     }
 
-    public LocalDateTime getArrivalTime() {
-        return ArrivalTime;
+    public void setParkingLotID(Integer parkingLotID) {
+        this.parkingLotID = parkingLotID;
     }
 
-    public void setArrivalTime(LocalDateTime arrivalTime) {
-        ArrivalTime = arrivalTime;
+    public LocalDateTime getTimeOfArrival() {
+        return timeOfArrival;
     }
 
-    public LocalDateTime getExitingTime() {
-        return ExitingTime;
+    public void setTimeOfArrival(LocalDateTime timeOfArrival) {
+        this.timeOfArrival = timeOfArrival;
     }
 
-    public void setExitingTime(LocalDateTime exitingTime) {
-        ExitingTime = exitingTime;
+    public LocalDateTime getTimeOfDeparture() {
+        return timeOfDeparture;
+    }
+
+    public void setTimeOfDeparture(LocalDateTime timeOfDeparture) {
+        this.timeOfDeparture = timeOfDeparture;
     }
 
     public String getType() {
@@ -103,10 +84,4 @@ public class Vehicle implements Serializable {
     public void setType(String type) {
         Type = type;
     }
-    public void setPosition(int floor,int row,int depth){
-    floorNumber=floor;
-    rowNumber=row;
-    depthNumber=depth;
-    }
-
 }

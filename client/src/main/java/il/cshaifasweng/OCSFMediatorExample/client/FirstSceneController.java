@@ -1,5 +1,6 @@
 package il.cshaifasweng.OCSFMediatorExample.client;
 
+        import il.cshaifasweng.OCSFMediatorExample.entities.Message;
         import javafx.event.ActionEvent;
         import javafx.fxml.FXML;
         import javafx.scene.control.Button;
@@ -59,7 +60,7 @@ public class FirstSceneController {
 
     @FXML
     void gotoreserve(ActionEvent event) throws IOException {
-        SimpleClient.getClient().sendToServer("#ShowReserveRequest");
+        SimpleClient.getClient().sendToServer(new Message("#ShowReserveRequest"));
 
     }
 
@@ -88,7 +89,7 @@ public class FirstSceneController {
     }
 
     @FXML
-    void gotomyprofile(ActionEvent event) {
-
+    void gotomyprofile(ActionEvent event) throws IOException {
+        SimpleClient.getClient().sendToServer("#ShowMyProfileRequest");
     }
 }

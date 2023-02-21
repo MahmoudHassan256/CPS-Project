@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.cshaifasweng.OCSFMediatorExample.client.ProfileController">
+   <children>
+      <ImageView fitHeight="800.0" fitWidth="1280.0" layoutX="180.0" layoutY="145.0" opacity="0.5" pickOnBounds="true" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <image>
+            <Image url="@images/background.png" />
+         </image>
+      </ImageView>
+      <Button fx:id="backBtn" layoutX="1206.0" layoutY="18.0" mnemonicParsing="false" onAction="#gotoprimary" stylesheets="@styles/clickableBtn.css" text="Back" />
+      <HBox alignment="CENTER" layoutX="503.0" layoutY="190.0" prefHeight="75.0" prefWidth="200.0" style="-fx-background-color: white;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="100.0">
+         <children>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="My Profile">
+               <font>
+                  <Font size="36.0" />
+               </font>
+            </Text>
+         </children>
+      </HBox>
+      <HBox alignment="CENTER" layoutX="400.0" layoutY="203.0" prefHeight="45.0" prefWidth="1280.0" spacing="5.0" style="-fx-background-color: white;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="203.0">
+         <children>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Car Number" wrappingWidth="139.5660858154297">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Text>
+            <TextField fx:id="tfcarnumber" onAction="#updatescene" prefHeight="0.0" prefWidth="289.0" promptText="enter your car number..." />
+         </children>
+         <padding>
+            <Insets left="10.0" />
+         </padding>
+      </HBox>
+      <HBox fx:id="errormsgbox" alignment="CENTER" layoutX="540.0" layoutY="633.0" prefHeight="100.0" prefWidth="200.0">
+         <children>
+            <Text fx:id="errormsg" fill="RED" strokeType="OUTSIDE" strokeWidth="0.0" text="errormsg">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Text>
+         </children>
+      </HBox>
+      <HBox fx:id="reservationbox" alignment="CENTER" layoutX="385.0" layoutY="293.0" prefHeight="330.0" prefWidth="374.0" style="-fx-background-color: white;" AnchorPane.leftAnchor="30.0" AnchorPane.topAnchor="300.0">
+         <children>
+            <TableView fx:id="reservationTable" prefHeight="334.0" prefWidth="372.0">
+              <columns>
+                <TableColumn fx:id="id" prefWidth="30.399984121322632" text="Id" />
+                <TableColumn fx:id="parkingLotID" prefWidth="114.13334274291992" text="Parking Lot ID" />
+                  <TableColumn fx:id="timeOfArrival" prefWidth="100.79995727539062" text="Time Of Arrival" />
+                  <TableColumn fx:id="timeOfDeparture" prefWidth="126.13340759277344" text="Time Of Departure" />
+              </columns>
+            </TableView>
+         </children>
+      </HBox>
+      <VBox fx:id="subscriptionbox" layoutX="510.0" layoutY="274.0" prefHeight="330.0" prefWidth="475.0" style="-fx-background-color: white;" AnchorPane.topAnchor="300.0">
+         <children>
+            <TableView fx:id="subscriptionTable" prefHeight="327.0" prefWidth="455.0">
+              <columns>
+                <TableColumn fx:id="sT_id" prefWidth="35.73339921236038" text="Id" />
+                <TableColumn fx:id="subscriptionType" prefWidth="114.66659164428711" text="Subscription Type" />
+                  <TableColumn fx:id="RemainingHours" prefWidth="121.06672668457031" text="Remaining Hours" />
+                  <TableColumn fx:id="subscriptionExpDate" prefWidth="198.4000244140625" text="Subscription Experation Date" />
+              </columns>
+            </TableView>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>

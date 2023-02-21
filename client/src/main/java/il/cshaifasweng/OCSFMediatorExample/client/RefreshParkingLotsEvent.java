@@ -2,12 +2,10 @@ package il.cshaifasweng.OCSFMediatorExample.client;
 
 import il.cshaifasweng.OCSFMediatorExample.entities.Message;
 
-public class ShowAdminReserveParkingEvent {
+public class RefreshParkingLotsEvent {
     private Object parkingLotList;
-    private Object worker;
-    public ShowAdminReserveParkingEvent(Message msg) {
+    public RefreshParkingLotsEvent(Message msg) {
         parkingLotList=msg.getObject();
-        worker=msg.getObject2();
     }
 
     public Object getParkingLotList() {
@@ -16,13 +14,5 @@ public class ShowAdminReserveParkingEvent {
 
     public void setParkingLotList(Object parkingLotList) {
         this.parkingLotList = parkingLotList;
-    }
-
-    public Object getWorker() {
-        return worker;
-    }
-
-    public void setWorker(Object worker) {
-        this.worker = worker;
     }
 }

@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.cshaifasweng.OCSFMediatorExample.client.ReportsController">
+   <children>
+      <ImageView fitHeight="800.0" fitWidth="1280.0" layoutX="173.0" layoutY="81.0" opacity="0.5" pickOnBounds="true" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <image>
+            <Image url="@images/background.png" />
+         </image>
+      </ImageView>
+      <Button fx:id="backBtn" layoutX="1206.0" layoutY="18.0" mnemonicParsing="false" onAction="#goback" stylesheets="@styles/clickableBtn.css" text="Back" />
+      <HBox alignment="CENTER" layoutX="529.0" layoutY="350.0" prefHeight="74.0" prefWidth="1280.0" style="-fx-background-color: white;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="100.0">
+         <children>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Reports">
+               <font>
+                  <Font size="36.0" />
+               </font>
+            </Text>
+         </children>
+      </HBox>
+      <TabPane layoutX="504.0" layoutY="390.0" prefHeight="442.0" prefWidth="1280.0" style="-fx-background-color: white;" tabClosingPolicy="UNAVAILABLE" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="250.0">
+        <tabs>
+          <Tab text="Show Reservation Report">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <TableView fx:id="reservationTable" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                          <columns>
+                            <TableColumn fx:id="rT_id" prefWidth="32.533321142196655" text="Id" />
+                            <TableColumn fx:id="creditCardHolderID" prefWidth="102.93331146240234" text="Holder ID" />
+                              <TableColumn fx:id="creditCardNumber" minWidth="0.0" prefWidth="137.33338928222656" text="Credit Card Number" />
+                              <TableColumn fx:id="cvv" prefWidth="58.66664123535156" text="CVV" />
+                              <TableColumn fx:id="driverID" prefWidth="90.933349609375" text="Driver ID" />
+                              <TableColumn fx:id="email" prefWidth="65.59994506835938" text="Email" />
+                              <TableColumn fx:id="expirationDate" prefWidth="102.39999389648438" text="Expiration Date" />
+                              <TableColumn fx:id="licensePlate" prefWidth="105.066650390625" text="License Plate" />
+                              <TableColumn fx:id="parkingLotID" prefWidth="108.5333251953125" text="Parking Lot ID" />
+                              <TableColumn fx:id="subsriptionID" prefWidth="125.86669921875" text="Subsription ID" />
+                              <TableColumn fx:id="timeOfArrival" prefWidth="110.1334228515625" text="Time Of Arrival" />
+                              <TableColumn fx:id="timeOfDeparture" prefWidth="133.3333740234375" text="Time Of Departure" />
+                              <TableColumn fx:id="typeOfClient" prefWidth="116.00006103515625" text="Type Of Client" />
+                          </columns>
+                        </TableView>
+                     </children>
+                  </AnchorPane>
+            </content>
+          </Tab>
+          <Tab text="Show Parking Lot States Report">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <TableView fx:id="parkinglotTable" prefHeight="160.0" prefWidth="1280.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                          <columns>
+                            <TableColumn fx:id="plT_id" prefWidth="75.0" text="id" />
+                            <TableColumn fx:id="plT_capacity" prefWidth="75.0" text="Capacity" />
+                          </columns>
+                        </TableView>
+                     </children>
+                  </AnchorPane>
+            </content>
+          </Tab>
+            <Tab text="Show Complaints Report">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <TableView fx:id="complaintTable" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                          <columns>
+                              <TableColumn fx:id="cT_id" prefWidth="27.999970257282257" text="Id" />
+                            <TableColumn fx:id="carNumber" prefWidth="110.39999008178711" text="Car Number" />
+                            <TableColumn fx:id="description" prefWidth="188.8000030517578" text="Description" />
+                              <TableColumn fx:id="refundValue" prefWidth="99.20001220703125" text="Refund Value" />
+                              <TableColumn fx:id="response" prefWidth="291.199951171875" text="Response" />
+                              <TableColumn fx:id="status" prefWidth="80.800048828125" text="Status" />
+                              <TableColumn fx:id="submitionDate" prefWidth="144.00006103515625" text="Submition Date" />
+                          </columns>
+                        </TableView>
+                     </children>
+                  </AnchorPane>
+              </content>
+            </Tab>
+        </tabs>
+      </TabPane>
+   </children>
+</AnchorPane>

@@ -7,7 +7,10 @@
 
 package il.cshaifasweng.OCSFMediatorExample.client;
 
-import il.cshaifasweng.OCSFMediatorExample.entities.SubsriptionClient;
+import il.cshaifasweng.OCSFMediatorExample.entities.Message;
+import il.cshaifasweng.OCSFMediatorExample.entities.ParkingLot;
+import il.cshaifasweng.OCSFMediatorExample.entities.Reservation;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -16,12 +19,18 @@ import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
-
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 
 public class CheckInController {
@@ -30,20 +39,28 @@ public class CheckInController {
     List<String> minLst = Arrays.asList("00", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23",
             "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41", "42", "43", "44",
             "45", "46", "47", "48", "49", "50", "51", "52", "53", "54", "55", "56", "57", "58", "59");
-    List<String> monthLst = Arrays.asList("01", "02", "03", "04", "05", "06", "07", "08,", "09", "10,", "11", "12");
+    List<String> monthLst = Arrays.asList("01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12");
     List<String> yearLst = Arrays.asList("23", "24", "25", "26", "27", "28");
 
     ObservableList<String> hourLst1 = FXCollections.observableArrayList("00", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23");
 
-    //public static List<Reservation>
-    public static List<SubsriptionClient> subsriptionClients;
+    private static List<Reservation> reservations;
+    private static List<ParkingLot> parkingLots;
 
-    public static List<SubsriptionClient> getSubsriptionClients() {
-        return subsriptionClients;
+    public static List<Reservation> getReservations() {
+        return reservations;
     }
 
-    public static void setSubsriptionClients(List<SubsriptionClient> subsriptionClients) {
-        CheckInController.subsriptionClients = subsriptionClients;
+    public static void setReservations(List<Reservation> reservations) {
+        CheckInController.reservations = reservations;
+    }
+
+    public static List<ParkingLot> getParkingLots() {
+        return parkingLots;
+    }
+
+    public static void setParkingLots(List<ParkingLot> parkingLots) {
+        CheckInController.parkingLots = parkingLots;
     }
 
     @FXML // fx:id="backBtn"
@@ -52,6 +69,8 @@ public class CheckInController {
     @FXML // fx:id="cbreserve"
     private CheckBox cbreserve; // Value injected by FXMLLoader
 
+    @FXML // fx:id="errormsg"
+    private Text errormsg; // Value injected by FXMLLoader
     @FXML // fx:id="cbsubscribe"
     private CheckBox cbsubscribe; // Value injected by FXMLLoader
 
@@ -146,27 +165,64 @@ public class CheckInController {
 
     @FXML
     void checkinbtn(ActionEvent event) {
-        if (cbsubscribe.isSelected()) {
-            //you checked subscriber
+        if (cbreserve.isSelected()){
+            if(cbsubscribe.isSelected()){
+                //im subscriber
+                if(!tflicenseplt.getText().isEmpty()){
+                    for(Reservation reservation:reservations) {
+                        if (reservation.getLicensePlate().equals(tflicenseplt.getText()) && reservation.getSubsriptionID().equals(tfsubid.getText())) {
+                            //Check-in info are good
+                        }
+                    }
+                    errormsg.setText("One or more of your information doesn't match");
+                    errormsg.setVisible(true);
+                    }
+                else {
+                    errormsg.setText("Please fill all fields");
+                    errormsg.setVisible(true);
+                }
 
-            tfsubid.getText();
+            }
+            else {
+                //one-timer
+                for (Reservation reservation : reservations) {
+                    if (reservation.getLicensePlate().equals(tflicenseplt.getText())) {
+                        //Check-in info are good
+                    }
+                }
+                errormsg.setText("No reservation found");
+                errormsg.setVisible(true);
+                }
         }
-    }
+        else{
+            //mezdamen
+            if(!tfdriverid.getText().isEmpty() && !tfcarnum.getText().isEmpty() && !tfmail.getText().isEmpty() && !combodephour.getValue().isEmpty()
+            && !combodepmin.getValue().isEmpty() &&!tfcardnum.getText().isEmpty() && !tfcardid.getText().isEmpty() && !tfcvv.getText().isEmpty()
+                    && !comboyear.getValue().isEmpty() && !combomonth.getValue().isEmpty()){
+                //check-in info good
+                LocalDateTime nowTime=LocalDateTime.now();
+                LocalDateTime depature=LocalDateTime.of(nowTime.getYear(),nowTime.getMonth(),nowTime.getDayOfMonth(),
+                Integer.parseInt(combodephour.getValue()),Integer.parseInt(combodepmin.getValue()));
 
-    boolean isSubscriper(SubsriptionClient subsriptionClient) {
-        for (SubsriptionClient subsriptionClient1 : subsriptionClients) {
-            if (subsriptionClient1.getDriverId().equals(subsriptionClient.getDriverId())) {
-                return true;
+                Reservation reservation=new Reservation(tfdriverid.getText(),tflicenseplt.getText(),1, LocalDateTime.now(),depature,tfmail.getText(),"Occasional parking",tfcardnum.getText(),
+                        LocalDate.of(Integer.parseInt(comboyear.getValue()),Integer.parseInt(combomonth.getValue()),1),tfcvv.getText(),tfcardid.getText());
+                try{
+                    SimpleClient.getClient().sendToServer(new Message("#AddReservationRequest",reservation));
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            else{
+                errormsg.setText("Please enter valid information");
+                errormsg.setVisible(true);
             }
         }
-        return false;
     }
-
+    
 
 
     @FXML
     void gotoprimary(ActionEvent event) {
-
         try {
             App.setRoot("firstscene");
         } catch (IOException e) {
@@ -174,8 +230,29 @@ public class CheckInController {
             e.printStackTrace();
         }
     }
+    @SuppressWarnings("unchecked")
+    @Subscribe
+    public void onReservationCantBeDoneEvent(ReservationCantBeDoneEvent event){
+        Platform.runLater(() -> {
+            errormsg.setText("No vacancy in this parking lot");
+            errormsg.setVisible(true);
+            Timer timer=new Timer();
+            timer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    try {
+                        App.setRoot("firstscene");
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            },2000);
 
+        });
+
+    }
     public void initialize(){
+        EventBus.getDefault().register(this);
         combodephour.getItems().clear();
         combodephour.setItems(FXCollections.observableArrayList(hourLst));
         combodepmin.getItems().clear();
@@ -184,6 +261,9 @@ public class CheckInController {
         combomonth.setItems(FXCollections.observableArrayList(monthLst));
         comboyear.getItems().clear();
         comboyear.setItems(FXCollections.observableArrayList(yearLst));
+        errormsg.setVisible(false);
+        tflicenseplt.setDisable(true);
+        tfsubid.setDisable(true);
 
     }
 

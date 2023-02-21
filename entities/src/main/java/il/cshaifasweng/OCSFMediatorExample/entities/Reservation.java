@@ -5,7 +5,6 @@ import jakarta.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Date;
 
 @Entity
 @Table (name="Reservation")
@@ -15,26 +14,8 @@ public class Reservation implements Serializable {
     private int id;
     private String driverID;
     private String licensePlate;
-
-    @Override
-    public String toString() {
-        return "Reservation{" +
-                "id=" + id +
-                ", driverID='" + driverID + '\'' +
-                ", licensePlate='" + licensePlate + '\'' +
-                ", parkingLotID=" + parkingLotID +
-                ", timeOfArrival=" + timeOfArrival +
-                ", timeOfDeparture=" + timeOfDeparture +
-                ", email='" + email + '\'' +
-                ", typeOfClient='" + typeOfClient + '\'' +
-                ", subsriptionID='" + subsriptionID + '\'' +
-                ", creditCardNumber='" + creditCardNumber + '\'' +
-                ", expirationDate=" + expirationDate +
-                ", cvv='" + cvv + '\'' +
-                ", creditCardHolderID='" + creditCardHolderID + '\'' +
-                '}';
-    }
-
+    private boolean notified;
+    private boolean expired;
     private Integer parkingLotID;
     private LocalDateTime timeOfArrival;
     @Column(nullable = true)
@@ -65,6 +46,8 @@ public class Reservation implements Serializable {
         this.email = email;
         this.typeOfClient = typeOfClient;
         this.subsriptionID = subsriptionID;
+        this.notified=false;
+        this.expired=false;
     }
 
     public Reservation(String driverID, String licensePlate, Integer parkingLotID, LocalDateTime timeOfArrival,
@@ -82,6 +65,24 @@ public class Reservation implements Serializable {
         this.expirationDate = expirationDate;
         this.cvv = cvv;
         this.creditCardHolderID = creditCardHolderID;
+        this.notified=false;
+        this.expired=false;
+    }
+
+    public boolean isNotified() {
+        return notified;
+    }
+
+    public void setNotified(boolean notified) {
+        this.notified = notified;
+    }
+
+    public boolean isExpired() {
+        return expired;
+    }
+
+    public void setExpired(boolean expired) {
+        this.expired = expired;
     }
 
     public int getId() {

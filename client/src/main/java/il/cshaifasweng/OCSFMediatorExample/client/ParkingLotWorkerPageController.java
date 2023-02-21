@@ -39,18 +39,17 @@ public class ParkingLotWorkerPageController {
     }
     @FXML
     void gotoadddisablespace(ActionEvent event) throws IOException {
-        SimpleClient.getClient().sendToServer("#ShowAddDisabledSpacesRequest");
-
+        SimpleClient.getClient().sendToServer(new Message("#ShowParkingLotStateRequest",worker));
     }
 
     @FXML
     void gotorefertoalternativeparkinglot(ActionEvent event) throws IOException {
-        SimpleClient.getClient().sendToServer("#ShowRefereToAnotherPLRequest");
+        SimpleClient.getClient().sendToServer("");
     }
 
     @FXML
     void gotoreservespace(ActionEvent event) throws IOException {
-        SimpleClient.getClient().sendToServer(new Message("#ShowAdminReserveParkingRequest",worker));
+        SimpleClient.getClient().sendToServer(new Message("#ShowReserveRequest",worker));
 
     }
     @FXML
