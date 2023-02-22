@@ -30,7 +30,7 @@ public class SubsriptionClient implements Serializable {
     public String cvv;
     public String idHolder;
     public String email;
-    public int RemainingHours;
+    public double RemainingHours;
     private boolean notified;
 
     public SubsriptionClient() {
@@ -172,11 +172,11 @@ public class SubsriptionClient implements Serializable {
         this.email = email;
     }
 
-    public int getRemainingHours() {
+    public double getRemainingHours() {
         return RemainingHours;
     }
 
-    public void setRemainingHours(int remainingHours) {
+    public void setRemainingHours(double remainingHours) {
         RemainingHours = remainingHours;
     }
 }
