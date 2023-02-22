@@ -327,6 +327,7 @@ public class ReserveController {
         }
         cbSubsType.getItems().clear();
         cbSubsType.setItems(FXCollections.observableArrayList(typeList));
+        cbSubsType.setDisable(true);
     }
     @FXML
     void cbSubsTypeSelected(ActionEvent event) {
