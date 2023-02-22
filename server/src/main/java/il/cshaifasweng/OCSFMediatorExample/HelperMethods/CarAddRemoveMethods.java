@@ -9,7 +9,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class CarAddRemoveMethods {
-    public void addReservationToPl(Reservation reservation,List<ParkingLot> parkingLotList){
+    public static void addReservationToPl(Reservation reservation,List<ParkingLot> parkingLotList,List<Vehicle> vehicleList){
         int parkingLotIndex=0;
         for (ParkingLot parkingLot:parkingLotList){
             if(parkingLot.getId()==reservation.getParkingLotID()){
@@ -19,9 +19,10 @@ public class CarAddRemoveMethods {
         List<Spot> spots=parkingLotList.get(parkingLotIndex).getParkingLotStatus();
         Vehicle car=new Vehicle(reservation.getDriverID(), reservation.getLicensePlate(), reservation.getParkingLotID(),reservation.getTimeOfArrival(),
                 reservation.getTimeOfDeparture(),reservation.getTypeOfClient());
+        vehicleList.add(car);
         Collections.sort(spots);
         for (Spot spot : spots) {
-            if(spot.getCar().equals("open")){
+            if(spot.isOpen()){
                 spot.setCar(car);
                 break;
             }else if(spot.getCar().getClass()==Vehicle.class && ((Vehicle)spot.getCar()).getTimeOfDeparture().isAfter(car.getTimeOfDeparture())){
@@ -30,9 +31,9 @@ public class CarAddRemoveMethods {
                 car=temp;
             }
         }
-        sortByDepartureTime(spots);
+        //sortByDepartureTime(spots);
     }
-    public void removeReservationFromPl(Vehicle vehicle,List<ParkingLot> parkingLotList){
+    public static void removeReservationFromPl(Vehicle vehicle,List<ParkingLot> parkingLotList,List<Vehicle> vehicleList){
         int parkingLotIndex=0;
         for (ParkingLot parkingLot:parkingLotList){
             if(parkingLot.getId()==vehicle.getParkingLotID()){
@@ -41,27 +42,31 @@ public class CarAddRemoveMethods {
         }
         List<Spot> spots=parkingLotList.get(parkingLotIndex).getParkingLotStatus();
         for (Spot spot:spots){
-            if(spot.getCar()==vehicle){
-                spot.setCar("open");
+            Vehicle car=null;
+            if(spot.getCar().getClass().equals(Vehicle.class)){
+                car= (Vehicle) spot.getCar();
+            }
+            if(car!=null){
+                spot.setCar("Open");
+                vehicleList.remove(vehicle);
                 break;
             }
         }
-        sortByDepartureTime(spots);
+        //sortByDepartureTime(spots);
         Collections.sort(spots);
     }
 
-    public void sortByDepartureTime(List<Spot> spots){
-        spots.sort((sp1,sp2)->{
-            if(sp1.getCar().equals("open")){
-                return 1;
-            }else if(sp2.getCar().equals("open")){
-                return -1;
-            }else if(sp1.getCar().equals("damaged")|| sp2.getCar().equals("damaged")){
-                return 0;
-            }
-            else{
-                return (((Vehicle)sp1.getCar()).getTimeOfDeparture()).compareTo(((Vehicle)sp2.getCar()).getTimeOfDeparture());
-            }
-        });
-    }
+//    public static void sortByDepartureTime(List<Spot> spots){
+//        spots.sort((sp1,sp2)->{
+//            if(sp1.getCar().equals("Open")){
+//                return 1;
+//            }else if(sp2.getCar().equals("Open")){
+//                return -1;
+//            }else if(sp1.getCar().equals("damaged")|| sp2.getCar().equals("damaged")){
+//                return 0;
+//            }else{
+//                return (((Vehicle)sp1.getCar()).getTimeOfDeparture()).compareTo(((Vehicle)sp2.getCar()).getTimeOfDeparture());
+//            }
+//        });
+//    }
 }

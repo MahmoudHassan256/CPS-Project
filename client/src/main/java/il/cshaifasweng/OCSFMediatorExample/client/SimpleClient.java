@@ -74,6 +74,8 @@ public class SimpleClient extends AbstractClient {
 			}
 		}
 		else if (strmsg.startsWith("#ShowCheckOut")) {
+			List<Vehicle> vehicles= (List<Vehicle>) ((Message) msg).getObject();
+			CheckOutController.setVehicleList(vehicles);
 			try {
 				App.setRoot("checkout");
 			} catch (IOException e) {

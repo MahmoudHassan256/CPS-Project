@@ -169,12 +169,36 @@ public class CheckInController {
             if(cbsubscribe.isSelected()){
                 //im subscriber
                 if(!tflicenseplt.getText().isEmpty()){
+                    errormsg.setText("One or more of your information doesn't match");
                     for(Reservation reservation:reservations) {
                         if (reservation.getLicensePlate().equals(tflicenseplt.getText()) && reservation.getSubsriptionID().equals(tfsubid.getText())) {
                             //Check-in info are good
+                            try {
+                                SimpleClient.getClient().sendToServer(new Message("#AddReserveredCarRequest",reservation));
+                            } catch (IOException e) {
+                                throw new RuntimeException(e);
+                            }
+                            errormsg.setText("Car had been added successfully");
+                            break;
                         }
                     }
-                    errormsg.setText("One or more of your information doesn't match");
+                    if(errormsg.getText().startsWith("Car had been added successfully")){
+                        Platform.runLater(() -> {
+                            Timer timer = new Timer();
+                            timer.schedule(new TimerTask() {
+                                @Override
+                                public void run() {
+                                    Platform.runLater(() -> {
+                                        try {
+                                            App.setRoot("firstscene");
+                                        } catch (IOException e) {
+                                            throw new RuntimeException(e);
+                                        }
+                                    });
+                                }
+                            },2000);
+                        });
+                    }
                     errormsg.setVisible(true);
                     }
                 else {
@@ -185,13 +209,37 @@ public class CheckInController {
             }
             else {
                 //one-timer
+                errormsg.setText("No reservation found");
                 for (Reservation reservation : reservations) {
                     if (reservation.getLicensePlate().equals(tflicenseplt.getText())) {
                         //Check-in info are good
+                        try {
+                            SimpleClient.getClient().sendToServer(new Message("#AddReserveredCarRequest",reservation));
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+                        errormsg.setText("Car had been added successfully");
+                        break;
                     }
-                }
-                errormsg.setText("No reservation found");
+                    }
                 errormsg.setVisible(true);
+                if(errormsg.getText().startsWith("Car had been added successfully")){
+                    Platform.runLater(() -> {
+                        Timer timer = new Timer();
+                        timer.schedule(new TimerTask() {
+                            @Override
+                            public void run() {
+                                Platform.runLater(() -> {
+                                    try {
+                                        App.setRoot("firstscene");
+                                    } catch (IOException e) {
+                                        throw new RuntimeException(e);
+                                    }
+                                });
+                            }
+                        },2000);
+                    });
+                }
                 }
         }
         else{
@@ -207,10 +255,30 @@ public class CheckInController {
                 Reservation reservation=new Reservation(tfdriverid.getText(),tflicenseplt.getText(),1, LocalDateTime.now(),depature,tfmail.getText(),"Occasional parking",tfcardnum.getText(),
                         LocalDate.of(Integer.parseInt(comboyear.getValue()),Integer.parseInt(combomonth.getValue()),1),tfcvv.getText(),tfcardid.getText());
                 try{
-                    SimpleClient.getClient().sendToServer(new Message("#AddReservationRequest",reservation));
+                    SimpleClient.getClient().sendToServer(new Message("#AddReserveredCarRequest",reservation));
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
+                errormsg.setText("Car had been added successfully");
+                errormsg.setVisible(true);
+                if(errormsg.getText().startsWith("Car had been added successfully")) {
+                    Platform.runLater(() -> {
+                        Timer timer = new Timer();
+                        timer.schedule(new TimerTask() {
+                            @Override
+                            public void run() {
+                                Platform.runLater(() -> {
+                                    try {
+                                        App.setRoot("firstscene");
+                                    } catch (IOException e) {
+                                        throw new RuntimeException(e);
+                                    }
+                                });
+                            }
+                        }, 2000);
+                    });
+                }
+
             }
             else{
                 errormsg.setText("Please enter valid information");
