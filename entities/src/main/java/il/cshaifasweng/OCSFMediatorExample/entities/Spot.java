@@ -47,6 +47,15 @@ public class Spot implements Serializable,Comparable<Spot> {
     public Object getCar() {
         return car;
     }
+    public boolean isOpen(){
+        return car instanceof String && car.equals("Open");
+    }
+    public boolean isDamaged(){
+        return car instanceof String && car.equals("damaged");
+    }
+    public void setCar(Object car) {
+        this.car = car;
+    }
 
     @Override
     public String toString() {
@@ -58,18 +67,14 @@ public class Spot implements Serializable,Comparable<Spot> {
                 '}';
     }
 
-    public void setCar(Object car) {
-        this.car = car;
-    }
-
     @Override
     public int compareTo(Spot other) {
-        if(this.rowNum==other.rowNum){
+        if(this.depthNum==other.depthNum){
             if(this.floorNum==other.floorNum){
-                return this.depthNum-other.depthNum;
+                return this.rowNum-other.rowNum;
             }
             return this.floorNum-other.floorNum;
         }
-        return this.rowNum-other.rowNum;
+        return this.depthNum-other.depthNum;
     }
 }

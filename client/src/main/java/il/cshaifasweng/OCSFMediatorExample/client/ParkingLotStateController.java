@@ -150,12 +150,12 @@ public class ParkingLotStateController {
                 FontAwesomeIconView car = new FontAwesomeIconView();
                 car.setGlyphName("CAR");
                 car.setSize("36");
-                if (spot.getCar().equals("open")) {
-                    car.setFill(Paint.valueOf("silver"));
+                if (spot.getCar().equals("Open")) {
+                    car.setFill(Paint.valueOf("black"));
                 } else if (spot.getCar().equals("damaged")) {
                     car.setFill(Paint.valueOf("red"));
                 } else {
-                    car.setFill(Paint.valueOf("black"));
+                    car.setFill(Paint.valueOf("silver"));
                 }
                 parkinglotcarsGrid.add(car,spot.getRowNum(),spot.getFloorNum());
             }
