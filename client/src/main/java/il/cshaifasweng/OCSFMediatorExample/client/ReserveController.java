@@ -204,11 +204,10 @@ public class ReserveController {
                     {
                         if(subsriptionClient.getSubscriptionType().startsWith("Casual")){
                             if(subsriptionClient.getDesiredPrkinglot()==parkingLotComboBox.getValue()){
-                                if(LocalTime.of(Integer.parseInt(departureHour.getValue()),Integer.parseInt(departureMinute.getValue())).isBefore(LocalTime.MIDNIGHT)){
+                                if(LocalTime.of(Integer.parseInt(departureHour.getValue()),Integer.parseInt(departureMinute.getValue())).isBefore(LocalTime.of(23, 59))){
                                    if(subsriptionClient.getTimeOfDepature().isAfter(LocalTime.of(Integer.parseInt(departureHour.getValue()),Integer.parseInt(departureMinute.getValue())))){
                                        if(!(departureDate.getValue().getDayOfWeek().equals(DayOfWeek.FRIDAY)||departureDate.getValue().getDayOfWeek().equals(DayOfWeek.SATURDAY))&&
                                        !(aririvalDate.getValue().getDayOfWeek().equals(DayOfWeek.FRIDAY)||aririvalDate.getValue().getDayOfWeek().equals(DayOfWeek.SATURDAY))){
-                                           continue;
                                        }
                                        else {
                                            labelErrorInvalid.setVisible(true);

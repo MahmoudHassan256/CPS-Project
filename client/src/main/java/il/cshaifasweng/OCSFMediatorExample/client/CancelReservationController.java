@@ -13,6 +13,7 @@ import javafx.scene.input.MouseEvent;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -122,7 +123,7 @@ public class CancelReservationController {
             LocalDateTime time = LocalDateTime.now();
             Duration timeElapsed = Duration.between(time,chosenReservation.getTimeOfArrival());
             Duration howLong = Duration.between(chosenReservation.getTimeOfArrival(), chosenReservation.getTimeOfDeparture());
-            if(!chosenReservation.getSubsriptionID().isEmpty())
+            if(chosenReservation.getSubsriptionID() != null && !chosenReservation.getSubsriptionID().isEmpty())
             {
                 for(SubsriptionClient subsriptionClient: subsriptionClients)
                 {
@@ -131,15 +132,15 @@ public class CancelReservationController {
                         subsriptionClient1=subsriptionClient;
                         if(timeElapsed.toHours()>=3)
                         {
-                            subsriptionClient1.setRemainingHours((int)(subsriptionClient.getRemainingHours()- 0.1*howLong.toHours()));
+                            subsriptionClient1.setRemainingHours((double)(subsriptionClient.getRemainingHours() - 0.1*howLong.toHours()));
 
                         }
                         else if(timeElapsed.toHours()<3 && timeElapsed.toHours()>=1)
                         {
-                            subsriptionClient1.setRemainingHours((int)(subsriptionClient.getRemainingHours()- 0.5*howLong.toHours()));
+                            subsriptionClient1.setRemainingHours((double)(subsriptionClient.getRemainingHours() - 0.5*howLong.toHours()));
                         }
                         else
-                            subsriptionClient1.setRemainingHours((int)(subsriptionClient.getRemainingHours()- howLong.toHours()));
+                            subsriptionClient1.setRemainingHours((double)(subsriptionClient.getRemainingHours()- howLong.toHours()));
 
                         labelPayment.setText("You have "+subsriptionClient1.getRemainingHours()+" remaining hours");
                         labelPayment.setVisible(true);
@@ -153,7 +154,7 @@ public class CancelReservationController {
                 {
                     if(price.getParkingType().startsWith("Requested One"))
                     {
-                        perhour = Integer.parseInt(price.getPrice());
+                        perhour = Integer.parseInt(price.getPrice().replaceAll("[^0-9.]", ""));
                     }
                 }
                 if(timeElapsed.toHours()>=3)
@@ -167,6 +168,7 @@ public class CancelReservationController {
                 else{
                     payment = perhour*howLong.toHours();
                 }
+                payment = Double.parseDouble(new DecimalFormat("##.###").format(payment));
                 labelPayment.setText("you were charged "+ payment);
                 labelPayment.setVisible(true);
             }
