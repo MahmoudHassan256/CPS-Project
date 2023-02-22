@@ -66,4 +66,13 @@ public class ParkingLot implements Serializable {
         }
         workerList.add(worker);
     }
+    public int canBeAdded() {
+        int result = 0;
+        for (Spot spot : parkingLotStatus) {
+            if (spot.isOpen()) {
+                result += 1;
+            }
+        }
+        return result;
+    }
 }

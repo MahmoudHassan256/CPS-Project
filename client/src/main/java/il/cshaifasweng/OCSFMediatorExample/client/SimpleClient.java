@@ -211,6 +211,14 @@ public class SimpleClient extends AbstractClient {
 		}
 		else if (strmsg.startsWith("#RefreshParkingLots")) {
 			EventBus.getDefault().post(new RefreshParkingLotsEvent((Message)msg));
+		} else if (strmsg.startsWith("#ShowAlternative")) {
+			AlternativeController.setWorker((Worker) ((Message) msg).getObject());
+			AlternativeController.setParkingLotList((List<ParkingLot>) ((Message) msg).getObject2());
+			try {
+				App.setRoot("alternative");
+			} catch (IOException e) {
+				throw new RuntimeException(e);
+			}
 		}
 
 	}

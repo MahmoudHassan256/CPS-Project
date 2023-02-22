@@ -525,6 +525,18 @@ public class SimpleServer extends AbstractServer {
             }catch (Exception e){
                 e.printStackTrace();
             }
+        } else if (msgString.startsWith("#ShowAlternativeRequest")) {
+            try {
+                session=sessionFactory.openSession();
+                session.beginTransaction();
+                Worker worker = (Worker) ((Message) msg).getObject();
+                List<ParkingLot> parkingLots = getAll(ParkingLot.class);
+                client.sendToClient(new Message("#ShowAlternative",worker,parkingLots));
+                session.getTransaction().commit();
+                session.close();
+            }catch (Exception e){
+                e.printStackTrace();
+            }
         }
     }
 
@@ -642,11 +654,8 @@ public class SimpleServer extends AbstractServer {
     private static void addWorkerToParkingLot() throws Exception {
         List<Worker> workers = getAll(Worker.class);
         List<ParkingLot> parkingLots = getAll(ParkingLot.class);
-
         for (Worker worker : workers) {
-            Random random = new Random();
-            int val = random.nextInt(parkingLots.size());
-            ParkingLot tempparkinglot = parkingLots.get(val);
+            ParkingLot tempparkinglot = parkingLots.get(0);
             if (worker.getOccupation().startsWith("Parking Lot Worker")) {
                 worker.setParkingLot(tempparkinglot);
                 for (Worker worker1 : workers) {
