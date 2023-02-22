@@ -1,9 +1,4 @@
-/**
- * Sample Skeleton for 'checkin.fxml' Controller Class
- */
-/**
- * Sample Skeleton for 'checkin.fxml' Controller Class
- */
+
 
 package il.cshaifasweng.OCSFMediatorExample.client;
 
@@ -12,7 +7,6 @@ import il.cshaifasweng.OCSFMediatorExample.entities.ParkingLot;
 import il.cshaifasweng.OCSFMediatorExample.entities.Reservation;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -42,7 +36,6 @@ public class CheckInController {
     List<String> monthLst = Arrays.asList("01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12");
     List<String> yearLst = Arrays.asList("23", "24", "25", "26", "27", "28");
 
-    ObservableList<String> hourLst1 = FXCollections.observableArrayList("00", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23");
 
     private static List<Reservation> reservations;
     private static List<ParkingLot> parkingLots;
