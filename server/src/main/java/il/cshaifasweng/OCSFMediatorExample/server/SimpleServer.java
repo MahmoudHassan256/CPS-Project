@@ -1,5 +1,6 @@
 package il.cshaifasweng.OCSFMediatorExample.server;
 
+import il.cshaifasweng.OCSFMediatorExample.HelperMethods.CarAddRemoveMethods;
 import il.cshaifasweng.OCSFMediatorExample.HelperMethods.ScheduledTask;
 import il.cshaifasweng.OCSFMediatorExample.entities.*;
 import il.cshaifasweng.OCSFMediatorExample.server.ocsf.AbstractServer;
@@ -82,8 +83,8 @@ public class SimpleServer extends AbstractServer {
                 session.flush();
                 session.getTransaction().commit();
                 List<NewPrice> newPriceList = getAll(NewPrice.class);
-                List<Price> priceList=getAll(Price.class);
-                this.sendToAllClients(new Message("#RefreshPricesList", priceList,newPriceList));
+                List<Price> priceList = getAll(Price.class);
+                this.sendToAllClients(new Message("#RefreshPricesList", priceList, newPriceList));
                 session.close();
             } catch (Exception e) {
                 e.printStackTrace();
@@ -112,7 +113,7 @@ public class SimpleServer extends AbstractServer {
                         session.getTransaction().commit();
                     }
                 }
-                this.sendToAllClients(new Message("#RefreshPricesList", priceList,null));
+                this.sendToAllClients(new Message("#RefreshPricesList", priceList, null));
                 session.close();
             } catch (Exception e) {
                 e.printStackTrace();
@@ -147,26 +148,23 @@ public class SimpleServer extends AbstractServer {
             }
 
         } else if (msgString.startsWith("#AddReservationRequest")) {
-            Reservation reservation = (Reservation) ((Message) msg).getObject();
-            if (!canBeAdded(reservation)) {
-                this.sendToAllClients(new Message("#ReservationCantBeDone"));
-            } else {
-                try {
-                    session = sessionFactory.openSession();
-                    session.beginTransaction();
+            try {
+                session = sessionFactory.openSession();
+                session.beginTransaction();
+                Reservation reservation = (Reservation) ((Message) msg).getObject();
+                if (!canBeAdded(reservation)) {
+                    this.sendToAllClients(new Message("#ReservationCantBeDone"));
+                } else {
                     session.save(reservation);
                     session.flush();
                     session.getTransaction().commit();
                     List<Reservation> reservationList = getAll(Reservation.class);
-                    //App.sendEmailMethod.SendMailTo(reservation.getEmail(), "Reserevation done", "Thanks for reserving a" +
-                    //" parking space in: " + reservation.getParkingLotID());
                     this.sendToAllClients(new Message("#RefreshReservationList", reservationList));
                     client.sendToClient(new Message("#ReservationDone"));
-                    session.close();
-                } catch (Exception e) {
-                    throw new RuntimeException(e);
                 }
-
+                session.close();
+            } catch (Exception e) {
+                throw new RuntimeException(e);
             }
         } else if (msgString.startsWith("#ShowCheckInRequest")) {
             try {
@@ -182,7 +180,12 @@ public class SimpleServer extends AbstractServer {
             }
         } else if (msgString.startsWith("#ShowCheckOutRequest")) {
             try {
-                client.sendToClient(new Message("#ShowCheckOut"));
+                session=sessionFactory.openSession();
+                session.beginTransaction();
+                List<Vehicle> vehicles=getAll(Vehicle.class);
+                client.sendToClient(new Message("#ShowCheckOut",vehicles));
+                session.getTransaction().commit();
+                session.close();
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -472,8 +475,80 @@ public class SimpleServer extends AbstractServer {
             }catch (Exception e){
                 e.printStackTrace();
             }
+        }else if(msgString.startsWith("#AddReserveredCarRequest")){
+            try{
+                session=sessionFactory.openSession();
+                session.beginTransaction();
+                List<Reservation> reservations=getAll(Reservation.class);
+                Reservation reservation= (Reservation) ((Message)msg).getObject();
+                List<ParkingLot> parkingLots=getAll(ParkingLot.class);
+                List<Vehicle> vehicles=getAll(Vehicle.class);
+                CarAddRemoveMethods.addReservationToPl(reservation,parkingLots,vehicles);
+                for (ParkingLot parkingLot:parkingLots){
+                    session.save(parkingLot);session.flush();
+                }
+                for (Vehicle vehicle:vehicles){
+                    session.save(vehicle);session.flush();
+                }
+                for (Reservation reservation1:reservations){
+                    if(reservation1.getId()==reservation1.getId()){
+                        session.delete(reservation1);session.flush();
+                        break;
+                    }
+                }
+                this.sendToAllClients(new Message("#RefreshParkingLots", parkingLots));
+                session.getTransaction().commit();
+                session.close();
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        } else if (msgString.startsWith("#RemoveVehicleRequset")) {
+            try{
+                session=sessionFactory.openSession();
+                session.beginTransaction();
+                List<ParkingLot> parkingLots=getAll(ParkingLot.class);
+                List<Vehicle> vehicles=getAll(Vehicle.class);
+                Vehicle vehicle= (Vehicle) ((Message)msg).getObject();
+                CarAddRemoveMethods.removeReservationFromPl(vehicle,parkingLots,vehicles);
+                for (ParkingLot parkingLot:parkingLots){
+                    session.save(parkingLot);session.flush();
+                }
+                for (Vehicle vehicle1:vehicles){
+                    if(vehicle1.getId()==vehicle.getId()){
+                        session.delete(vehicle1);session.flush();
+                        break;
+                    }
+                }
+                this.sendToAllClients(new Message("#RefreshParkingLots", parkingLots));
+                session.getTransaction().commit();
+                session.close();
+            }catch (Exception e){
+                e.printStackTrace();
+            }
         }
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     public static <T> ArrayList<T> getAll(Class<T> object) {
         CriteriaBuilder builder = session.getCriteriaBuilder();
         CriteriaQuery<T> query = builder.createQuery(object);
@@ -671,7 +746,7 @@ public class SimpleServer extends AbstractServer {
         configuration.addAnnotatedClass(Price.class);
         configuration.addAnnotatedClass(Worker.class);
         configuration.addAnnotatedClass(Vehicle.class);
-        //configuration.addAnnotatedClass(Spot.class);
+        configuration.addAnnotatedClass(Spot.class);
         configuration.addAnnotatedClass(Complaint.class);
         configuration.addAnnotatedClass(Refund.class);
         configuration.addAnnotatedClass(Reservation.class);

@@ -101,12 +101,13 @@ public class ChainManagerPageController {
 
     @FXML
     void gotoshowparkinglotstate(ActionEvent event) throws IOException {
-        SimpleClient.getClient().sendToServer(new Message("#ShowReportsRequest", worker));
+        SimpleClient.getClient().sendToServer(new Message("#ShowParkingLotStateRequest", worker));
     }
 
     @FXML
     void gotoshowreports(ActionEvent event) throws IOException {
         SimpleClient.getClient().sendToServer(new Message("#ShowReportsRequest", worker));
+
     }
 
     @FXML

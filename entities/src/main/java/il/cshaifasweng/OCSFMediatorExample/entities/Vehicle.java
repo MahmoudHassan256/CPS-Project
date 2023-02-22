@@ -84,4 +84,17 @@ public class Vehicle implements Serializable {
     public void setType(String type) {
         Type = type;
     }
+
+    @Override
+    public String toString() {
+        return "Vehicle{" +
+                "id=" + id +
+                ", driverID='" + driverID + '\'' +
+                ", licensePlate='" + licensePlate + '\'' +
+                ", parkingLotID=" + parkingLotID +
+                ", timeOfArrival=" + timeOfArrival +
+                ", timeOfDeparture=" + timeOfDeparture +
+                ", Type='" + Type + '\'' +
+                '}';
+    }
 }

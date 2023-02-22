@@ -36,9 +36,14 @@
                </font>
             </Text>
             <TextField fx:id="tfcarnumber" prefHeight="26.0" prefWidth="254.0" />
-            <Button fx:id="checkoutBtn" mnemonicParsing="false" onAction="#checkout" stylesheets="@styles/clickableBtn.css" text="Check out">
+            <Text fx:id="errormsg" fill="RED" strokeType="OUTSIDE" strokeWidth="0.0" text="error msg">
                <VBox.margin>
                   <Insets top="100.0" />
+               </VBox.margin>
+            </Text>
+            <Button fx:id="checkoutBtn" mnemonicParsing="false" onAction="#checkout" stylesheets="@styles/clickableBtn.css" text="Check out">
+               <VBox.margin>
+                  <Insets />
                </VBox.margin>
             </Button>
          </children>
