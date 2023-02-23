@@ -201,7 +201,7 @@ public class CheckInController {
 
             }
             else {
-                //one-timer
+                //
                 errormsg.setText("No reservation found");
                 for (Reservation reservation : reservations) {
                     if (reservation.getLicensePlate().equals(tflicenseplt.getText())) {

@@ -77,18 +77,19 @@ public class CheckOutController {
             Integer perhour=0;
             double paymentAmount;
             if(vehicle.getLicensePlate().equals(tfcarnumber.getText())){
-                if(vehicle.getType().equals("one-Timer") || vehicle.getType().equals("Occasional parking"))
+                if(vehicle.getType().equals("One-time") || vehicle.getType().equals("Occasional parking"))
                 {
                     for(Price price: priceList)
                     {
-                        if(price.getParkingType().startsWith(vehicle.getType()))
+                        if(price.getParkingType().contains(vehicle.getType()))
                         {
                             perhour = Integer.parseInt(price.getPrice().replaceAll("[^0-9.]", ""));
+                            break;
                         }
                     }
                     Duration duration = Duration.between(vehicle.getTimeOfArrival(), vehicle.getTimeOfDeparture());
                     Duration lateDuration = Duration.between(vehicle.getTimeOfDeparture(), time);
-                    paymentAmount = (int)(duration.toHours()*perhour);
+                    paymentAmount = (double)(duration.toHours()*perhour);
                     if(vehicle.getTimeOfDeparture().isBefore(time))
                     {
                         paymentAmount = (int)(paymentAmount+ lateDuration.toHours()*1.1*perhour);
