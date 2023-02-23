@@ -183,7 +183,10 @@ public class SimpleServer extends AbstractServer {
                 session=sessionFactory.openSession();
                 session.beginTransaction();
                 List<Vehicle> vehicles=getAll(Vehicle.class);
-                client.sendToClient(new Message("#ShowCheckOut",vehicles));
+                List<SubsriptionClient> subsriptionClients = getAll((SubsriptionClient.class));
+                List<Reservation> reservations = getAll(Reservation.class);
+                List<Price> prices = getAll(Price.class);
+                client.sendToClient(new Message("#ShowCheckOut",vehicles, subsriptionClients, reservations, prices));
                 session.getTransaction().commit();
                 session.close();
             } catch (IOException e) {
@@ -508,6 +511,7 @@ public class SimpleServer extends AbstractServer {
                 session.beginTransaction();
                 List<ParkingLot> parkingLots=getAll(ParkingLot.class);
                 List<Vehicle> vehicles=getAll(Vehicle.class);
+                List<SubsriptionClient> subsriptionClients = (List<SubsriptionClient>) ((Message) msg).getObject2();
                 Vehicle vehicle= (Vehicle) ((Message)msg).getObject();
                 CarAddRemoveMethods.removeReservationFromPl(vehicle,parkingLots,vehicles);
                 for (ParkingLot parkingLot:parkingLots){
@@ -518,6 +522,11 @@ public class SimpleServer extends AbstractServer {
                         session.delete(vehicle1);session.flush();
                         break;
                     }
+                }
+                for(SubsriptionClient subsriptionClient: subsriptionClients)
+                {
+                    session.save(subsriptionClient);
+                    session.flush();
                 }
                 this.sendToAllClients(new Message("#RefreshParkingLots", parkingLots));
                 session.getTransaction().commit();
