@@ -75,7 +75,13 @@ public class SimpleClient extends AbstractClient {
 		}
 		else if (strmsg.startsWith("#ShowCheckOut")) {
 			List<Vehicle> vehicles= (List<Vehicle>) ((Message) msg).getObject();
+			List<SubsriptionClient> subsriptionClients = (List<SubsriptionClient>) (((Message) msg).getObject2());
+			List<Reservation> reservations = (List<Reservation>) ((Message) msg).getObject3();
+			List<Price> prices = (List<Price>) ((Message) msg).getObject4();
 			CheckOutController.setVehicleList(vehicles);
+			CheckOutController.setSubsriptionClientList(subsriptionClients);
+			CheckOutController.setReservationList(reservations);
+			CheckOutController.setPriceList(prices);
 			try {
 				App.setRoot("checkout");
 			} catch (IOException e) {
