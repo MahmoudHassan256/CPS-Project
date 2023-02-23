@@ -44,7 +44,7 @@ public class ParkingLotWorkerPageController {
 
     @FXML
     void gotorefertoalternativeparkinglot(ActionEvent event) throws IOException {
-        SimpleClient.getClient().sendToServer("");
+        SimpleClient.getClient().sendToServer(new Message("#ShowAlternativeRequest",worker));
     }
 
     @FXML

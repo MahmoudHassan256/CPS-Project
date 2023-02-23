@@ -244,8 +244,7 @@ public class CheckInController {
                 LocalDateTime nowTime=LocalDateTime.now();
                 LocalDateTime depature=LocalDateTime.of(nowTime.getYear(),nowTime.getMonth(),nowTime.getDayOfMonth(),
                 Integer.parseInt(combodephour.getValue()),Integer.parseInt(combodepmin.getValue()));
-
-                Reservation reservation=new Reservation(tfdriverid.getText(),tflicenseplt.getText(),1, LocalDateTime.now(),depature,tfmail.getText(),"Occasional parking",tfcardnum.getText(),
+                Reservation reservation=new Reservation(tfdriverid.getText(),tfcarnum.getText(),1, LocalDateTime.now(),depature,tfmail.getText(),"Occasional parking",tfcardnum.getText(),
                         LocalDate.of(Integer.parseInt(comboyear.getValue()),Integer.parseInt(combomonth.getValue()),1),tfcvv.getText(),tfcardid.getText());
                 try{
                     SimpleClient.getClient().sendToServer(new Message("#AddReserveredCarRequest",reservation));
