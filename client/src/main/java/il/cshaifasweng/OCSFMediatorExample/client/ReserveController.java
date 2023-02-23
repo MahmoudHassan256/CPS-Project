@@ -259,7 +259,7 @@ public class ReserveController {
                         departureDate.getValue().getDayOfMonth(), Integer.parseInt(departureHour.getValue()), Integer.parseInt(departureMinute.getValue()));
                 LocalDate expirationD = LocalDate.of(Integer.parseInt(expirationYear.getValue()), Integer.parseInt(expirationMonth.getValue()), 1);
                 Reservation reservation = new Reservation(tfID.getText(), tfLicense.getText(),
-                        parkingLotComboBox.getValue(), arrivalDate, departureDate1, tfEmail.getText(), "one-Timer",
+                        parkingLotComboBox.getValue(), arrivalDate, departureDate1, tfEmail.getText(), "One-time",
                         tfCardNumber.getText(), expirationD, tfCVV.getText(), tfCardOwnerID.getText());
                 try {
                     SimpleClient.getClient().sendToServer(new Message("#AddReservationRequest", reservation));
