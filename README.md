@@ -10,7 +10,7 @@ Main screen:
 The fetures:<br />
       1. It holds the database for a parking lot for now we have it virtually it handels inserting cars into the parkinglot and removing them.<br />
       2. It has it's own worker structure:<br />
-            -parking lot Worker :<br />
+            <b>-parking lot Worker :<b/><br />
                 1.reserving a place in parking lot.<br />
                 2.add disabled places in the parkinglot.<br /><br />
                 3.refer to alternative parking lot if its full.<br />
@@ -25,7 +25,7 @@ The fetures:<br />
             -chain manager:<br />
                 1.confirms or declines the price change request that was send by the manger.<br />
                 ![image](https://user-images.githubusercontent.com/103119019/224544528-47d8bc15-9ff9-4099-a7a7-25b0a1b6cd41.png)
-                2.shows reports that were send by the mangers.<br /><br />
+                2.shows reports that were send by the mangers.<br />
                 3.can see the state of the parkinglots.<br />
                 ![image](https://user-images.githubusercontent.com/103119019/224544513-b85ee0be-5c67-42ab-809d-6bb2f1daf25d.png)
     3.It has a user interfaces were he can:<br />
