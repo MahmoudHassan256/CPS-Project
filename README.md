@@ -10,19 +10,19 @@ Main screen:
 The fetures:<br />
       1. It holds the database for a parking lot for now we have it virtually it handels inserting cars into the parkinglot and removing them.<br />
       2. It has it's own worker structure:<br />
-            <b>-parking lot Worker :<b/><br />
+            <b>-parking lot Worker :</b><br />
                 1.reserving a place in parking lot.<br />
                 2.add disabled places in the parkinglot.<br /><br />
                 3.refer to alternative parking lot if its full.<br />
-            -parking lot manager:<br />
+            <b>-parking lot manager:</b><br />
                 1.does all what can the worker do.<br />
                 2.she is the responsable for sending a price change request for the chain manager.<br />
                 3.sends reports to the chain manager.<br />
-            -customer service worker:<br />
+            <b>-customer service worker:</b><br />
                 1.handels all the complaints.<br />
                 2.response to the complaints has a prio table.<br />
                 ![image](https://user-images.githubusercontent.com/103119019/224544557-e0fe746a-d04f-463b-889e-a555c0b8fc02.png)
-            -chain manager:<br />
+            <b>-chain manager:</b><br />
                 1.confirms or declines the price change request that was send by the manger.<br />
                 ![image](https://user-images.githubusercontent.com/103119019/224544528-47d8bc15-9ff9-4099-a7a7-25b0a1b6cd41.png)
                 2.shows reports that were send by the mangers.<br />
