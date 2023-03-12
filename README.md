@@ -12,7 +12,7 @@ The fetures:<br />
       2. It has it's own worker structure:<br />
             <b>-parking lot Worker :</b><br />
                 1.reserving a place in parking lot.<br />
-                2.add disabled places in the parkinglot.<br /><br />
+                2.add disabled places in the parkinglot.<br />
                 3.refer to alternative parking lot if its full.<br />
             <b>-parking lot manager:</b><br />
                 1.does all what can the worker do.<br />
