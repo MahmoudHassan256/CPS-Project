@@ -1,12 +1,10 @@
 # CPS-Project
 
 ![Java Version](https://img.shields.io/badge/Java-%3E%3D8-blue)
-![License](https://img.shields.io/badge/license-MIT-green)
-![Build Status](https://img.shields.io/github/workflow/status/MahmoudHassan256/CPS-Project/CI)
 
 ## Overview
 
-**CPS-Project** is an advanced Java-based application designed for [brief project purpose, e.g., "simulating Cyber-Physical Systems" or specify the domain].  
+**CPS-Project** is an advanced Java-based application designed as a parking managemnet system for handling real-time vehicle tracking and complaint resolution. Ensured secure socket communication and optimized system responsiveness, reducing user report processing time by 40%..  
 Built for scalability, maintainability, and extensibility, this project leverages modern Java best practices and robust software design principles.
 
 ## Features
@@ -21,8 +19,6 @@ Built for scalability, maintainability, and extensibility, this project leverage
 ## Technologies Used
 
 - **Language:** Java 8+
-- **Build Tool:** [e.g., Gradle, Maven]
-- **Testing:** JUnit, Mockito (adapt as needed)
 - **CI/CD:** GitHub Actions
 
 ## Getting Started
@@ -30,7 +26,7 @@ Built for scalability, maintainability, and extensibility, this project leverage
 ### Prerequisites
 
 - Java 8 or higher installed
-- [Specify relevant tools, e.g., Maven/Gradle]
+- Maven/Gradle
 
 ### Build & Run
 
@@ -83,11 +79,6 @@ We welcome contributions from the community!
 3. Commit changes, write tests if needed.
 4. Submit a pull request describing your changes.
 
-Please follow our [Code of Conduct](CODE_OF_CONDUCT.md) and [Contribution Guidelines](CONTRIBUTING.md).
-
-## License
-
-This project is licensed under the [MIT License](LICENSE).
 
 ## Contact
 
@@ -98,7 +89,3 @@ This project is licensed under the [MIT License](LICENSE).
 ## Acknowledgments
 
 Special thanks to all contributors, testers, and libraries that made this project possible.
-
----
-
-> _For detailed API docs, usage examples, and troubleshooting, see the [Wiki](https://github.com/MahmoudHassan256/CPS-Project/wiki)._
