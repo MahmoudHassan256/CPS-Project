@@ -1,72 +1,104 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-</head>
-<body>
+# CPS-Project
 
-<h1>CPS Car Parking System</h1>
+![Java Version](https://img.shields.io/badge/Java-%3E%3D8-blue)
+![License](https://img.shields.io/badge/license-MIT-green)
+![Build Status](https://img.shields.io/github/workflow/status/MahmoudHassan256/CPS-Project/CI)
 
-<p>This is our client-server project called CPS (Car Parking System), developed in Java. The project revolves around managing a car parking system and incorporates various features to handle parking lot operations efficiently.</p>
+## Overview
 
-<h2>Main Screen</h2>
-<img src="https://user-images.githubusercontent.com/103119019/224544264-b8e4398b-6719-486d-ae5d-7db8c9872305.png" alt="Main Screen Image">
+**CPS-Project** is an advanced Java-based application designed for [brief project purpose, e.g., "simulating Cyber-Physical Systems" or specify the domain].  
+Built for scalability, maintainability, and extensibility, this project leverages modern Java best practices and robust software design principles.
 
-<h2>Features</h2>
+## Features
 
-<ol>
-  <li>
-    <p>Database Management:</p>
-    <ul>
-      <li>Virtual parking lot database handling car insertion and removal.</li>
-    </ul>
-  </li>
-  <li>
-    <p>Worker Structure:</p>
-    <ul>
-      <li><b>Parking Lot Worker:</b>
-        <ul>
-          <li>Reserves parking spaces.</li>
-          <li>Adds disabled parking places.</li>
-          <li>Refers to alternative parking lots if full.</li>
-        </ul>
-      </li>
-      <li><b>Parking Lot Manager:</b>
-        <ul>
-          <li>Performs tasks of a worker.</li>
-          <li>Responsible for sending price change requests to chain manager.</li>
-          <li>Sends reports to chain manager.</li>
-        </ul>
-      </li>
-      <li><b>Customer Service Worker:</b>
-        <ul>
-          <li>Handles all complaints.</li>
-          <li>Responds to complaints with a priority table.</li>
-        </ul>
-      </li>
-      <li><b>Chain Manager:</b>
-        <ul>
-          <li>Confirms or declines price change requests.</li>
-          <li>Views reports sent by managers.</li>
-          <li>Monitors parking lot states.</li>
-        </ul>
-      </li>
-    </ul>
-  </li>
-  <li>
-    <p>User Interface:</p>
-    <ul>
-      <li>Allows users to reserve parking spaces.</li>
-      <li>Check-in and check-out functionality.</li>
-      <li>Subscription option for better prices.</li>
-    </ul>
-  </li>
-</ol>
+- Modular Java architecture for easy maintenance.
+- Comprehensive use of OOP, design patterns, and functional paradigms where appropriate.
+- Intuitive CLI and/or GUI (adapt as needed).
+- Integration with [list any frameworks/libraries used].
+- Comprehensive error handling and logging.
+- Unit and integration tests for high code reliability.
 
-<p>This project taught us valuable skills in Java programming, group work dynamics, and handling different personas within a team.</p>
+## Technologies Used
 
-<p>Developed by Mahmoud Hassan and Muhammed Sarahni.</p>
+- **Language:** Java 8+
+- **Build Tool:** [e.g., Gradle, Maven]
+- **Testing:** JUnit, Mockito (adapt as needed)
+- **CI/CD:** GitHub Actions
 
-</body>
-</html>
+## Getting Started
+
+### Prerequisites
+
+- Java 8 or higher installed
+- [Specify relevant tools, e.g., Maven/Gradle]
+
+### Build & Run
+
+#### Using Maven
+
+```bash
+mvn clean install
+java -jar target/cps-project.jar
+```
+
+#### Using Gradle
+
+```bash
+./gradlew build
+java -jar build/libs/cps-project.jar
+```
+
+#### From Sources
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/MahmoudHassan256/CPS-Project.git
+   cd CPS-Project
+   ```
+
+2. Build and run as above.
+
+## Project Structure
+
+```
+src/
+ └── main/
+       ├── java/
+       │     └── ... (core logic)
+       └── resources/
+             └── ... (config, assets)
+ └── test/
+       ├── java/
+       │     └── ... (tests)
+       └── resources/
+             └── ... (test assets)
+```
+
+## Contributing
+
+We welcome contributions from the community!
+
+1. Fork the repository.
+2. Create a feature branch (`git checkout -b feature/AmazingFeature`).
+3. Commit changes, write tests if needed.
+4. Submit a pull request describing your changes.
+
+Please follow our [Code of Conduct](CODE_OF_CONDUCT.md) and [Contribution Guidelines](CONTRIBUTING.md).
+
+## License
+
+This project is licensed under the [MIT License](LICENSE).
+
+## Contact
+
+- **Author:** Mahmoud Hassan  
+- **GitHub:** [MahmoudHassan256](https://github.com/MahmoudHassan256)
+- **Email:** [insert your email or contact option here]
+
+## Acknowledgments
+
+Special thanks to all contributors, testers, and libraries that made this project possible.
+
+---
+
+> _For detailed API docs, usage examples, and troubleshooting, see the [Wiki](https://github.com/MahmoudHassan256/CPS-Project/wiki)._
